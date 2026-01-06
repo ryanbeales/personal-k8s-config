@@ -6,3 +6,4 @@ resources:
   - ./providers/upbound/upbound-provider-aws-acm.yaml
   - ./providers/upbound/upbound-provider-aws-config.yaml
   - ./providers/upbound/upbound-provider-aws-iam.yaml
+  - ./providers/upbound/upbound-provider-aws-ses.yaml
