@@ -23,3 +23,7 @@ resources:
   - sync/iam-policy.yaml
   - sync/iam-policy-attachment.yaml
   - sync/cronjob.yaml
+  - ses/domain-identity.yaml
+  - ses/dkim.yaml
+  - ses/receipt-rule-set.yaml
+  - ses/receipt-rule.yaml

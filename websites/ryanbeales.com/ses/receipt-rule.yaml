@@ -1,0 +1,17 @@
+apiVersion: ses.aws.upbound.io/v1beta2
+kind: ReceiptRule
+metadata:
+  name: ryanbeales-default-rule
+spec:
+  forProvider:
+    name: default-rule
+    ruleSetName: ryanbeales-rules
+    region: us-west-2
+    enabled: true
+    scanEnabled: true
+    # Initially just enabling it, we can add actions (S3, Lambda) later if requested.
+    # For now, let's assume a basic setup that receives but doesn't store yet,
+    # or I can add an S3 action if I know the bucket.
+    # The user has an S3 bucket 'www.ryanbeales.com', but might want a dedicated one.
+  providerConfigRef:
+    name: upbound-aws-default
