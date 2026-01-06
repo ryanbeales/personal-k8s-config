@@ -1,0 +1,11 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-mx
+spec:
+  forProvider:
+    type: MX
+    ttl: 300
+    resourceRecords:
+      - value: 10 inbound-smtp.us-west-2.amazonaws.com.
+    zoneId: Z2AOZQ8V4DDJEY

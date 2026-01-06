@@ -2,9 +2,11 @@ apiVersion: ses.aws.upbound.io/v1beta1
 kind: ReceiptRuleSet
 metadata:
   name: ryanbeales-rules
+  annotations:
+    crossplane.io/external-name: ryanbeales-rules
 spec:
   forProvider:
-    ruleSetName: ryanbeales-rules
     region: us-west-2
+    ruleSetName: ryanbeales-rules
   providerConfigRef:
     name: upbound-aws-default

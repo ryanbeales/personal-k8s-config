@@ -1,0 +1,11 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-ses-verification
+spec:
+  forProvider:
+    type: TXT
+    ttl: 300
+    resourceRecords:
+      - value: '"REPLACE_WITH_VERIFICATION_TOKEN"'
+    zoneId: Z2AOZQ8V4DDJEY
