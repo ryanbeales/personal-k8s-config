@@ -2,6 +2,8 @@ apiVersion: route53.aws.crossplane.io/v1alpha1
 kind: ResourceRecordSet
 metadata:
   name: ryanbeales.com-mx
+  annotations:
+    crossplane.io/external-name: ryanbeales.com
 spec:
   forProvider:
     type: MX
