@@ -1,0 +1,10 @@
+apiVersion: ses.aws.upbound.io/v1beta1
+kind: DomainDkim
+metadata:
+  name: ryanbeales.com
+spec:
+  forProvider:
+    domain: ryanbeales.com
+    region: us-west-2
+  providerConfigRef:
+    name: upbound-aws-default
