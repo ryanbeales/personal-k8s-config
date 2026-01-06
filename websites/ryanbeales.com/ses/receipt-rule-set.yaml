@@ -5,6 +5,6 @@ metadata:
 spec:
   forProvider:
     ruleSetName: ryanbeales-rules
-    region: us-west-2
+    region: eu-west-2
   providerConfigRef:
     name: upbound-aws-default

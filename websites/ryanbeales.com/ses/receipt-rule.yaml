@@ -6,7 +6,7 @@ spec:
   forProvider:
     name: default-rule
     ruleSetName: ryanbeales-rules
-    region: us-west-2
+    region: eu-west-2
     enabled: true
     scanEnabled: true
     # Initially just enabling it, we can add actions (S3, Lambda) later if requested.

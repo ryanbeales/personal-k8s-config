@@ -1,0 +1,11 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-spf
+spec:
+  forProvider:
+    type: TXT
+    ttl: 300
+    resourceRecords:
+      - value: '"v=spf1 include:amazonses.com ~all"'
+    zoneId: Z2AOZQ8V4DDJEY
