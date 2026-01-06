@@ -9,7 +9,7 @@ spec:
     type: CNAME
     ttl: 300
     resourceRecords:
-      - value: ol7x4msxnzdpwa5mi46qxbasvy7gghgq.dkim.amazonses.com.
+      - value: ol7x4msxnzdpwa5mi46qxbasvy7gghgq.dkim.amazonses.com
     zoneId: Z2AOZQ8V4DDJEY
 ---
 apiVersion: route53.aws.crossplane.io/v1alpha1
@@ -23,7 +23,7 @@ spec:
     type: CNAME
     ttl: 300
     resourceRecords:
-      - value: 4ctlbdhzrn57nou573spgyn4dqh27ufm.dkim.amazonses.com.
+      - value: 4ctlbdhzrn57nou573spgyn4dqh27ufm.dkim.amazonses.com
     zoneId: Z2AOZQ8V4DDJEY
 ---
 apiVersion: route53.aws.crossplane.io/v1alpha1
@@ -37,5 +37,5 @@ spec:
     type: CNAME
     ttl: 300
     resourceRecords:
-      - value: 6e7pirca3hzfou66d42qbzyitvn465s3.dkim.amazonses.com.
+      - value: 6e7pirca3hzfou66d42qbzyitvn465s3.dkim.amazonses.com
     zoneId: Z2AOZQ8V4DDJEY
