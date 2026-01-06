@@ -30,3 +30,4 @@ resources:
   - dns/ses-mx.yaml
   - dns/ses-spf.yaml
   - dns/ses-verification.yaml
+  - dns/ses-dkim.yaml

@@ -1,0 +1,41 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-ses-dkim-0
+  annotations:
+    crossplane.io/external-name: ol7x4msxnzdpwa5mi46qxbasvy7gghgq._domainkey.ryanbeales.com
+spec:
+  forProvider:
+    type: CNAME
+    ttl: 300
+    resourceRecords:
+      - value: ol7x4msxnzdpwa5mi46qxbasvy7gghgq.dkim.amazonses.com.
+    zoneId: Z2AOZQ8V4DDJEY
+---
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-ses-dkim-1
+  annotations:
+    crossplane.io/external-name: 4ctlbdhzrn57nou573spgyn4dqh27ufm._domainkey.ryanbeales.com
+spec:
+  forProvider:
+    type: CNAME
+    ttl: 300
+    resourceRecords:
+      - value: 4ctlbdhzrn57nou573spgyn4dqh27ufm.dkim.amazonses.com.
+    zoneId: Z2AOZQ8V4DDJEY
+---
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-ses-dkim-2
+  annotations:
+    crossplane.io/external-name: 6e7pirca3hzfou66d42qbzyitvn465s3._domainkey.ryanbeales.com
+spec:
+  forProvider:
+    type: CNAME
+    ttl: 300
+    resourceRecords:
+      - value: 6e7pirca3hzfou66d42qbzyitvn465s3.dkim.amazonses.com.
+    zoneId: Z2AOZQ8V4DDJEY
