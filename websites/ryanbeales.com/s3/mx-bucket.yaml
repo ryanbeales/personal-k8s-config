@@ -1,0 +1,11 @@
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  name: ryanbeales.com-mx
+  annotations:
+    crossplane.io/external-name: ryanbeales.com-mx
+spec:
+  forProvider:
+    region: us-west-2
+  providerConfigRef:
+    name: upbound-aws-default

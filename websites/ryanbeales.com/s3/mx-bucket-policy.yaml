@@ -1,0 +1,31 @@
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketPolicy
+metadata:
+  name: ryanbeales.com-mx
+spec:
+  forProvider:
+    region: us-west-2
+    bucketRef:
+      name: ryanbeales.com-mx
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "AllowSESPutObject",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "ses.amazonaws.com"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::ryanbeales.com-mx/*",
+            "Condition": {
+              "StringEquals": {
+                "aws:SourceAccount": "528519205020"
+              }
+            }
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default
