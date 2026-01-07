@@ -18,6 +18,8 @@ resources:
   - acm/certificate.yaml
   - s3/bucket.yaml
   - s3/bucket-policy.yaml
+  - s3/mx-bucket.yaml
+  - s3/mx-bucket-policy.yaml
   - sync/iam-user.yaml
   - sync/iam-access-key.yaml
   - sync/iam-policy.yaml

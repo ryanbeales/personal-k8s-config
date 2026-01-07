@@ -11,5 +11,10 @@ spec:
     region: us-west-2
     enabled: true
     scanEnabled: true
+    recipients:
+      - ryanbeales.com
+    s3Action:
+      - bucketName: ryanbeales.com-mx
+        position: 1
   providerConfigRef:
     name: upbound-aws-default
