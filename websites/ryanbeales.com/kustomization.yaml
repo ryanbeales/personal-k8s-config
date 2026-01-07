@@ -29,6 +29,7 @@ resources:
   - ses/dkim.yaml
   - ses/receipt-rule-set.yaml
   - ses/receipt-rule.yaml
+  - ses/active-receipt-rule-set.yaml
   - dns/ses-mx.yaml
   - dns/ses-spf.yaml
   - dns/ses-verification.yaml

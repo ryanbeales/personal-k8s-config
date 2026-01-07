@@ -1,0 +1,10 @@
+apiVersion: ses.aws.upbound.io/v1beta1
+kind: ActiveReceiptRuleSet
+metadata:
+  name: ryanbeales-rules
+spec:
+  forProvider:
+    region: us-west-2
+    ruleSetName: ryanbeales-rules
+  providerConfigRef:
+    name: upbound-aws-default
