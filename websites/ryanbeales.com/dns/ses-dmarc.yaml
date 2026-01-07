@@ -1,13 +1,13 @@
 apiVersion: route53.aws.crossplane.io/v1alpha1
 kind: ResourceRecordSet
 metadata:
-  name: ryanbeales.com-ses-verification
+  name: ryanbeales.com-dmarc
   annotations:
-    crossplane.io/external-name: ryanbeales.com
+    crossplane.io/external-name: _dmarc.ryanbeales.com
 spec:
   forProvider:
     type: TXT
     ttl: 300
     resourceRecords:
-      - value: '"Oa/kZ7NrYlzLk+hZYUpb1wS8W2sg0edxSEROjsUSKks="'
+      - value: '"v=DMARC1; p=none;"'
     zoneId: Z2AOZQ8V4DDJEY
