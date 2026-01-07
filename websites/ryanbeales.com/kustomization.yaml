@@ -31,3 +31,4 @@ resources:
   - dns/ses-spf.yaml
   - dns/ses-verification.yaml
   - dns/ses-dkim.yaml
+  - dns/ses-dmarc.yaml
