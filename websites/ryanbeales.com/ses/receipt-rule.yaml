@@ -16,5 +16,6 @@ spec:
     s3Action:
       - bucketName: ryanbeales.com-mx
         position: 1
+    tlsPolicy: Require
   providerConfigRef:
     name: upbound-aws-default
