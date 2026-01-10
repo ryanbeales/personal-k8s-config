@@ -30,6 +30,10 @@ resources:
   - ses/receipt-rule-set.yaml
   - ses/receipt-rule.yaml
   - ses/active-receipt-rule-set.yaml
+  - ses/sns-sqs.yaml
+  - ses/iam-forwarder.yaml
+  - email-forwarder/configmap.yaml
+  - email-forwarder/deployment.yaml
   - dns/ses-mx.yaml
   - dns/ses-spf.yaml
   - dns/ses-verification.yaml

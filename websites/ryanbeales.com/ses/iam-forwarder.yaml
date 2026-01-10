@@ -1,0 +1,61 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: User
+metadata:
+  name: ryanbeales-email-forwarder
+spec:
+  forProvider: {}
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: AccessKey
+metadata:
+  name: ryanbeales-email-forwarder-key
+spec:
+  forProvider:
+    userRef:
+      name: ryanbeales-email-forwarder
+  writeConnectionSecretToRef:
+    name: ryanbeales-email-forwarder-creds
+    namespace: ryanbeales-com
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: UserPolicy
+metadata:
+  name: ryanbeales-email-forwarder-policy
+spec:
+  forProvider:
+    userRef:
+      name: ryanbeales-email-forwarder
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "s3:GetObject",
+              "s3:DeleteObject"
+            ],
+            "Resource": "arn:aws:s3:::ryanbeales.com-mx/*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "sqs:ReceiveMessage",
+              "sqs:DeleteMessage",
+              "sqs:GetQueueAttributes"
+            ],
+            "Resource": "arn:aws:sqs:us-west-2:645775182778:ryanbeales-com-ses-forwarder"
+          },
+          {
+            "Effect": "Allow",
+            "Action": "ses:SendRawEmail",
+            "Resource": "*"
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default

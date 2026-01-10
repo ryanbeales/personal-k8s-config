@@ -1,0 +1,64 @@
+apiVersion: sns.aws.upbound.io/v1beta1
+kind: Topic
+metadata:
+  name: ryanbeales-com-ses-notifications
+spec:
+  forProvider:
+    region: us-west-2
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: sqs.aws.upbound.io/v1beta1
+kind: Queue
+metadata:
+  name: ryanbeales-com-ses-forwarder
+spec:
+  forProvider:
+    region: us-west-2
+    receiveWaitTimeSeconds: 20
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: sns.aws.upbound.io/v1beta1
+kind: TopicSubscription
+metadata:
+  name: ryanbeales-com-ses-to-sqs
+spec:
+  forProvider:
+    endpointRef:
+      name: ryanbeales-com-ses-forwarder
+    protocol: sqs
+    region: us-west-2
+    topicArnRef:
+      name: ryanbeales-com-ses-notifications
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: sqs.aws.upbound.io/v1beta1
+kind: QueuePolicy
+metadata:
+  name: ryanbeales-com-ses-forwarder-policy
+spec:
+  forProvider:
+    region: us-west-2
+    queueUrlRef:
+      name: ryanbeales-com-ses-forwarder
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "sqs:SendMessage",
+            "Resource": "*",
+            "Condition": {
+              "ArnEquals": {
+                "aws:SourceArn": "arn:aws:sns:us-west-2:645775182778:ryanbeales-com-ses-notifications"
+              }
+            }
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default
