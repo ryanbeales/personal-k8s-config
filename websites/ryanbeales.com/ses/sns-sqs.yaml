@@ -12,6 +12,8 @@ apiVersion: sqs.aws.upbound.io/v1beta1
 kind: Queue
 metadata:
   name: ryanbeales-com-ses-forwarder
+  annotations:
+    crossplane.io/external-name: ryanbeales-com-ses-forwarder
 spec:
   forProvider:
     region: us-west-2
