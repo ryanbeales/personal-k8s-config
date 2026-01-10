@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: email-forwarder
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:ryanbeales/personal-k8s-config.git
+    targetRevision: main
+    path: self-hosted-services/email-forwarder
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ryanbeales-com
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
