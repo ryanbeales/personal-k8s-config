@@ -68,9 +68,16 @@ def process_message(message):
         del msg['Reply-To']
     msg['Reply-To'] = original_from
     
-    # We also need to remove DKIM-Signature as it's no longer valid after modification
-    if 'DKIM-Signature' in msg:
-        del msg['DKIM-Signature']
+    # Remove headers that can cause SES to reject the message due to identity verification
+    headers_to_remove = ['Return-Path', 'Sender', 'Message-ID', 'DKIM-Signature']
+    for header in headers_to_remove:
+        if header in msg:
+            del msg[header]
+
+    # Also remove any X-SES-* headers to avoid confusion
+    for header in list(msg.keys()):
+        if header.startswith('X-SES-'):
+            del msg[header]
 
     # 3. Send via SES
     try:
