@@ -32,6 +32,10 @@ def process_message(message):
         print("Skipping non-SES message")
         return True
 
+    if 'bucketName' not in sns_msg['receipt']['action']:
+        print(f"Error: 'bucketName' missing from SES notification. Action type: {sns_msg['receipt']['action'].get('type')}")
+        return False
+
     bucket_name = sns_msg['receipt']['action']['bucketName']
     object_key = sns_msg['receipt']['action']['objectKey']
     original_recipient = sns_msg['mail']['destination'][0]
@@ -88,9 +92,6 @@ def main():
                 WaitTimeSeconds=20
             )
 
-            # Reset backoff on successful API call
-            current_backoff = INITIAL_BACKOFF
-
             if 'Messages' in response:
                 for msg in response['Messages']:
                     if process_message(msg):
@@ -98,6 +99,10 @@ def main():
                             QueueUrl=QUEUE_URL,
                             ReceiptHandle=msg['ReceiptHandle']
                         )
+                    else:
+                        raise Exception("Message processing failed")
+                # Reset backoff ONLY after successful polling and processing
+                current_backoff = INITIAL_BACKOFF
             else:
                 # No messages, loop again (Long Polling will wait up to 20s)
                 pass
