@@ -2,6 +2,7 @@ import boto3
 import json
 import os
 import email
+import time
 from email.message import EmailMessage
 
 # Configuration
@@ -9,6 +10,10 @@ REGION = os.environ.get('AWS_REGION', 'us-west-2')
 QUEUE_URL = os.environ.get('SQS_QUEUE_URL')
 DESTINATION_EMAIL = os.environ.get('DESTINATION_EMAIL')
 FORK_FROM_EMAIL = os.environ.get('FORK_FROM_EMAIL', f"forwarder@ryanbeales.com")
+
+# Backoff configuration
+INITIAL_BACKOFF = 1
+MAX_BACKOFF = 600
 
 sqs = boto3.client('sqs', region_name=REGION)
 s3 = boto3.client('s3', region_name=REGION)
@@ -74,6 +79,7 @@ def process_message(message):
 
 def main():
     print(f"Email forwarder started. Polling {QUEUE_URL}...")
+    current_backoff = INITIAL_BACKOFF
     while True:
         try:
             response = sqs.receive_message(
@@ -81,6 +87,9 @@ def main():
                 MaxNumberOfMessages=1,
                 WaitTimeSeconds=20
             )
+
+            # Reset backoff on successful API call
+            current_backoff = INITIAL_BACKOFF
 
             if 'Messages' in response:
                 for msg in response['Messages']:
@@ -93,7 +102,9 @@ def main():
                 # No messages, loop again (Long Polling will wait up to 20s)
                 pass
         except Exception as e:
-            print(f"Error in main loop: {e}")
+            print(f"Error in main loop, backing off for {current_backoff}s: {e}")
+            time.sleep(current_backoff)
+            current_backoff = min(current_backoff * 2, MAX_BACKOFF)
 
 if __name__ == "__main__":
     main()
