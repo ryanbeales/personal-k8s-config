@@ -5,6 +5,7 @@ metadata:
 spec:
   forProvider:
     region: us-west-2
+    name: ryanbeales-com-ses-notifications
   providerConfigRef:
     name: upbound-aws-default
 ---
@@ -16,6 +17,7 @@ metadata:
     crossplane.io/external-name: ryanbeales-com-ses-forwarder
 spec:
   forProvider:
+    name: ryanbeales-com-ses-forwarder
     region: us-west-2
     receiveWaitTimeSeconds: 20
   providerConfigRef:
