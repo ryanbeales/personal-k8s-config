@@ -33,12 +33,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: ryanbeales-email-forwarder-creds
-                  key: attribute.access_key_id
+                  key: username
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: ryanbeales-email-forwarder-creds
-                  key: attribute.secret_access_key
+                  key: password
             - name: AWS_REGION
               value: us-west-2
             - name: SQS_QUEUE_URL
