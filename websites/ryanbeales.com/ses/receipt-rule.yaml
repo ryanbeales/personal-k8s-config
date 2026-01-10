@@ -16,9 +16,7 @@ spec:
     s3Action:
       - bucketName: ryanbeales.com-mx
         position: 1
-    snsAction:
-      - topicArn: arn:aws:sns:us-west-2:645775182778:ryanbeales-com-ses-notifications
-        position: 2
+        topicArn: arn:aws:sns:us-west-2:645775182778:ryanbeales-com-ses-notifications
     tlsPolicy: Require
   providerConfigRef:
     name: upbound-aws-default
