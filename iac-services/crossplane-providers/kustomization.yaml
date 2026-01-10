@@ -7,3 +7,5 @@ resources:
   - ./providers/upbound/upbound-provider-aws-config.yaml
   - ./providers/upbound/upbound-provider-aws-iam.yaml
   - ./providers/upbound/upbound-provider-aws-ses.yaml
+  - ./providers/upbound/upbound-provider-aws-sns.yaml
+  - ./providers/upbound/upbound-provider-aws-sqs.yaml

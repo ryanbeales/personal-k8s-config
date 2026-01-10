@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: email-forwarder-script
+  namespace: ryanbeales-com
+data:
+  forwarder.py: |
+    import boto3
+    import json
+    import os
+    import email
+    from email.message import EmailMessage
+
+    # Configuration
+    REGION = os.environ.get('AWS_REGION', 'us-west-2')
+    QUEUE_URL = os.environ.get('SQS_QUEUE_URL')
+    DESTINATION_EMAIL = os.environ.get('DESTINATION_EMAIL')
+    FORK_FROM_EMAIL = os.environ.get('FORK_FROM_EMAIL', f"forwarder@ryanbeales.com")
+
+    sqs = boto3.client('sqs', region_name=REGION)
+    s3 = boto3.client('s3', region_name=REGION)
+    ses = boto3.client('ses', region_name=REGION)
+
+    def process_message(message):
+        body = json.loads(message['Body'])
+        
+        # SNS-wrapped SES notification
+        if 'Message' in body:
+            sns_msg = json.loads(body['Message'])
+        else:
+            sns_msg = body
+
+        if 'receipt' not in sns_msg or 'mail' not in sns_msg:
+            print("Skipping non-SES message")
+            return True
+
+        bucket_name = sns_msg['receipt']['action']['bucketName']
+        object_key = sns_msg['receipt']['action']['objectKey']
+        original_recipient = sns_msg['mail']['destination'][0]
+        original_sender = sns_msg['mail']['commonHeaders']['from'][0]
+        subject = sns_msg['mail']['commonHeaders'].get('subject', 'No Subject')
+
+        print(f"Processing email from {original_sender} to {original_recipient}: {subject}")
+
+        # 1. Download email from S3
+        response = s3.get_object(Bucket=bucket_name, Key=object_key)
+        raw_email = response['Body'].read()
+
+        # 2. Parse and modify email
+        # To bypass SPF/DKIM issues, we rewrite the From header
+        # and put the original sender in Reply-To.
+        msg = email.message_from_bytes(raw_email)
+        
+        original_from = msg.get('From')
+        del msg['From']
+        msg['From'] = f"{original_from} <{FORK_FROM_EMAIL}>"
+        
+        if 'Reply-To' in msg:
+            del msg['Reply-To']
+        msg['Reply-To'] = original_from
+        
+        # We also need to remove DKIM-Signature as it's no longer valid after modification
+        if 'DKIM-Signature' in msg:
+            del msg['DKIM-Signature']
+
+        # 3. Send via SES
+        try:
+            ses.send_raw_email(
+                Source=FORK_FROM_EMAIL,
+                Destinations=[DESTINATION_EMAIL],
+                RawMessage={'Data': msg.as_bytes()}
+            )
+            print(f"Successfully forwarded email to {DESTINATION_EMAIL}")
+            
+            # 4. Cleanup
+            s3.delete_object(Bucket=bucket_name, Key=object_key)
+            return True
+        except Exception as e:
+            print(f"Error forwarding email: {e}")
+            return False
+
+    def main():
+        print(f"Email forwarder started. Polling {QUEUE_URL}...")
+        while True:
+            try:
+                response = sqs.receive_message(
+                    QueueUrl=QUEUE_URL,
+                    MaxNumberOfMessages=1,
+                    WaitTimeSeconds=20
+                )
+
+                if 'Messages' in response:
+                    for msg in response['Messages']:
+                        if process_message(msg):
+                            sqs.delete_message(
+                                QueueUrl=QUEUE_URL,
+                                ReceiptHandle=msg['ReceiptHandle']
+                            )
+                else:
+                    # No messages, loop again (Long Polling will wait up to 20s)
+                    pass
+            except Exception as e:
+                print(f"Error in main loop: {e}")
+
+    if __name__ == "__main__":
+        main()

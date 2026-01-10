@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-forwarder
+  namespace: ryanbeales-com
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: email-forwarder
+  template:
+    metadata:
+      labels:
+        app: email-forwarder
+    spec:
+      containers:
+        - name: forwarder
+          image: python:3.11-slim
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 64Mi
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              pip install boto3
+              python /scripts/forwarder.py
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: ryanbeales-email-forwarder-creds
+                  key: attribute.access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ryanbeales-email-forwarder-creds
+                  key: attribute.secret_access_key
+            - name: AWS_REGION
+              value: us-west-2
+            - name: SQS_QUEUE_URL
+              value: "https://sqs.us-west-2.amazonaws.com/645775182778/ryanbeales-com-ses-forwarder"
+            - name: DESTINATION_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: email-forwarder-config
+                  key: destination_email
+            - name: FORK_FROM_EMAIL
+              value: "forwarder@ryanbeales.com"
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: email-forwarder-script
