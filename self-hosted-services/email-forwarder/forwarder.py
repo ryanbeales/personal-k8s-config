@@ -4,6 +4,7 @@ import os
 import email
 import time
 from email.message import EmailMessage
+from email.utils import parseaddr, formataddr
 
 # Configuration
 REGION = os.environ.get('AWS_REGION', 'us-west-2')
@@ -54,8 +55,14 @@ def process_message(message):
     msg = email.message_from_bytes(raw_email)
     
     original_from = msg.get('From')
+    name, addr = parseaddr(original_from)
+    
+    # New From header: "Name (original@email.com) via forwarder" <forwarder@ryanbeales.com>
+    # This avoids nested angle brackets and keeps the sender context.
+    display_name = f"{name} ({addr})" if name else addr
+    
     del msg['From']
-    msg['From'] = f"{original_from} <{FORK_FROM_EMAIL}>"
+    msg['From'] = formataddr((f"{display_name} via forwarder", FORK_FROM_EMAIL))
     
     if 'Reply-To' in msg:
         del msg['Reply-To']
