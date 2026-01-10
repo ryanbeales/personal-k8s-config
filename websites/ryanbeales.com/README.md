@@ -45,7 +45,7 @@ The following manifests manage the AWS side of the system:
 
 #### 2. Home Cluster Service (ArgoCD)
 The forwarder is deployed as a Kubernetes Deployment in the `ryanbeales-com` namespace.
-- `email-forwarder/`: Deployment, ConfigMap (Python script), and ArgoCD manifest.
+- [self-hosted-services/email-forwarder/](../../self-hosted-services/email-forwarder/): Deployment, Kustomization, and ArgoCD manifest.
 
 #### 3. Required Manual Steps
 To maintain privacy, the destination email address and AWS credentials are NOT stored in Git. You must create a local secret in the cluster:
@@ -59,7 +59,7 @@ kubectl create secret generic email-forwarder-config `
 
 The AWS credentials for the forwarder are automatically written to a secret by Crossplane:
 - Secret Name: `ryanbeales-email-forwarder-creds`
-- Key mappings are handled in `email-forwarder/deployment.yaml`.
+- Key mappings are handled in [deployment.yaml](../../self-hosted-services/email-forwarder/deployment.yaml).
 
 ### Content Sync Service
 

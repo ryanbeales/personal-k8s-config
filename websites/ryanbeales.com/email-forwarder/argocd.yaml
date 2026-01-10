@@ -1,3 +1,0 @@
-argocd:
-  name: email-forwarder
-  namespace: ryanbeales-com
