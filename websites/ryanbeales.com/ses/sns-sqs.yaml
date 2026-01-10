@@ -15,7 +15,7 @@ kind: Queue
 metadata:
   name: ryanbeales-com-ses-forwarder
   annotations:
-    crossplane.io/external-name: ryanbeales-com-ses-forwarder
+    crossplane.io/external-name: https://sqs.us-west-2.amazonaws.com/645775182778/ryanbeales-com-ses-forwarder
 spec:
   forProvider:
     name: ryanbeales-com-ses-forwarder
