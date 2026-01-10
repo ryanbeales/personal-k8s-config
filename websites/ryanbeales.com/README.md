@@ -70,18 +70,22 @@ To send emails from Gmail using a `*@ryanbeales.com` identity, you must configur
 kubectl get secret ryanbeales-smtp-creds -n ryanbeales-com -o yaml
 ```
 
-The SMTP credentials are stored in the following fields
-```
-.attribute.username,
-.attribute.ses_smtp_password_v4
+The `username` and `password` fields are stored in base64, decode the username, and the next step will tell you how to convert the password.
+
+#### 2. Generate SMTP Password
+The IAM Secret Access Key is **not** the SMTP password. You can convert it using this Python one-liner (ensure you have the `$SECRET_KEY` variable set from the previous step):
+
+```powershell
+python -c "import sys,hmac,hashlib,base64; key=sys.argv[1]; region='us-west-2'; sign=lambda k,m: hmac.new(k, m.encode('utf-8'), hashlib.sha256).digest(); signature=sign(('AWS4' + key).encode('utf-8'), '11111111'); signature=sign(signature, region); signature=sign(signature, 'ses'); signature=sign(signature, 'aws4_request'); signature=sign(signature, 'SendRawEmail'); print(base64.b64encode(bytes([0x04]) + signature).decode('utf-8'))" $SECRET_KEY
 ```
 
-#### 2. Configure Gmail
+
+#### 3. Configure Gmail
 1.  Go to **Settings > Accounts and Import > Add another email address**.
 2.  Enter your desired name and email (e.g., `me@ryanbeales.com`). Uncheck "Treat as an alias".
 3.  **SMTP Server**: `email-smtp.us-west-2.amazonaws.com`
 4.  **Port**: `587` (TLS)
-5.  **Username**: Your `$ACCESS_KEY_ID`
+5.  **Username**: Base64 decoded `username`
 6.  **Password**: The output from the python script.
 
 ### Content Sync Service
