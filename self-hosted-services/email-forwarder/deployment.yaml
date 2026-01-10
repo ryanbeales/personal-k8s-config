@@ -26,9 +26,13 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              pip install boto3
-              python /scripts/forwarder.py
+              echo "Installing dependencies..."
+              pip install boto3 --quiet
+              echo "Dependencies installed. Starting forwarder..."
+              python -u /scripts/forwarder.py
           env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
