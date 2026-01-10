@@ -2,6 +2,7 @@ apiVersion: iam.aws.upbound.io/v1beta1
 kind: User
 metadata:
   name: ryanbeales-email-forwarder
+  namespace: ryanbeales-com
 spec:
   forProvider: {}
   providerConfigRef:
@@ -11,6 +12,7 @@ apiVersion: iam.aws.upbound.io/v1beta1
 kind: AccessKey
 metadata:
   name: ryanbeales-email-forwarder-key
+  namespace: ryanbeales-com
 spec:
   forProvider:
     userRef:
@@ -22,13 +24,12 @@ spec:
     name: upbound-aws-default
 ---
 apiVersion: iam.aws.upbound.io/v1beta1
-kind: UserPolicy
+kind: Policy
 metadata:
   name: ryanbeales-email-forwarder-policy
+  namespace: ryanbeales-com
 spec:
   forProvider:
-    userRef:
-      name: ryanbeales-email-forwarder
     policy: |
       {
         "Version": "2012-10-17",
@@ -57,5 +58,19 @@ spec:
           }
         ]
       }
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: UserPolicyAttachment
+metadata:
+  name: ryanbeales-email-forwarder-attachment
+  namespace: ryanbeales-com
+spec:
+  forProvider:
+    userRef:
+      name: ryanbeales-email-forwarder
+    policyArnRef:
+      name: ryanbeales-email-forwarder-policy
   providerConfigRef:
     name: upbound-aws-default
