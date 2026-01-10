@@ -1,0 +1,59 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: User
+metadata:
+  name: ryanbeales-smtp
+  namespace: ryanbeales-com
+spec:
+  forProvider: {}
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: AccessKey
+metadata:
+  name: ryanbeales-smtp-key
+  namespace: ryanbeales-com
+spec:
+  forProvider:
+    userRef:
+      name: ryanbeales-smtp
+  writeConnectionSecretToRef:
+    name: ryanbeales-smtp-creds
+    namespace: ryanbeales-com
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Policy
+metadata:
+  name: ryanbeales-smtp-policy
+  namespace: ryanbeales-com
+spec:
+  forProvider:
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": "ses:SendRawEmail",
+            "Resource": "*"
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: UserPolicyAttachment
+metadata:
+  name: ryanbeales-smtp-attachment
+  namespace: ryanbeales-com
+spec:
+  forProvider:
+    userRef:
+      name: ryanbeales-smtp
+    policyArnRef:
+      name: ryanbeales-smtp-policy
+  providerConfigRef:
+    name: upbound-aws-default
