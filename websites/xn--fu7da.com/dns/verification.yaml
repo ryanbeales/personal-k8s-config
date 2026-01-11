@@ -1,0 +1,13 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: verification-xn--fu7da.com
+  annotations:
+    crossplane.io/external-name: xn--fu7da.com
+spec:
+  forProvider:
+    type: TXT
+    ttl: 300
+    resourceRecords:
+      - value: '"h0ZlBlJGDjRIKUTesSnZzvv/jX1EzbYlLN8c3x2UuOU="'
+    zoneId: Z08351656086KJO2313

@@ -1,0 +1,13 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: mx-xn--fu7da.com
+  annotations:
+    crossplane.io/external-name: xn--fu7da.com
+spec:
+  forProvider:
+    resourceRecords:
+      - value: "10 inbound-smtp.us-west-2.amazonaws.com"
+    type: MX
+    ttl: 300
+    zoneId: Z08351656086KJO2313
