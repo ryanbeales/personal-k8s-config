@@ -1,0 +1,2 @@
+argocd:
+  name: kube-prometheus-stack
