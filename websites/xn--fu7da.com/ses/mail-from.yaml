@@ -1,0 +1,13 @@
+apiVersion: ses.aws.upbound.io/v1beta1
+kind: DomainIdentityMailFrom
+metadata:
+  name: xn--fu7da.com
+  annotations:
+    crossplane.io/external-name: xn--fu7da.com
+spec:
+  forProvider:
+    domain: xn--fu7da.com
+    mailFromDomain: mail.xn--fu7da.com
+    region: us-west-2
+  providerConfigRef:
+    name: upbound-aws-default
