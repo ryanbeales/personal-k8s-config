@@ -102,7 +102,7 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     ruleSelector: {}
     scrapeConfigSelector:
-      matchLabels: null
+      matchLabels: {}
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
 
