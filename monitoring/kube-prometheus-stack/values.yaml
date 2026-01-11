@@ -48,6 +48,11 @@ grafana:
       auto_assign_org_role: Viewer
       default_theme: dark
 
+  admin:
+    existingSecret: grafana-admin-credentials
+    userKey: admin-user
+    passwordKey: admin-password
+
 # Forcing the namespace fix - https://github.com/prometheus-community/helm-charts/issues/1438
 prometheusOperator:
   tls:
