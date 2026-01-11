@@ -1,5 +1,5 @@
 apiVersion: ses.aws.upbound.io/v1beta1
-kind: DomainIdentityMailFrom
+kind: DomainMailFrom
 metadata:
   name: ryanbeales.com
   annotations:
