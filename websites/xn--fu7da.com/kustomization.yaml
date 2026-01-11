@@ -1,2 +1,3 @@
 resources:
-- dns/www.xn--fu7da.com.yaml
+  - dns/www.xn--fu7da.com.yaml
+  - ses/

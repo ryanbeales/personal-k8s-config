@@ -1,0 +1,22 @@
+apiVersion: ses.aws.upbound.io/v1beta1
+kind: ReceiptRule
+metadata:
+  name: xn--fu7da-com-default-rule
+  annotations:
+    crossplane.io/external-name: xn--fu7da-com-default-rule
+spec:
+  forProvider:
+    name: xn--fu7da-com-default-rule
+    ruleSetName: ryanbeales-rules
+    region: us-west-2
+    enabled: true
+    scanEnabled: true
+    recipients:
+      - xn--fu7da.com
+    s3Action:
+      - bucketName: ryanbeales.com-mx
+        position: 1
+        topicArn: arn:aws:sns:us-west-2:645775182778:ryanbeales-com-ses-notifications
+    tlsPolicy: Require
+  providerConfigRef:
+    name: upbound-aws-default
