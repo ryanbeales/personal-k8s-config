@@ -129,3 +129,13 @@ nodeExporter:
 
 prometheus-node-exporter:
   namespaceOverride: kube-prometheus-stack
+  # Disables running on the WSL2 node, it won't start here due to a mount issue.
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                  - crobputer
