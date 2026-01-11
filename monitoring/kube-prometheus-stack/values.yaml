@@ -45,11 +45,6 @@ grafana:
 
 # Prometheus section.
 prometheus:
-  # Disable admission webhook and tls
-  admissionWebhook:
-    enabled: false
-    certManager:
-      enabled: true
   tls:
     enabled: false
 
