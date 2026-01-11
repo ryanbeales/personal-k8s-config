@@ -7,6 +7,7 @@ alertmanager:
       enabled: true
       hostnames:
         - alertmanager.crobasaurusrex.ryanbeales.com
+        - alertmanager.crobceratops.ryanbeales.com
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
@@ -24,6 +25,7 @@ grafana:
       enabled: true
       hostnames:
         - grafana.crobasaurusrex.ryanbeales.com
+        - grafana.crobceratops.ryanbeales.com
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
@@ -59,6 +61,7 @@ prometheus:
       enabled: true
       hostnames:
         - prometheus.crobasaurusrex.ryanbeales.com
+        - prometheus.crobceratops.ryanbeales.com
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
