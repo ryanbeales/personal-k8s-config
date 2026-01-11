@@ -43,11 +43,13 @@ grafana:
       auto_assign_org_role: Viewer
       default_theme: dark
 
-# Prometheus section.
-prometheus:
+# Forcing the namespace fix - https://github.com/prometheus-community/helm-charts/issues/1438
+prometheusOperator:
   tls:
     enabled: false
 
+# Prometheus section.
+prometheus:
   # Create HTTPRoute for prometheus
   route:
     main:
