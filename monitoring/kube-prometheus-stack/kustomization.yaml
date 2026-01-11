@@ -9,3 +9,34 @@ helmCharts:
     version: 80.13.3
 resources:
   - namespace.yaml
+
+# Fixes argocd sync issue - these HTTPRoutes are in BETA in the chart but they're missing these fields.
+# I'm using argocd and server side applies, so argocd is seeing this as a difference and trying to remove the fields.
+# Grafana is fine, it's a different chart. It's only prometheus and alertmanager that are affected.
+patches:
+  - target:
+      group: gateway.networking.k8s.io
+      version: v1
+      kind: HTTPRoute
+      name: kube-prometheus-stack-alertmanager
+      namespace: kube-prometheus-stack
+    patch: |-
+      - op: add
+        path: /spec/rules/0/backendRefs/0/group
+        value: ""
+      - op: add
+        path: /spec/rules/0/backendRefs/0/kind
+        value: Service
+  - target:
+      group: gateway.networking.k8s.io
+      version: v1
+      kind: HTTPRoute
+      name: kube-prometheus-stack-prometheus
+      namespace: kube-prometheus-stack
+    patch: |-
+      - op: add
+        path: /spec/rules/0/backendRefs/0/group
+        value: ""
+      - op: add
+        path: /spec/rules/0/backendRefs/0/kind
+        value: Service
