@@ -5,4 +5,5 @@ resources:
   - dns/verification.yaml
   - dns/spf.yaml
   - dns/dmarc.yaml
+  - dns/mail-from.yaml
   - ses/

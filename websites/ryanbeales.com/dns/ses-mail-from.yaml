@@ -1,0 +1,27 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-mail-from-mx
+  annotations:
+    crossplane.io/external-name: mail.ryanbeales.com
+spec:
+  forProvider:
+    type: MX
+    ttl: 300
+    resourceRecords:
+      - value: "10 feedback-smtp.us-west-2.amazonses.com"
+    zoneId: Z2AOZQ8V4DDJEY
+---
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-mail-from-spf
+  annotations:
+    crossplane.io/external-name: mail.ryanbeales.com
+spec:
+  forProvider:
+    type: TXT
+    ttl: 300
+    resourceRecords:
+      - value: '"v=spf1 include:amazonses.com ~all"'
+    zoneId: Z2AOZQ8V4DDJEY

@@ -5,3 +5,4 @@ resources:
   - domain-identity.yaml
   - dkim.yaml
   - receipt-rule.yaml
+  - mail-from.yaml

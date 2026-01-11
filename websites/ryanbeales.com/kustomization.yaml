@@ -26,6 +26,7 @@ resources:
   - sync/iam-policy-attachment.yaml
   - sync/cronjob.yaml
   - ses/domain-identity.yaml
+  - ses/mail-from.yaml
   - ses/dkim.yaml
   - ses/receipt-rule-set.yaml
   - ses/receipt-rule.yaml
@@ -38,3 +39,4 @@ resources:
   - dns/ses-verification.yaml
   - dns/ses-dkim.yaml
   - dns/ses-dmarc.yaml
+  - dns/ses-mail-from.yaml
