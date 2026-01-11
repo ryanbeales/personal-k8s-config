@@ -23,7 +23,7 @@ grafana:
     main:
       enabled: true
       hostnames:
-        - prometheus.crobasaurusrex.ryanbeales.com
+        - grafana.crobasaurusrex.ryanbeales.com
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
