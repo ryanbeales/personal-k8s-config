@@ -47,6 +47,8 @@ grafana:
 prometheusOperator:
   tls:
     enabled: false
+  admissionWebhook:
+    enabled: false
 
 # Prometheus section.
 prometheus:
