@@ -1,3 +1,5 @@
+namespaceOverride: kube-prometheus-stack
+
 alertmanager:
   # Create HTTPRoute for alertmanager
   route:
@@ -16,6 +18,7 @@ alertmanager:
           namespace: gateways
 
 grafana:
+  namespaceOverride: kube-prometheus-stack
   route:
     main:
       enabled: true
@@ -46,8 +49,6 @@ grafana:
 # Forcing the namespace fix - https://github.com/prometheus-community/helm-charts/issues/1438
 prometheusOperator:
   tls:
-    enabled: false
-  admissionWebhook:
     enabled: false
 
 # Prometheus section.
@@ -116,3 +117,15 @@ kubeScheduler:
 
 kubeControllerManager:
   enabled: false
+
+kubeStateMetrics:
+  namespaceOverride: kube-prometheus-stack
+
+kube-state-metrics:
+  namespaceOverride: kube-prometheus-stack
+
+nodeExporter:
+  namespaceOverride: kube-prometheus-stack
+
+prometheus-node-exporter:
+  namespaceOverride: kube-prometheus-stack
