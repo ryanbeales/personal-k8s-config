@@ -29,18 +29,31 @@ The system reuses the forwarder service running in the home Kubernetes cluster.
 
 ```mermaid
 graph TD
-    Sender[External Sender] -->|Send Email| SES[Amazon SES]
-    SES -->|1. Store Raw Email| S3[S3 Bucket: ryanbeales.com-mx]
-    SES -->|2. Notify| SNS[SNS Topic]
-    SNS -->|3. Push| SQS[SQS Queue]
-    
-    subgraph "Home Cluster (MicroK8s)"
-        Forwarder[Python Forwarder Service] -->|4. Poll| SQS
-        Forwarder -->|5. Download| S3
-        Forwarder -->|6. Send via SES| SES_Out[Amazon SES]
+    Sender[External Sender]
+
+    subgraph "AWS Cloud"
+        SES[Amazon SES]
+        S3[S3 Bucket: ryanbeales.com-mx]
+        SNS[SNS Topic]
+        SQS[SQS Queue]
+        SES_Out[Amazon SES]
     end
-    
-    SES_Out -->|Forward Email| Inbox[Personal Inbox]
+
+    subgraph "Home Cluster (k3s)"
+        Forwarder[Python Forwarder Service]
+    end
+
+    Inbox[Personal Inbox]
+
+    Sender -->|Send Email| SES
+    SES -->|1. Store Raw Email| S3
+    SES -->|2. Notify| SNS
+    SNS -->|3. Push| SQS
+
+    Forwarder -->|4. Poll| SQS
+    Forwarder -->|5. Download| S3
+    Forwarder -->|6. Send via SES| SES_Out
+    SES_Out -->|Forward Email| Inbox
 ```
 
 ### How it Works
