@@ -1,0 +1,111 @@
+alertmanager:
+  # Create HTTPRoute for alertmanager
+  route:
+    main:
+      enabled: true
+      hostnames:
+        - alertmanager.crobasaurusrex.ryanbeales.com
+      parentRefs:
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: crobceratops-gateway
+          namespace: gateways
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: crobasaurusrex-gateway
+          namespace: gateways
+
+grafana:
+  route:
+    main:
+      enabled: true
+      hostnames:
+        - prometheus.crobasaurusrex.ryanbeales.com
+      parentRefs:
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: crobceratops-gateway
+          namespace: gateways
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: crobasaurusrex-gateway
+          namespace: gateways
+
+  defaultDashboardsTimezone: America/Vancover
+  defaultDashboardsEditable: true
+  grafana.ini:
+    server:
+      domain: grafana.crobasaurusrex.ryanbeales.com
+      root_url: https://grafana.crobasaurusrex.ryanbeales.com
+    users:
+      allow_sign_up: false
+      auto_assign_org: true
+      auto_assign_org_role: Viewer
+      default_theme: dark
+
+# Prometheus section.
+prometheus:
+  # Create HTTPRoute for prometheus
+  route:
+    main:
+      enabled: true
+      hostnames:
+        - prometheus.crobasaurusrex.ryanbeales.com
+      parentRefs:
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: crobceratops-gateway
+          namespace: gateways
+        - group: gateway.networking.k8s.io
+          kind: Gateway
+          name: crobasaurusrex-gateway
+          namespace: gateways
+
+  # Prometheus configuration to pass to prometheus-operator
+  prometheusSpec:
+    replicas: 1
+
+    # Resource allocation for prometheus pods
+    resources:
+      limits:
+        memory: 4Gi
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+
+    # Keep disk usage low for now.
+    retention: 3d
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+          storageClassName: crobasaurusrex-nfs
+
+    # Allow this prometheus instance to consume all rules and monitors
+    podMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelector: {}
+    probeSelectorNilUsesHelmValues: false
+    probeSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    ruleSelector: {}
+    scrapeConfigSelector:
+      matchLabels: null
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+
+thanosRuler:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
