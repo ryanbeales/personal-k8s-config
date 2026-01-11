@@ -40,8 +40,28 @@ def process_message(message):
     bucket_name = sns_msg['receipt']['action']['bucketName']
     object_key = sns_msg['receipt']['action']['objectKey']
     original_recipient = sns_msg['mail']['destination'][0]
-    original_sender = sns_msg['mail']['commonHeaders']['from'][0]
-    subject = sns_msg['mail']['commonHeaders'].get('subject', 'No Subject')
+    # Safe extraction of sender and subject for logging
+    mail = sns_msg['mail']
+    common_headers = mail.get('commonHeaders', {})
+    headers = mail.get('headers', [])
+
+    original_sender = "Unknown Sender"
+    if 'from' in common_headers:
+        original_sender = common_headers['from'][0]
+    else:
+        for h in headers:
+            if h['name'].lower() == 'from':
+                original_sender = h['value']
+                break
+    
+    subject = common_headers.get('subject')
+    if subject is None:
+        for h in headers:
+            if h['name'].lower() == 'subject':
+                subject = h['value']
+                break
+    if subject is None:
+        subject = "No Subject"
 
     print(f"Processing email from {original_sender} to {original_recipient}: {subject}")
 
