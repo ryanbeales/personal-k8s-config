@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: kube-prometheus-stack
 helmCharts:
   - includeCRDs: true
     name: kube-prometheus-stack
@@ -7,3 +8,5 @@ helmCharts:
     releaseName: kube-prometheus-stack
     valuesFile: values.yaml
     version: 80.13.3
+resources:
+  - namespace.yaml
