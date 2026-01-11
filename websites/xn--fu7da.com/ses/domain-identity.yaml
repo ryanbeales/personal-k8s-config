@@ -1,0 +1,11 @@
+apiVersion: ses.aws.upbound.io/v1beta1
+kind: DomainIdentity
+metadata:
+  name: xn--fu7da.com
+  annotations:
+    crossplane.io/external-name: xn--fu7da.com
+spec:
+  forProvider:
+    region: us-west-2
+  providerConfigRef:
+    name: upbound-aws-default
