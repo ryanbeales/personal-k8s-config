@@ -2,25 +2,26 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: immich
 helmCharts:
-- name: immich
-  repo: 'https://immich-app.github.io/immich-charts'
-  version: 0.10.3 # https://immich-app.github.io/immich-charts/index.yaml / https://github.com/immich-app/immich-charts/releases
-  releaseName: immich
-  namespace: immich
-  valuesFile: immich-values.yaml
-  includeCRDs: true
-- name: postgresql
-  repo: 'oci://registry-1.docker.io/bitnamicharts/'
-  version: 16.0.0 # Don't update this, it breaks the pgvector install.
-  releaseName: postgresql
-  namespace: immich
-  valuesFile: postgres-values.yaml
+  - name: immich
+    repo: "https://immich-app.github.io/immich-charts"
+    version: 0.10.3 # https://immich-app.github.io/immich-charts/index.yaml / https://github.com/immich-app/immich-charts/releases
+    releaseName: immich
+    namespace: immich
+    valuesFile: immich-values.yaml
+    includeCRDs: true
+  - name: postgresql
+    repo: "oci://registry-1.docker.io/bitnamicharts/"
+    version: 16.0.0 # Don't update this, it breaks the pgvector install.
+    releaseName: postgresql
+    namespace: immich
+    valuesFile: postgres-values.yaml
 resources:
-- namespace.yaml
-- immich-library-pv.yaml
-- immich-library-pvc.yaml
-- immich-mlcache-pv.yaml
-- immich-mlcache-pvc.yaml
-- immich-postgres-pv.yaml
-- immich-postgres-pvc.yaml
-- httproute.yaml
+  - namespace.yaml
+  - immich-library-pv.yaml
+  - immich-library-pvc.yaml
+  - immich-mlcache-pv.yaml
+  - immich-mlcache-pvc.yaml
+  - immich-postgres-pv.yaml
+  - immich-postgres-pvc.yaml
+  - httproute.yaml
+  - service-monitor.yaml

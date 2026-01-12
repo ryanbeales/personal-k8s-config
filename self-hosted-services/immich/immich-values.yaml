@@ -15,6 +15,12 @@ controllers:
               secretKeyRef:
                 name: immich-postgres-secrets
                 key: password
+          IMMICH_TELEMETRY_INCLUDE: all
+        ports:
+          - containerPort: 2283
+            name: http
+          - containerPort: 8081
+            name: metrics
 
 immich:
   persistence:
