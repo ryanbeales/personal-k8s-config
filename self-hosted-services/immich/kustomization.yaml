@@ -24,4 +24,3 @@ resources:
   - immich-postgres-pv.yaml
   - immich-postgres-pvc.yaml
   - httproute.yaml
-  - service-monitor.yaml

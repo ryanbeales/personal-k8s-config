@@ -17,6 +17,9 @@ controllers:
                 key: password
 
 immich:
+  metrics:
+    enabled: true
+
   persistence:
     library:
       existingClaim: immich-library-pvc
@@ -25,24 +28,10 @@ server:
   ingress:
     main:
       enabled: false
-  service:
-    main:
-      ports:
-        http:
-          port: 2283
-        metrics:
-          port: 8081
   controllers:
     main:
       containers:
         main:
-          env:
-            IMMICH_TELEMETRY_INCLUDE: all
-          ports:
-            - containerPort: 2283
-              name: http
-            - containerPort: 8081
-              name: metrics
           probes:
             startup:
               enabled: true
