@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: immich
-      app.kubernetes.io/name: immich
+      app.kubernetes.io/name: server
   endpoints:
     - port: metrics
       path: /metrics

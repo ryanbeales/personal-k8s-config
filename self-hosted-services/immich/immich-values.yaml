@@ -25,6 +25,13 @@ server:
   ingress:
     main:
       enabled: false
+  service:
+    main:
+      ports:
+        http:
+          port: 2283
+        metrics:
+          port: 8081
   controllers:
     main:
       containers:
