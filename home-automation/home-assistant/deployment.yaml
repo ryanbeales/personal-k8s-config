@@ -30,7 +30,7 @@ spec:
               value: America/Vancouver
           # https://hub.docker.com/r/homeassistant/home-assistant/tags
           # renovate: datasource=github-tags depname=home-assistant/core versioning=semver
-          image: homeassistant/home-assistant:2026.1.0
+          image: homeassistant/home-assistant:2026.1.1
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
