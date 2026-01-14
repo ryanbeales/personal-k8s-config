@@ -15,3 +15,10 @@ configMapGenerator:
     behavior: replace
     files:
       - config.yml=frigate-config.yaml
+  # Use the raw json dashboard from https://grafana.com/grafana/dashboards/24165-frigate-monitoring-dashboard/
+  - name: frigate-dashboards
+    files:
+      - frigate-dashboard.json=https://raw.githubusercontent.com/znand-dev/frigate-grafana-dashboard/refs/heads/main/dashboard.json
+    options:
+      labels:
+        grafana_dashboard: "1"
