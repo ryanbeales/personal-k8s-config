@@ -121,3 +121,7 @@ In the past i've also included my main desktop as a worker node, it's running wi
 ## Building the cluster
 
 See [BOOTSTRAP.md](./BOOTSTRAP.md) for notes on how to build the cluster from scratch. 
+
+## Upgrading the cluster
+
+Follow the instructions [here](https://docs.k3s.io/upgrades/manual#upgrade-k3s-using-the-binary) on each node in the cluster.
