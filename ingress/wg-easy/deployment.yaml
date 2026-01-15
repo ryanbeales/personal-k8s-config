@@ -43,7 +43,7 @@ spec:
           # Image
           # https://github.com/wg-easy/wg-easy/pkgs/container/wg-easy
           # renovate: datasource=github-tags depname=wg-easy/wg-easy versioning=semver
-          image: ghcr.io/wg-easy/wg-easy:15.2.0
+          image: ghcr.io/wg-easy/wg-easy:15.2.1
           imagePullPolicy: IfNotPresent
           # Ports
           ports:
