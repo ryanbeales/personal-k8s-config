@@ -33,7 +33,7 @@ spec:
               value: America/Vancouver
           # https://hub.docker.com/r/zwavejs/zwave-js-ui/tags
           # renovate: datasource=github-tags depname=zwave-js/zwave-js-ui versioning=semver
-          image: zwavejs/zwave-js-ui:11.9.1
+          image: zwavejs/zwave-js-ui:11.10.0
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
