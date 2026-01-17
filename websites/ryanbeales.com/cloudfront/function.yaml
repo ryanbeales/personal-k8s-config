@@ -7,17 +7,8 @@ spec:
     name: www-ryanbeales-com-rewrite
     runtime: cloudfront-js-1.0
     publish: true
-    code: |
-      function handler(event) {
-          var request = event.request;
-          var uri = request.uri;
-
-          if (uri.endsWith('/')) {
-              request.uri += 'index.html';
-          } else if (!uri.includes('.')) {
-              request.uri += '/index.html';
-          }
-
-          return request;
-      }
+    codeSecretRef:
+      name: www-ryanbeales-com-rewrite-code
+      namespace: ryanbeales-com
+      key: code
     region: us-east-1
