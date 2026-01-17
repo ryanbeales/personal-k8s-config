@@ -26,6 +26,10 @@ spec:
           - queryString: false
             cookies:
               - forward: none
+        functionAssociation:
+          - eventType: viewer-request
+            functionArnRef:
+              name: www-ryanbeales-com-rewrite
     origin:
       - domainName: www.ryanbeales.com.s3.amazonaws.com
         originId: S3-www.ryanbeales.com
