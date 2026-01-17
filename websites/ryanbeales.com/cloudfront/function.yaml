@@ -4,7 +4,6 @@ metadata:
   name: www-ryanbeales-com-rewrite
 spec:
   forProvider:
-    name: www-ryanbeales-com-rewrite
     runtime: cloudfront-js-1.0
     publish: true
     codeSecretRef:
