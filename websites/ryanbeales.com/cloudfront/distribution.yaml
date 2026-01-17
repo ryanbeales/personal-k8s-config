@@ -13,6 +13,15 @@ spec:
     aliases:
       - www.ryanbeales.com
       - ryanbeales.com
+    customErrorResponse:
+      - errorCode: 403
+        responseCode: 404
+        responsePagePath: /errors.html
+        errorCachingMinTtl: 300
+      - errorCode: 404
+        responseCode: 404
+        responsePagePath: /errors.html
+        errorCachingMinTtl: 300
     defaultCacheBehavior:
       - targetOriginId: S3-www.ryanbeales.com
         viewerProtocolPolicy: redirect-to-https
@@ -28,8 +37,7 @@ spec:
               - forward: none
         functionAssociation:
           - eventType: viewer-request
-            functionArnRef:
-              name: www-ryanbeales-com-rewrite
+            functionArn: arn:aws:cloudfront::645775182778:function/www-ryanbeales-com-rewrite
     origin:
       - domainName: www.ryanbeales.com.s3.amazonaws.com
         originId: S3-www.ryanbeales.com
