@@ -15,6 +15,7 @@ resources:
   - dns/www.ryanbeales.com.yaml
   - dns/apex-domain.yaml
   - cloudfront/distribution.yaml
+  - cloudfront/function.yaml
   - acm/certificate.yaml
   - s3/bucket.yaml
   - s3/bucket-policy.yaml
