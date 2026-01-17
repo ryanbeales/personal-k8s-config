@@ -81,7 +81,7 @@ spec:
   forProvider:
     policyArnRef:
       name: website-sync-s3-permissions
-    roleNameRef:
+    roleRef:
       name: github-actions-website-sync
   providerConfigRef:
     name: upbound-aws-default
