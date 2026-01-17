@@ -16,6 +16,7 @@ resources:
   - dns/apex-domain.yaml
   - cloudfront/distribution.yaml
   - cloudfront/function.yaml
+  - cloudfront/secret.yaml
   - acm/certificate.yaml
   - s3/bucket.yaml
   - s3/bucket-policy.yaml
