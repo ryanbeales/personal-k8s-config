@@ -1,0 +1,23 @@
+apiVersion: cloudfront.aws.upbound.io/v1beta1
+kind: Function
+metadata:
+  name: www-ryanbeales-com-rewrite
+spec:
+  forProvider:
+    name: www-ryanbeales-com-rewrite
+    runtime: cloudfront-js-1.0
+    publish: true
+    code: |
+      function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+
+          if (uri.endsWith('/')) {
+              request.uri += 'index.html';
+          } else if (!uri.includes('.')) {
+              request.uri += '/index.html';
+          }
+
+          return request;
+      }
+    region: us-east-1
