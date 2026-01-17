@@ -1,0 +1,87 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: OpenIDConnectProvider
+metadata:
+  name: github-oidc
+spec:
+  forProvider:
+    clientIdList:
+      - sts.amazonaws.com
+    thumbprintList:
+      - 6938fd4d98bab03faadb97b34396831e3780aea1
+    url: https://token.actions.githubusercontent.com
+  providerConfigRef:
+    name: upbound-aws-default
+
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Role
+metadata:
+  name: github-actions-website-sync
+spec:
+  forProvider:
+    description: "Allows GitHub Actions to sync content to S3"
+    assumeRolePolicy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Federated": "arn:aws:iam::645775182778:oidc-provider/token.actions.githubusercontent.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+              "StringEquals": {
+                "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                "token.actions.githubusercontent.com:sub": "repo:ryanbeales/wwwryanbealescom:ref:refs/heads/main"
+              }
+            }
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default
+
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Policy
+metadata:
+  name: website-sync-s3-permissions
+spec:
+  forProvider:
+    description: "Permissions for GitHub Actions to sync to website bucket"
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "SyncBucketAccess",
+            "Effect": "Allow",
+            "Action": [
+              "s3:PutObject",
+              "s3:DeleteObject",
+              "s3:ListBucket"
+            ],
+            "Resource": [
+              "arn:aws:s3:::www.ryanbeales.com",
+              "arn:aws:s3:::www.ryanbeales.com/*"
+            ]
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default
+
+---
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: RolePolicyAttachment
+metadata:
+  name: github-actions-website-sync-attachment
+spec:
+  forProvider:
+    policyArnRef:
+      name: website-sync-s3-permissions
+    roleNameRef:
+      name: github-actions-website-sync
+  providerConfigRef:
+    name: upbound-aws-default

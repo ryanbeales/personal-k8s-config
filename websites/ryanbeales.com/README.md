@@ -103,12 +103,45 @@ python -c "import sys,hmac,hashlib,base64; key=sys.argv[1]; region='us-west-2'; 
 
 ### Content Sync Service
 
-The content for the website is hosted in a private GitHub repository (`ryanbeales/wwwryanbealescom`) and is automatically synced to the S3 bucket using a Kubernetes CronJob.
+The content for the website is hosted in a private GitHub repository (`ryanbeales/wwwryanbealescom`) and is automatically synced to the S3 bucket using a GitHub Actions workflow.
 
-- **Location**: `sync/`
-- **Mechanism**: A CronJob runs periodically to clone the private repo (using a GitHub Deploy Key) and perform an `aws s3 sync`.
-- **IAM**: A Crossplane-managed IAM user and policy provide the necessary write access to the S3 bucket.
-- **Setup**: Requires a `github-deploy-key` secret in the `ryanbeales-com` namespace. See [sync/README.md](sync/README.md) for detailed key generation instructions.
+- **Location**: `oidc/`
+- **Mechanism**: AWS OIDC Provider trusts GitHub Actions to assume a specific IAM Role.
+- **IAM**: A Crossplane-managed IAM Role and Policy provide the necessary write access to the S3 bucket without long-lived credentials.
+
+#### Example Workflow (`.github/workflows/deploy.yml`)
+
+Use the following workflow in your website repository to sync changes to S3:
+
+```yaml
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::645775182778:role/github-actions-website-sync
+          aws-region: eu-west-2
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync . s3://www.ryanbeales.com --delete --exclude ".git/*" --exclude ".github/*"
+```
 
 ### DNS Management
 
