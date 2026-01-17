@@ -20,11 +20,7 @@ resources:
   - s3/bucket-policy.yaml
   - s3/mx-bucket.yaml
   - s3/mx-bucket-policy.yaml
-  - sync/iam-user.yaml
-  - sync/iam-access-key.yaml
-  - sync/iam-policy.yaml
-  - sync/iam-policy-attachment.yaml
-  - sync/cronjob.yaml
+  - oidc/github-oidc.yaml
   - ses/domain-identity.yaml
   - ses/mail-from.yaml
   - ses/dkim.yaml
