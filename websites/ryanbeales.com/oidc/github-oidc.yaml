@@ -66,6 +66,16 @@ spec:
               "arn:aws:s3:::www.ryanbeales.com",
               "arn:aws:s3:::www.ryanbeales.com/*"
             ]
+          },
+          {
+            "Sid": "InvalidateCloudFront",
+            "Effect": "Allow",
+            "Action": [
+              "cloudfront:CreateInvalidation"
+            ],
+            "Resource": [
+              "arn:aws:cloudfront::645775182778:distribution/E14YREW8AXYHTR"
+            ]
           }
         ]
       }

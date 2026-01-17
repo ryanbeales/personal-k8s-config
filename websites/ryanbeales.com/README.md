@@ -141,6 +141,10 @@ jobs:
       - name: Sync to S3
         run: |
           aws s3 sync . s3://www.ryanbeales.com --delete --exclude ".git/*" --exclude ".github/*"
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation --distribution-id E14YREW8AXYHTR --paths "/*"
 ```
 
 ### DNS Management
