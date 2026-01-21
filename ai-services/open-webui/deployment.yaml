@@ -10,37 +10,37 @@ spec:
   replicas: 1
   revisionHistoryLimit: 3
   strategy:
-    type: Recreate 
+    type: Recreate
   template:
     metadata:
       labels:
         app.kubernetes.io/name: open-webui
     spec:
       containers:
-      - name: open-webui
-        # Get the commit tag for the image from here https://github.com/open-webui/open-webui/releases
-        image: ghcr.io/open-webui/open-webui:git-e0d5de1
-        env:
-        - name: OLLAMA_BASE_URL
-          value: http://ollama.ollama.svc.cluster.local:11434
-        - name: ENABLE_WEB_SEARCH
-          value: "true"
-        - name: WEBUI_URL
-          value: https://open-webui.crobasaurusrex.ryanbeales.com
-        - name: WEB_SEARCH_RESULT_COUNT
-          value: "3"
-        - name: WEB_SEARCH_ENGINE
-          value: searxng
-        - name: SEARXNG_QUERY_URL
-          value: http://searxng.searxng.svc.cluster.local:8080/search?q=<query>
-        ports:
         - name: open-webui
-          containerPort: 8080
-        volumeMounts:
-        - name: storage
-          # Models are downloaded and stored in the root home directory
-          mountPath: /app/backend/data 
+          # Get the commit tag for the image from here https://github.com/open-webui/open-webui/releases
+          image: ghcr.io/open-webui/open-webui:git-2b26355
+          env:
+            - name: OLLAMA_BASE_URL
+              value: http://ollama.ollama.svc.cluster.local:11434
+            - name: ENABLE_WEB_SEARCH
+              value: "true"
+            - name: WEBUI_URL
+              value: https://open-webui.crobasaurusrex.ryanbeales.com
+            - name: WEB_SEARCH_RESULT_COUNT
+              value: "3"
+            - name: WEB_SEARCH_ENGINE
+              value: searxng
+            - name: SEARXNG_QUERY_URL
+              value: http://searxng.searxng.svc.cluster.local:8080/search?q=<query>
+          ports:
+            - name: open-webui
+              containerPort: 8080
+          volumeMounts:
+            - name: storage
+              # Models are downloaded and stored in the root home directory
+              mountPath: /app/backend/data
       volumes:
-      - name: storage
-        persistentVolumeClaim:
-          claimName: open-webui-nfs-pvc
+        - name: storage
+          persistentVolumeClaim:
+            claimName: open-webui-nfs-pvc
