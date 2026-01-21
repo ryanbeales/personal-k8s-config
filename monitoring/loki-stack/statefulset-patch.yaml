@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: loki-stack
+  namespace: loki-stack
+spec:
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+      apiVersion: v1
+      kind: PersistentVolumeClaim
