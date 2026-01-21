@@ -41,7 +41,7 @@ grafana:
   additionalDataSources:
     - name: Loki
       type: loki
-      url: http://loki-stack.loki-stack.svc:3100
+      url: http://loki.loki-stack.svc:3100
       access: proxy
       isDefault: false
   grafana.ini:
