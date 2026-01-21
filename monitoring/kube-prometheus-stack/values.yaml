@@ -38,6 +38,12 @@ grafana:
 
   defaultDashboardsTimezone: America/Vancover
   defaultDashboardsEditable: true
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      url: http://loki-stack.loki-stack.svc:3100
+      access: proxy
+      isDefault: false
   grafana.ini:
     server:
       domain: grafana.crobasaurusrex.ryanbeales.com
