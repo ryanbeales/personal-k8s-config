@@ -23,6 +23,17 @@ loki:
     shared_store: filesystem
     retention_enabled: true
 
+monitoring:
+  selfMonitoring:
+    enabled: false
+    grafanaAgent:
+      installOperator: false
+  lokiCanary:
+    enabled: false
+
+test:
+  enabled: false
+
 singleBinary:
   replicas: 1
   persistence:
