@@ -5,7 +5,7 @@ helmCharts:
     repo: https://grafana.github.io/helm-charts
     releaseName: loki
     namespace: loki-stack
-    version: 5.43.3
+    version: 6.51.0
     valuesFile: loki-values.yaml
   - name: promtail
     repo: https://grafana.github.io/helm-charts
