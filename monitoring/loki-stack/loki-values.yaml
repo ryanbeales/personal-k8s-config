@@ -22,8 +22,7 @@ loki:
 
   compactor:
     working_directory: /var/loki/compactor
-    delete_request_store:
-      store: filesystem
+    delete_request_store: filesystem
     retention_enabled: true
 
 monitoring:
