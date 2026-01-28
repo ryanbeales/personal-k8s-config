@@ -27,7 +27,7 @@ spec:
       - name: octoprint
         # https://hub.docker.com/r/octoprint/octoprint/tags
         # renovate: datasource=github-tags depname=OctoPrint/octoprint versioning=semver
-        image: octoprint/octoprint:1.11.5
+        image: octoprint/octoprint:1.11.6
         env:
           - name: ENABLE_MJPG_STREAMER
             value: 'false'
