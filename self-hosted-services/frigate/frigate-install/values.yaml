@@ -9,7 +9,7 @@ envFromSecrets:
 image:
   # https://github.com/blakeblackshear/frigate/releases
   # renovate: datasource=docker depname=ghcr.io/blakeblackshear/frigate versioning=docker
-  tag: 0.16.3-tensorrt
+  tag: 0.16.4-tensorrt
 
 ingress:
   enabled: false
