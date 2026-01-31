@@ -30,24 +30,32 @@ spec:
         - image: eclipse-mosquitto:1.6.15
           imagePullPolicy: IfNotPresent
           livenessProbe:
-            failureThreshold: 3
-            periodSeconds: 10
-            successThreshold: 1
-            tcpSocket:
-              port: 1883
-            timeoutSeconds: 1
+            exec:
+              command:
+                - mosquitto_sub
+                - -t
+                - "$SYS/broker/uptime"
+                - -C
+                - "1"
+            initialDelaySeconds: 5
+            periodSeconds: 20
+            timeoutSeconds: 5
           name: mosquitto
           ports:
             - containerPort: 1883
               name: mqtt
               protocol: TCP
           readinessProbe:
-            failureThreshold: 3
-            periodSeconds: 10
-            successThreshold: 1
-            tcpSocket:
-              port: 1883
-            timeoutSeconds: 1
+            exec:
+              command:
+                - mosquitto_sub
+                - -t
+                - "$SYS/broker/uptime"
+                - -C
+                - "1"
+            initialDelaySeconds: 5
+            periodSeconds: 20
+            timeoutSeconds: 5
           volumeMounts:
             - mountPath: /mosquitto/config
               name: config-volume
