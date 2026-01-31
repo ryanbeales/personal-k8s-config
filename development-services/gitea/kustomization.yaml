@@ -4,8 +4,6 @@ namespace: gitea
 helmCharts:
   - name: gitea
     repo: "oci://registry-1.docker.io/giteacharts/"
-    # Note that version 11 includes the postgres 17 chart which requires an upgrade.
-    # Leave on this version until I migrate to a postgres operator instead.
     version: 12.5.0 # https://gitea.com/gitea/helm-chart/releases
     releaseName: gitea
     namespace: gitea
@@ -13,8 +11,6 @@ helmCharts:
     includeCRDs: true
   - name: actions
     repo: "oci://registry-1.docker.io/giteacharts/"
-    # Note that version 11 includes the postgres 17 chart which requires an upgrade.
-    # Leave on this version until I migrate to a postgres operator instead.
     version: 0.0.2 # https://gitea.com/gitea/helm-chart/releases
     releaseName: actions
     namespace: gitea
