@@ -27,6 +27,7 @@ spec:
     spec:
       initContainers:
         - name: fix-permissions
+          # renovate: datasource=docker depname=alpine
           image: alpine:3.18
           command:
             [
@@ -41,6 +42,7 @@ spec:
               name: config-volume-writable
       containers:
         # https://hub.docker.com/_/eclipse-mosquitto/tags
+        # renovate: datasource=docker depname=eclipse-mosquitto
         - image: eclipse-mosquitto:2
           imagePullPolicy: IfNotPresent
           livenessProbe:
