@@ -25,6 +25,20 @@ spec:
         app.kubernetes.io/instance: mosquitto
         app.kubernetes.io/name: mosquitto
     spec:
+      initContainers:
+        - name: fix-permissions
+          image: alpine:3.18
+          command:
+            [
+              "sh",
+              "-c",
+              "cp /tmp/config/* /mosquitto/config/ && chown -R 1883:1883 /mosquitto/config/ && chmod 0700 /mosquitto/config/accounts.conf",
+            ]
+          volumeMounts:
+            - mountPath: /tmp/config
+              name: config-volume
+            - mountPath: /mosquitto/config
+              name: config-volume-writable
       containers:
         # https://hub.docker.com/_/eclipse-mosquitto/tags
         - image: eclipse-mosquitto:2
@@ -68,7 +82,7 @@ spec:
             timeoutSeconds: 5
           volumeMounts:
             - mountPath: /mosquitto/config
-              name: config-volume
+              name: config-volume-writable
             - mountPath: /mosquitto/data/
               name: mosquitto-data
       restartPolicy: Always
@@ -77,5 +91,7 @@ spec:
             defaultMode: 420
             name: mosquitto
           name: config-volume
+        - emptyDir: {}
+          name: config-volume-writable
         - emptyDir: {}
           name: mosquitto-data
