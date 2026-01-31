@@ -35,6 +35,8 @@ statefulset:
         valid_volumes:
           - '**'
   dind:
-    # https://hub.docker.com/_/docker/tags?name=dind-rootless
     # renovate: datasource=github-releases depname=moby/moby versioning=docker
-    tag: 28.4.0-dind-rootless 
+    tag: 28.4.0-dind-rootless
+
+global:
+  storageClass: crobasaurusrex-nfs
