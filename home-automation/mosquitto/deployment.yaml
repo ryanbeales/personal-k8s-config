@@ -27,16 +27,21 @@ spec:
     spec:
       containers:
         # https://hub.docker.com/_/eclipse-mosquitto/tags
-        - image: eclipse-mosquitto:1.6.15
+        - image: eclipse-mosquitto:2
           imagePullPolicy: IfNotPresent
           livenessProbe:
             exec:
               command:
                 - mosquitto_sub
+                - -h
+                - 127.0.0.1
+                - -p
+                - "1884"
                 - -t
                 - "$SYS/broker/uptime"
                 - -C
                 - "1"
+            tcpSocket: null
             initialDelaySeconds: 5
             periodSeconds: 20
             timeoutSeconds: 5
@@ -49,10 +54,15 @@ spec:
             exec:
               command:
                 - mosquitto_sub
+                - -h
+                - 127.0.0.1
+                - -p
+                - "1884"
                 - -t
                 - "$SYS/broker/uptime"
                 - -C
                 - "1"
+            tcpSocket: null
             initialDelaySeconds: 5
             periodSeconds: 20
             timeoutSeconds: 5

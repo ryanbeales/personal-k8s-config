@@ -7,8 +7,14 @@ data:
   accounts.conf: >-
     admin:$6$5w8gXq38OdhCaMy1$0RkpHDAEPAyNOwxU8Y6MdfxTCo7Sx6Hch35AEtUb6L42UrehC4JxEtQiRsaSKWsOZt/YtW98MOjrB3yhLcXrNw==
   mosquitto.conf: |-
+    per_listener_settings true
     persistence false
     persistence_location /mosquitto/data/
     log_dest stdout
-    password_file /mosquitto/config/accounts.conf
+
     listener 1883
+    password_file /mosquitto/config/accounts.conf
+    allow_anonymous false
+
+    listener 1884 127.0.0.1
+    allow_anonymous true
