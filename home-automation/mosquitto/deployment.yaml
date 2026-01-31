@@ -37,6 +37,7 @@ spec:
                 - "$SYS/broker/uptime"
                 - -C
                 - "1"
+            tcpSocket: null
             initialDelaySeconds: 5
             periodSeconds: 20
             timeoutSeconds: 5
@@ -53,6 +54,7 @@ spec:
                 - "$SYS/broker/uptime"
                 - -C
                 - "1"
+            tcpSocket: null
             initialDelaySeconds: 5
             periodSeconds: 20
             timeoutSeconds: 5
