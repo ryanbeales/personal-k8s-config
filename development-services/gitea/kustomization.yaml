@@ -3,14 +3,14 @@ kind: Kustomization
 namespace: gitea
 helmCharts:
   - name: gitea
-    repo: "oci://registry-1.docker.io/giteacharts/"
+    repo: "oci://docker.gitea.com/charts/"
     version: 12.5.0 # https://gitea.com/gitea/helm-chart/releases
     releaseName: gitea
     namespace: gitea
     valuesFile: values.yaml
     includeCRDs: true
   - name: actions
-    repo: "oci://registry-1.docker.io/giteacharts/"
+    repo: "oci://docker.gitea.com/charts/"
     version: 0.0.2 # https://gitea.com/gitea/helm-chart/releases
     releaseName: actions
     namespace: gitea
