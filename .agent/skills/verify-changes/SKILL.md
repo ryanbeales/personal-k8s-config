@@ -1,8 +1,13 @@
 ---
+name: verify-changes
 description: follow rules for verifying changes after merge
 ---
 
-# Change Verification Workflow
+# Change Verification
+
+Always follow these steps before verifying changes that have been merged via a Pull Request.
+
+## Instructions
 
 Before performing any verification steps (e.g., `kubectl get`, `aws ses describe`, checking UI) after making changes that require a PR:
 
