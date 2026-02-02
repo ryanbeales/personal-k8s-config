@@ -12,7 +12,7 @@ spec:
   revisionHistoryLimit: 3
   # During deployments, don't start another before the first is terminated.
   strategy:
-    type: Recreate 
+    type: Recreate
   template:
     metadata:
       labels:
@@ -23,44 +23,46 @@ spec:
       # Run on 3060 GPU node
       nodeName: crobceratops
       containers:
-      - name: ollama
-        # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
-        image: ollama/ollama:0.15.2
-        env:
-        # Allow from everywhere (we limit it via where it's served from)
-        - name: OLLAMA_ORIGINS
-          value: "*"
-        - name: OLLAMA_KV_CACHE_TYPE
-          value: "q8_0"
-        # Keep the model loaded for 60m
-        - name: OLLAMA_KEEP_ALIVE
-          value: "60m"
-        # Ensure we run on a node with GPU available
-        resources:
-          limits:
-            nvidia.com/gpu: '1'
-        ports:
         - name: ollama
-          containerPort: 11434
-        volumeMounts:
-        - name: storage
-          # Models are downloaded and stored in the root home directory
-          mountPath: /root/.ollama
-        # Full inspiration from https://github.com/otwld/ollama-helm/blob/main/templates/deployment.yaml#L140-L150
-        # I just didn't want to run the helm chart...
-        lifecycle:
-          postStart:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - | 
-                  while ! /bin/ollama ps > /dev/null 2>&1; do
-                    sleep 5
-                  done
-                  /bin/ollama pull qwen3-vl:8b
-                  /bin/ollama pull llama3.1
+          # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
+          image: ollama/ollama:0.15.2
+          env:
+            # Allow from everywhere (we limit it via where it's served from)
+            - name: OLLAMA_ORIGINS
+              value: "*"
+            - name: OLLAMA_KV_CACHE_TYPE
+              value: "q8_0"
+            # Keep the model loaded for 60m
+            - name: OLLAMA_KEEP_ALIVE
+              value: "60m"
+            - name: OLLAMA_NUM_CTX
+              value: "16384"
+          # Ensure we run on a node with GPU available
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+          ports:
+            - name: ollama
+              containerPort: 11434
+          volumeMounts:
+            - name: storage
+              # Models are downloaded and stored in the root home directory
+              mountPath: /root/.ollama
+          # Full inspiration from https://github.com/otwld/ollama-helm/blob/main/templates/deployment.yaml#L140-L150
+          # I just didn't want to run the helm chart...
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    while ! /bin/ollama ps > /dev/null 2>&1; do
+                      sleep 5
+                    done
+                    /bin/ollama pull qwen3-vl:8b
+                    /bin/ollama pull llama3.1
       volumes:
-      - name: storage
-        persistentVolumeClaim:
-          claimName: ollama-nfs-pvc
+        - name: storage
+          persistentVolumeClaim:
+            claimName: ollama-nfs-pvc
