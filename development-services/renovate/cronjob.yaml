@@ -13,7 +13,7 @@ spec:
           containers:
             - name: renovate-bot
               # renovate: datasource=github-tags depname=renovatebot/renovate versioning=semver
-              image: ghcr.io/renovatebot/renovate:43.0.9
+              image: ghcr.io/renovatebot/renovate:43.2.1
               env:
                 - name: RENOVATE_PLATFORM
                   value: github
