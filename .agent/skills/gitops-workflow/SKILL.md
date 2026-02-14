@@ -10,6 +10,9 @@ This skill covers the entire lifecycle of a change in this repository, from crea
 ## 1. Development and PR Creation
 
 1. **Prepare Main**: Ensure you are on the latest `main`.
+   > [!IMPORTANT]
+   > **NEVER push directly to `main`.** The `main` branch is protected. Always create a feature branch.
+
    ```powershell
    git checkout main
    git pull origin main
