@@ -61,7 +61,20 @@
         "esphome/esphome",
         "argoproj/argo-cd",
         "ollama/ollama",
-        "Octoprint/octoprint"
+        "Octoprint/octoprint",
+        "kube-prometheus-stack",
+        "prometheus-community/charts/kube-prometheus-stack",
+        "ghcr.io/prometheus-community/charts/kube-prometheus-stack",
+        "loki",
+        "grafana/loki",
+        "promtail",
+        "grafana/promtail",
+        "gateway-helm",
+        "envoyproxy/gateway-helm",
+        "envoyproxy//gateway-helm",
+        "home-assistant/core",
+        "immich",
+        "immich-app/immich"
       ],
       automerge: true
     }
