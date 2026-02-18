@@ -6,6 +6,5 @@ resources:
   - config/argocd-certificate.yaml
   - config/argocd-cm.yaml
   - config/argocd-cmd-params-cm.yaml
-  - config/argocd-ssh-known-hosts-cm.yaml
   - applicationset/application-set.yaml
   - httproute.yaml
