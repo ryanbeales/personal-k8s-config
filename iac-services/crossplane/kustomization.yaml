@@ -4,7 +4,7 @@ namespace: crossplane-system
 helmCharts:
 - name: crossplane
   repo: 'https://charts.crossplane.io/stable'
-  version: 2.1.4 # https://charts.crossplane.io/stable
+  version: 2.2.0 # https://charts.crossplane.io/stable
   releaseName: crossplane
   namespace: crossplane-system
   valuesFile: values.yaml
