@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-tuning
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: node-tuning
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: node-tuning
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: node-tuning
+    spec:
+      hostNetwork: true
+      hostPID: true
+      initContainers:
+        - name: sysctl-tuning
+          image: alpine:3.18
+          command:
+            - sh
+            - -c
+            - |
+              sysctl -w fs.inotify.max_user_watches=524288
+              sysctl -w fs.inotify.max_user_instances=8192
+          securityContext:
+            privileged: true
+      containers:
+        - name: pause
+          image: k8s.gcr.io/pause:3.9
+          resources:
+            limits:
+              cpu: 10m
+              memory: 10Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
