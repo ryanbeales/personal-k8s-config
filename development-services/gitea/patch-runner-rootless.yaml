@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: actions-act-runner
+  namespace: gitea
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: dind
+          livenessProbe:
+            exec:
+              command:
+                - /usr/bin/test
+                - -S
+                - /var/run/user/1000/docker.sock
+          startupProbe:
+            exec:
+              command:
+                - /usr/bin/test
+                - -S
+                - /var/run/user/1000/docker.sock
+      containers:
+        - name: act-runner
+          env:
+            - name: DOCKER_HOST
+              value: unix:///var/run/user/1000/docker.sock
+          volumeMounts:
+            - name: docker-socket
+              mountPath: /var/run

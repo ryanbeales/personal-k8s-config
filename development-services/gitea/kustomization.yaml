@@ -46,3 +46,4 @@ patches:
       - op: add
         path: /spec/volumeClaimTemplates/0/kind
         value: PersistentVolumeClaim
+  - path: patch-runner-rootless.yaml
