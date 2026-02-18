@@ -1,10 +1,11 @@
 namespace: argocd
 resources:
-- namespace/argocd-namespace.yaml
-- argocd-application.yaml
-- install
-- config/argocd-certificate.yaml
-- config/argocd-cm.yaml
-- config/argocd-cmd-params-cm.yaml
-- applicationset/application-set.yaml
-- httproute.yaml
+  - namespace/argocd-namespace.yaml
+  - argocd-application.yaml
+  - install
+  - config/argocd-certificate.yaml
+  - config/argocd-cm.yaml
+  - config/argocd-cmd-params-cm.yaml
+  - config/argocd-ssh-known-hosts-cm.yaml
+  - applicationset/application-set.yaml
+  - httproute.yaml
