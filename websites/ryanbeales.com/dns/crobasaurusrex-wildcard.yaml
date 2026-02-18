@@ -3,11 +3,13 @@ kind: ResourceRecordSet
 metadata:
   name: wildcard.crobasaurusrex.ryanbeales.com
   annotations:
-    crossplane.io/external-name: '*.crobasaurusrex.ryanbeales.com.'
+    crossplane.io/external-name: "*.crobasaurusrex.ryanbeales.com."
 spec:
   forProvider:
     resourceRecords:
       - value: 10.0.0.59
+      - value: 10.0.0.139
+      - value: 10.0.0.126
     type: A
     ttl: 300
     zoneId: Z2AOZQ8V4DDJEY
