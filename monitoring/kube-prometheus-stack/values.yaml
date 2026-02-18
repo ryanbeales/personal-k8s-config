@@ -87,6 +87,32 @@ prometheus:
   prometheusSpec:
     replicas: 1
 
+    # Relax probe timeouts — NFS storage causes TSDB compaction stalls
+    # that prevent the HTTP server from responding within default 3s.
+    containers:
+      - name: prometheus
+        livenessProbe:
+          httpGet:
+            path: /-/healthy
+            port: http-web
+          timeoutSeconds: 10
+          periodSeconds: 15
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /-/ready
+            port: http-web
+          timeoutSeconds: 10
+          periodSeconds: 15
+          failureThreshold: 5
+        startupProbe:
+          httpGet:
+            path: /-/ready
+            port: http-web
+          timeoutSeconds: 10
+          periodSeconds: 15
+          failureThreshold: 60
+
     # Resource allocation for prometheus pods
     resources:
       limits:
