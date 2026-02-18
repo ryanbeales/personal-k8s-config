@@ -37,6 +37,8 @@ statefulset:
   dind:
     # renovate: datasource=github-releases depname=moby/moby versioning=docker
     tag: 28.4.0-dind-rootless
+    securityContext:
+      privileged: true
 
 global:
   storageClass: crobasaurusrex-nfs
