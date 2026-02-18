@@ -9,15 +9,15 @@ This skill covers the entire lifecycle of a change in this repository, from crea
 
 ## 1. Development and PR Creation
 
-1. **Prepare Main**: Ensure you are on the latest `main`.
-   > [!IMPORTANT]
-   > **NEVER push directly to `main`.** The `main` branch is protected. Always create a feature branch.
+> [!CAUTION]
+> **NEVER push directly to `main`.** The `main` branch is protected and pushes will be rejected. You MUST always create a feature branch BEFORE committing. If you have already committed to `main` by mistake, see the recovery steps below.
 
+1. **Prepare Main**: Ensure you are on the latest `main`.
    ```powershell
    git checkout main
    git pull origin main
    ```
-2. **Feature Branch**: Create a descriptive branch.
+2. **Feature Branch**: Create a descriptive branch **before making any commits**.
    ```powershell
    git checkout -b <branch-name>
    ```
@@ -32,6 +32,21 @@ This skill covers the entire lifecycle of a change in this repository, from crea
    gh pr create --fill
    gh pr merge --auto --merge
    ```
+
+### Recovery: Accidental Commit to Main
+
+If you've already committed to `main`, move the commit(s) to a feature branch:
+```powershell
+# Create a branch at the current commit
+git branch <branch-name>
+# Reset main back (soft keeps changes staged)
+git reset HEAD~1 --soft
+# Discard the staged changes on main (they're safe on the branch)
+git checkout -- .
+# Switch to the feature branch and push
+git checkout <branch-name>
+git push -u origin <branch-name>
+```
 
 ## 2. CI Verification and Merge
 
