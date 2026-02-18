@@ -1,51 +1,60 @@
 resources:
-# https://github.com/argoproj/argo-cd/releases
-# renovate: datasource=github-tags depname=argoproj/argo-cd versioning=semver
-- https://raw.githubusercontent.com/argoproj/argo-cd/v3.3.0/manifests/install.yaml
+  # https://github.com/argoproj/argo-cd/releases
+  # renovate: datasource=github-tags depname=argoproj/argo-cd versioning=semver
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.3.0/manifests/install.yaml
 # Delete included argocd-cm so we can provide our own.
 patches:
-- target:
-    kind: ConfigMap
-    name: argocd-cm
-  patch: | 
-    $patch: delete
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
+  - target:
+      kind: ConfigMap
       name: argocd-cm
-- target:
-    kind: ConfigMap
-    name: argocd-cmd-params-cm
-  patch: | 
-    $patch: delete
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
+    patch: |
+      $patch: delete
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-cm
+  - target:
+      kind: ConfigMap
       name: argocd-cmd-params-cm
+    patch: |
+      $patch: delete
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-cmd-params-cm
+  - target:
+      kind: ConfigMap
+      name: argocd-ssh-known-hosts-cm
+    patch: |
+      $patch: delete
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-ssh-known-hosts-cm
 
-# Delete ingress so we can provide our own
-- target:
-    kind: Ingress
-    name: argocd-server
-  patch: | 
-    $patch: delete
-    apiVersion: networking.k8s.io/v1
-    kind: Ingress
-    metadata:
+  # Delete ingress so we can provide our own
+  - target:
+      kind: Ingress
       name: argocd-server
-# Enable rbac role for web terminal
-- target:
-    group: rbac.authorization.k8s.io
-    version: v1
-    kind: ClusterRole
-    name: argocd-server
-  patch: |-
-    - op: add
-      path: /rules/0
-      value:
-        apiGroups:
-          - ''
-        resources:
-          - pods/exec
-        verbs:
-          - create
+    patch: |
+      $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: argocd-server
+  # Enable rbac role for web terminal
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: ClusterRole
+      name: argocd-server
+    patch: |-
+      - op: add
+        path: /rules/0
+        value:
+          apiGroups:
+            - ''
+          resources:
+            - pods/exec
+          verbs:
+            - create
