@@ -24,7 +24,7 @@ spec:
       - name: vaultwarden
         # https://hub.docker.com/r/vaultwarden/server/tags
         # renovate: datasource=github-tags depname=dani-garcia/vaultwarden versioning=semver
-        image: vaultwarden/server:1.35.3
+        image: vaultwarden/server:1.35.4
         imagePullPolicy: Always
         env:
           - name: DOMAIN
