@@ -5,4 +5,4 @@ metadata:
 spec: 
   # https://github.com/crossplane-contrib/provider-aws/releases
   # renovate: datasource=github-releases depname=crossplane-contrib/provider-aws versioning=semver
-  package: xpkg.upbound.io/crossplane-contrib/provider-aws:v0.55.0
+  package: xpkg.upbound.io/crossplane-contrib/provider-aws:v0.57.0
