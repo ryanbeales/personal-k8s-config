@@ -6,7 +6,7 @@ metadata:
 data:
   accounts.conf: |-
     admin:$6$5w8gXq38OdhCaMy1$0RkpHDAEPAyNOwxU8Y6MdfxTCo7Sx6Hch35AEtUb6L42UrehC4JxEtQiRsaSKWsOZt/YtW98MOjrB3yhLcXrNw==
-    workswitcher:$7$1000$qAmBZYFcagGnH83sGn6ysJBDk6dgc9CE+umRA4KBcfT4sSjpLx0CxhTsQuZfoiDfaRHHssHkseefgeMOa3zpzg==$xaTQMcY2fQOqdwkvvW1GYTeZUO3h1uTex4WcZljwK2uuX9TF9EMuR9hyL5IsHSTHpWQDPZj1GBDCMcJsYJAEOw==
+    workswitcher:$6$RZbztkRuRfPIEawB$ACwB31vuqweQVSCi2YotG6cgiMR22XqRPEwFeXrUbdHsxIEsnJiogxeUDG+G0E/MpObspGQU2nbHElnOsQGZmw==
   mosquitto.conf: |-
     per_listener_settings true
     persistence false

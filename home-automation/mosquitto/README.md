@@ -6,20 +6,21 @@ This mosquitto deployment uses a `ConfigMap` to store the `accounts.conf` file c
 
 ### 1. Generating a Password Hash
 
-You can use the `mosquitto_passwd` utility to generate a new password hash. The easiest way to do this without installing anything locally is via Docker:
+You can use the `mosquitto_passwd` utility to generate a new password hash. The easiest way to do this without installing anything locally is via Docker. 
+Note: Ensure you use `eclipse-mosquitto:1.6` or an older tag that generates `$6$` SHA512 hashes. New argon2 (`$7$`) hashes fail to decode salt on this cluster.
 
 ```bash
-docker run --rm --entrypoint sh eclipse-mosquitto -c "touch /tmp/pw && mosquitto_passwd -b /tmp/pw <username> <password> && cat /tmp/pw"
+docker run --rm --entrypoint sh eclipse-mosquitto:1.6 -c "mosquitto_passwd -c -b /tmp/pw <username> <password> && cat /tmp/pw"
 ```
 
 For example:
 ```bash
-docker run --rm --entrypoint sh eclipse-mosquitto -c "touch /tmp/pw && mosquitto_passwd -b /tmp/pw newuser mysecretpassword && cat /tmp/pw"
+docker run --rm --entrypoint sh eclipse-mosquitto:1.6 -c "mosquitto_passwd -c -b /tmp/pw workswitcher mysecretpassword && cat /tmp/pw"
 ```
 
 This will output a line like:
 ```
-newuser:$6$8wJ...
+workswitcher:$6$0F...
 ```
 
 ### 2. Updating the Configuration
