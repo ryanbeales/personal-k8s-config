@@ -25,7 +25,7 @@ spec:
       containers:
         - name: ollama
           # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
-          image: ollama/ollama:0.17.4
+          image: ollama/ollama:0.17.5
           env:
             # Allow from everywhere (we limit it via where it's served from)
             - name: OLLAMA_ORIGINS
