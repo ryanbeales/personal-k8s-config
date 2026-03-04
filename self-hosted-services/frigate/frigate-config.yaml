@@ -121,7 +121,7 @@ review:
 genai:
   provider: ollama
   base_url: http://ollama.ollama.svc.cluster.local:11434
-  model: qwen3-vl:8b
+  model: qwen3.5:9b
 objects:
   track:
     - person
