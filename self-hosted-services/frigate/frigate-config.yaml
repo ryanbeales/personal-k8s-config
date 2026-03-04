@@ -1,4 +1,6 @@
 version: 0.17.0
+auth:
+  enabled: false
 mqtt:
   host: mosquitto.mosquitto.svc.cluster.local
   port: 1883
