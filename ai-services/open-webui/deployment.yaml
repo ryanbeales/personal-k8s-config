@@ -19,10 +19,12 @@ spec:
       containers:
         - name: open-webui
           # Get the commit tag for the image from here https://github.com/open-webui/open-webui/releases
-          image: ghcr.io/open-webui/open-webui:git-2b26355
+          image: ghcr.io/open-webui/open-webui:git-79f0437
           env:
             - name: OLLAMA_BASE_URL
               value: http://ollama.ollama.svc.cluster.local:11434
+            - name: DEFAULT_MODELS
+              value: "qwen3.5:9b"
             - name: ENABLE_WEB_SEARCH
               value: "true"
             - name: WEBUI_URL

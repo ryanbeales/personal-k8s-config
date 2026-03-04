@@ -80,7 +80,7 @@ I've added several self-hosted AI services into the cluster to provide local LLM
 - [Open-WebUI](https://openwebui.com/) provides the interface for interacting with models.
 - [ChromaImageGen](https://github.com/ryanbeales/chromaimagegen/tree/main) is my own small creation to provide local image generation using HuggingFace pipelines.
 
-Home-assistant and Frigate are both configured to point to the Ollama instance in the cluster. Currently using the qwen3-vl:8b model for Frigate snapshot descriptions. Home assistant makes use of the same model as a Voice Assistant, but it is _slow_ on the 3060.
+Home-assistant and Frigate are both configured to point to the Ollama instance in the cluster. Currently using the qwen3.5:9b model for Frigate snapshot descriptions. Home assistant makes use of the same model as a Voice Assistant, but it is _slow_ on the 3060.
 
 ## Antigravity
 
