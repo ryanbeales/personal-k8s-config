@@ -5,11 +5,11 @@ metadata:
   namespace: argocd
 spec:
   parentRefs:
-    - group: gateway.networking.k8s.io	
+    - group: gateway.networking.k8s.io
       kind: Gateway
       name: crobceratops-gateway
       namespace: gateways
-    - group: gateway.networking.k8s.io	
+    - group: gateway.networking.k8s.io
       kind: Gateway
       name: crobasaurusrex-gateway
       namespace: gateways
@@ -18,11 +18,14 @@ spec:
     - argocd.crobasaurusrex.ryanbeales.com
   rules:
     - matches:
-      - path:
-          type: PathPrefix
-          value: /
+        - path:
+            type: PathPrefix
+            value: /
+      timeouts:
+        request: 0s
+        backendRequest: 0s
       backendRefs:
-        - group: ''	
+        - group: ""
           kind: Service
           name: argocd-server
           port: 80
