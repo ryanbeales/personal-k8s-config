@@ -133,11 +133,9 @@ objects:
     - sheep
     - cow
     - elephant
-    - shoe
     - skis
     - car
     - motorcycle
-    - bus
     - zebra
     - giraffe
   genai:
