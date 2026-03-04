@@ -1,4 +1,4 @@
-version: 0.16-0
+version: 0.17.0
 mqtt:
   host: mosquitto.mosquitto.svc.cluster.local
   port: 1883
@@ -39,8 +39,7 @@ cameras:
       enabled: true
     zones:
       yard:
-        coordinates:
-          0.998,0.671,0.999,0.998,0,0.998,0.003,0.467,0.174,0.421,0.251,0.341,0.267,0.22,0.61,0.229,0.673,0.384,0.676,0.217,0.71,0.218
+        coordinates: 0.998,0.671,0.999,0.998,0,0.998,0.003,0.467,0.174,0.421,0.251,0.341,0.267,0.22,0.61,0.229,0.673,0.384,0.676,0.217,0.71,0.218
     birdseye:
       order: 2
     genai:
@@ -69,8 +68,7 @@ cameras:
         - driveway
     zones:
       driveway:
-        coordinates:
-          0,1,0.408,0.997,0.614,0.997,1,0.997,1,0.574,1,0.353,0.976,0.111,0.7,0.106,0.692,0.253,0.597,0.355,0.505,0.259,0.506,0.261,0.443,0.191,0.367,0.019,0.163,0.129,0,0.274,0,0.484,0,0.643,0,0.68,0,0.695,0,0.716,0,0.765,0,0.821
+        coordinates: 0,1,0.408,0.997,0.614,0.997,1,0.997,1,0.574,1,0.353,0.976,0.111,0.7,0.106,0.692,0.253,0.597,0.355,0.505,0.259,0.506,0.261,0.443,0.191,0.367,0.019,0.163,0.129,0,0.274,0,0.484,0,0.643,0,0.68,0,0.695,0,0.716,0,0.765,0,0.821
     birdseye:
       order: 1
     genai:
@@ -98,9 +96,8 @@ model:
   labelmap_path: /labelmap/coco-80.txt
 record:
   enabled: true
-  retain:
+  continuous:
     days: 7
-    mode: all
   alerts:
     retain:
       days: 30
@@ -117,6 +114,8 @@ review:
       - bear
   detections:
     enabled: True
+genai:
+  provider: ollama
 objects:
   track:
     - person
@@ -135,6 +134,12 @@ objects:
     - bus
     - zebra
     - giraffe
+  genai:
+    enabled: true
+    base_url: http://ollama.ollama.svc.cluster.local:11434
+    model: qwen3-vl:8b
+    prompt: >-
+      Describe the image in a concise sentence, focusing on the main object (person, car, animal) and its activity.
 audio:
   enabled: true
   listen:
@@ -146,10 +151,3 @@ semantic_search:
   enabled: true
   reindex: false
   model_size: large
-genai:
-  enabled: true
-  provider: ollama
-  base_url: http://ollama.ollama.svc.cluster.local:11434
-  model: qwen3-vl:8b
-  prompt: >-
-    Describe the image in a concise sentence, focusing on the main object (person, car, animal) and its activity.
