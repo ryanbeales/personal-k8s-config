@@ -118,6 +118,12 @@ review:
       - bear
   detections:
     enabled: True
+  genai:
+    enabled: true
+    additional_concerns:
+      - bear in the garden
+      - person walking in between the pillars
+      - cats in the planter box
 genai:
   provider: ollama
   base_url: http://ollama.ollama.svc.cluster.local:11434
