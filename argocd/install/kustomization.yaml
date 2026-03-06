@@ -22,15 +22,6 @@ patches:
       kind: ConfigMap
       metadata:
         name: argocd-cmd-params-cm
-  - target:
-      kind: ConfigMap
-      name: argocd-ssh-known-hosts-cm
-    patch: |
-      $patch: delete
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: argocd-ssh-known-hosts-cm
 
   # Delete ingress so we can provide our own
   - target:
