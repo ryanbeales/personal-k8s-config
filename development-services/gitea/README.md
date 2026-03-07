@@ -22,3 +22,12 @@ sudo k3s kubectl create secret generic -n gitea gitea-actions-secret --from-lite
 ```
 
 Restart the runner and it should be picked up by gitea.
+
+## Rootless Runner Setup
+The Gitea Actions runners in this deployment are configured to run in "rootless" mode (specifically Docker-in-Docker rootless). This setup requires a few special considerations compared to the default Helm chart configuration:
+
+1.  **Values Configuration:** `values-actions.yaml` is configured with `image.rootless: true` and specifically targets the `-dind-rootless` tags for both `act_runner` and `dind`.
+2.  **AppArmor and Seccomp:** To allow nested virtualization/user namespaces on newer OS versions (like Ubuntu 24.04), the `dind` and `act-runner` containers require native Kubernetes 1.30+ `securityContext` settings with `appArmorProfile: type: Unconfined` and `seccompProfile: type: Unconfined`.
+3.  **Socket Paths:** Rootless docker places its socket at `/var/run/user/1000/docker.sock` instead of `/var/run/docker.sock`.
+
+These necessary modifications are applied via a Kustomize patch (`patch-runner-rootless.yaml`), which overrides the default StatefulSet created by the Gitea Actions Helm chart to adjust the security contexts, probe paths, and mount points.
