@@ -27,7 +27,16 @@ Restart the runner and it should be picked up by gitea.
 The Gitea Actions runners in this deployment are configured to run in "rootless" mode (specifically Docker-in-Docker rootless). This setup requires a few special considerations compared to the default Helm chart configuration:
 
 1.  **Values Configuration:** `values-actions.yaml` is configured with `image.rootless: true` and specifically targets the `-dind-rootless` tags for both `act_runner` and `dind`.
-2.  **AppArmor and Seccomp:** To allow nested virtualization/user namespaces on newer OS versions (like Ubuntu 24.04), the `dind` and `act-runner` containers require native Kubernetes 1.30+ `securityContext` settings with `appArmorProfile: type: Unconfined` and `seccompProfile: type: Unconfined`.
-3.  **Socket Paths:** Rootless docker places its socket at `/var/run/user/1000/docker.sock` instead of `/var/run/docker.sock`.
+2.  **AppArmor and Seccomp:** To allow nested virtualization/user namespaces on newer OS versions, the `dind` and `act-runner` containers require native Kubernetes 1.30+ `securityContext` settings with `appArmorProfile: type: Unconfined` and `seccompProfile: type: Unconfined`.
+3.  **Host OS Security Limits (Ubuntu 24.04):** Even with `Unconfined` set, Ubuntu 24.04 and 23.10 kernel defaults completely block unprivileged processes without AppArmor profiles from creating user namespaces. For rootless dind to work on these nodes, you must disable the restriction on the host:
+    ```bash
+    sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+    ```
+    (You should also persist this across reboots by creating a file in `/etc/sysctl.d/`):
+    ```bash
+    echo "kernel.apparmor_restrict_unprivileged_userns = 0" | sudo tee /etc/sysctl.d/99-rootless.conf
+    sudo sysctl -p /etc/sysctl.d/99-rootless.conf
+    ```
+4.  **Socket Paths:** Rootless docker places its socket at `/var/run/user/1000/docker.sock` instead of `/var/run/docker.sock`.
 
 These necessary modifications are applied via a Kustomize patch (`patch-runner-rootless.yaml`), which overrides the default StatefulSet created by the Gitea Actions Helm chart to adjust the security contexts, probe paths, and mount points.
