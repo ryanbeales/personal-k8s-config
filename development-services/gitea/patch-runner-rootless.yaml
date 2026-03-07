@@ -8,6 +8,11 @@ spec:
     spec:
       initContainers:
         - name: dind
+          securityContext:
+            appArmorProfile:
+              type: Unconfined
+            seccompProfile:
+              type: Unconfined
           livenessProbe:
             exec:
               command:
@@ -22,6 +27,11 @@ spec:
                 - /var/run/user/1000/docker.sock
       containers:
         - name: act-runner
+          securityContext:
+            appArmorProfile:
+              type: Unconfined
+            seccompProfile:
+              type: Unconfined
           env:
             - name: DOCKER_HOST
               value: unix:///var/run/user/1000/docker.sock
