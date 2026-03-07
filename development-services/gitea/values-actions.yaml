@@ -3,6 +3,9 @@ namespace: gitea
 # Provision gitea-actions statefulset, we should end up with 2 runners.
 enabled: true
 
+image:
+  rootless: true
+
 # Provisioning secret -- see readme to create this
 existingSecret: gitea-actions-secret
 existingSecretKey: GITEA_ACTIONS_TOKEN
@@ -26,19 +29,20 @@ statefulset:
           - "ubuntu-22.04:docker://gitea/runner-images:ubuntu-22.04"
           - "ubuntu-20.04:docker://gitea/runner-images:ubuntu-20.04"
       container:
-        # Force the runner to mount the dind containers docker socket to allow for docker in docker.
-        # Set the DOCKER_HOST to use the mounted socket.
-        options: "-v /var/run/user/1000/docker.sock:/dockersock/docker.sock:ro -e DOCKER_HOST=unix:///dockersock/docker.sock"
-        # The above option will fail if the docker socket directory is not listed in valid volumes. Time lost here: 4 hours.
-        # It's wildcarded for now but should be locked down to the one path above. but It's working right now and I don't want
-        # to mess it up.
-        valid_volumes:
-          - '**'
+        require_docker: true
+        docker_timeout: 300s
+      # container:
+      #   # Force the runner to mount the dind containers docker socket to allow for docker in docker.
+      #   # Set the DOCKER_HOST to use the mounted socket.
+      #   options: "-v /var/run/user/1000/docker.sock:/dockersock/docker.sock:ro -e DOCKER_HOST=unix:///dockersock/docker.sock"
+      #   # The above option will fail if the docker socket directory is not listed in valid volumes. Time lost here: 4 hours.
+      #   # It's wildcarded for now but should be locked down to the one path above. but It's working right now and I don't want
+      #   # to mess it up.
+      #   valid_volumes:
+      #     - '**'
   dind:
     # renovate: datasource=github-releases depname=moby/moby versioning=docker
     tag: 28.4.0-dind-rootless
-    securityContext:
-      privileged: true
 
 global:
   storageClass: crobasaurusrex-nfs
