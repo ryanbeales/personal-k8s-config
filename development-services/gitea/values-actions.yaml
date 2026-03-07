@@ -12,6 +12,10 @@ existingSecretKey: GITEA_ACTIONS_TOKEN
 giteaRootURL: http://gitea-http.gitea.svc.cluster.local:3000/
 
 statefulset:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
   actRunner:
     # https://hub.docker.com/r/gitea/act_runner/tags
     # renovate: datasource=gitea-releases depname=gitea/act_runner versioning=docker
