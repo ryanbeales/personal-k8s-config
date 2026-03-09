@@ -10,7 +10,7 @@ spec:
   replicas: 1
   revisionHistoryLimit: 3
   strategy:
-    type: Recreate 
+    type: Recreate
   template:
     metadata:
       labels:
@@ -18,37 +18,37 @@ spec:
     spec:
       # Switch to the nvidia runtime class to get access to GPUs
       runtimeClassName: nvidia
-  
+
       # This process is tiny, we have a 1050Ti-4GB, 1060-6GB, and 3060-12GB in the cluster. We won't restrict this to a specific node.
       nodeSelector:
         nvidia.com/gpu.present: "true"
 
       containers:
-      - name: faster-whisper
-        # Disable - renovate: datasource=github-tags depname=linuxserver/docker-faster-whisper versioning=docker
-        image: lscr.io/linuxserver/faster-whisper:2.5.0-gpu
-        env:
-        - name: PUID
-          value: "1000"
-        - name: PGID  
-          value: "1000"
-        - name: TZ
-          value: America/Vancouver
-        - name: WHISPER_MODEL
-          value: tiny-int8
-        - name: WHISPER_LANG
-          value: en
-        resources:
-          limits:
-            nvidia.com/gpu: '1'
-        ports:
         - name: faster-whisper
-          containerPort: 10300
-        volumeMounts:
-        - name: storage
-          # Models are downloaded and stored in the root home directory
-          mountPath: /config
+          # Disable - renovate: datasource=github-tags depname=linuxserver/docker-faster-whisper versioning=docker
+          image: lscr.io/linuxserver/faster-whisper:3.1.0-gpu-legacy
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: America/Vancouver
+            - name: WHISPER_MODEL
+              value: large-v3-turbo
+            - name: WHISPER_LANG
+              value: en
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+          ports:
+            - name: faster-whisper
+              containerPort: 10300
+          volumeMounts:
+            - name: storage
+              # Models are downloaded and stored in the root home directory
+              mountPath: /config
       volumes:
-      - name: storage
-        persistentVolumeClaim:
-          claimName: faster-whisper-nfs-pvc
+        - name: storage
+          persistentVolumeClaim:
+            claimName: faster-whisper-nfs-pvc
