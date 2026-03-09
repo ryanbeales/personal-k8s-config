@@ -34,7 +34,7 @@ spec:
               value: "q8_0"
             # Keep the model loaded for 60m
             - name: OLLAMA_KEEP_ALIVE
-              value: "60m"
+              value: "-1"
             - name: OLLAMA_NUM_CTX
               value: "16384"
           # Ensure we run on a node with GPU available
