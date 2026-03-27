@@ -4,7 +4,7 @@ namespace: jupyterhub
 helmCharts:
 - name: jupyterhub
   repo: 'https://hub.jupyter.org/helm-chart/'
-  version: 4.3.2 # https://hub.jupyter.org/helm-chart/
+  version: 4.3.3 # https://hub.jupyter.org/helm-chart/
   releaseName: jupyterhub
   namespace: jupyterhub
   valuesFile: values.yaml
