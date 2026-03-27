@@ -36,7 +36,7 @@ spec:
             - name: OLLAMA_KEEP_ALIVE
               value: "-1"
             - name: OLLAMA_NUM_CTX
-              value: "16384"
+              value: "8192"
           # Ensure we run on a node with GPU available
           resources:
             limits:
