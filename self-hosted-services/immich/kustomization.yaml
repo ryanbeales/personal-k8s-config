@@ -4,7 +4,7 @@ namespace: immich
 helmCharts:
   - name: immich
     repo: "https://immich-app.github.io/immich-charts"
-    version: 0.10.3 # https://immich-app.github.io/immich-charts/index.yaml / https://github.com/immich-app/immich-charts/releases
+    version: 0.11.0 # https://immich-app.github.io/immich-charts/index.yaml / https://github.com/immich-app/immich-charts/releases
     releaseName: immich
     namespace: immich
     valuesFile: immich-values.yaml
