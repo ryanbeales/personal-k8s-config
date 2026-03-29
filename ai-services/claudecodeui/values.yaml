@@ -4,5 +4,5 @@ ingress:
 persistence:
   enabled: true
   size: 10Gi
-  storageClass: "crobasaurus-nfs"
+  storageClass: "crobasaurusrex-nfs"
   accessMode: ReadWriteOnce
