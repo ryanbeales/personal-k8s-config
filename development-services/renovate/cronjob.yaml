@@ -25,7 +25,7 @@ spec:
                 - name: RENOVATE_BASE_DIR
                   value: "/tmp/renovate/"
                 - name: RENOVATE_REPOSITORIES
-                  value: ryanbeales/personal-k8s-config,ryanbeales/immich-album-export
+                  value: ryanbeales/personal-k8s-config,ryanbeales/immich-album-export,ryanbeales/claudecodeui-container
                 - name: RENOVATE_REPORT_TYPE
                   value: logging
                 - name: RENOVATE_PR_HOURLY_LIMIT
