@@ -1,7 +1,7 @@
 helmCharts:
   - name: kro
     repo: oci://registry.k8s.io/kro/charts
-    version: 0.9.0
+    version: 0.9.1
     releaseName: kro
     namespace: kro-system
     valuesFile: values.yaml
