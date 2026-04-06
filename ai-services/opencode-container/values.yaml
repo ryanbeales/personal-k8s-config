@@ -1,0 +1,30 @@
+# Configuration for opencode-container stack
+persistence:
+  enabled: true
+  storageClass: "crobasaurusrex-nfs"
+  size: 128Gi  # Large enough for models
+
+ollama:
+  enabled: true
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+config:
+  opencodeJson: |
+    {
+      "model": "ollama/gpt-oss:20b",
+      "enabled_providers": ["ollama"],
+      "provider": {
+        "ollama": {
+          "npm": "@ai-sdk/openai-compatible",
+          "name": "Ollama",
+          "options": {
+            "baseURL": "http://ollama:11434/v1"
+          },
+          "models": {
+            "gpt-oss:20b": { "name": "gpt-oss:20b" }
+          }
+        }
+      }
+    }
