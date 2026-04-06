@@ -1,7 +1,7 @@
 # Configuration for opencode-container stack
 persistence:
   enabled: true
-  storageClass: "crobasaurus-nfs"
+  storageClass: "crobasaurusrex-nfs"
   size: 128Gi
   accessModes:
     - ReadWriteOnce
