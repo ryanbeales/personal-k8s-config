@@ -5,6 +5,7 @@ namespace: opencode-container
 
 resources:
   - namespace.yaml
+  - httproute.yaml
 
 helmCharts:
   - name: opencode

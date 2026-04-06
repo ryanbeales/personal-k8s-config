@@ -1,0 +1,29 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: opencode-route
+  namespace: opencode-container
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobceratops-gateway
+      namespace: gateways
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobasaurusrex-gateway
+      namespace: gateways
+  hostnames:
+    - opencode.crobceratops.ryanbeales.com
+    - opencode.crobasaurusrex.ryanbeales.com
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: opencode
+          port: 80
+          weight: 1
