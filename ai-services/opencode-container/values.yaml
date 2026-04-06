@@ -1,14 +1,19 @@
 # Configuration for opencode-container stack
 persistence:
   enabled: true
-  storageClass: "crobasaurusrex-nfs"
-  size: 128Gi  # Large enough for models
+  storageClass: "crobasaurus-nfs"
+  size: 128Gi
+  accessModes:
+    - ReadWriteOnce
 
 ollama:
   enabled: true
   resources:
     limits:
       nvidia.com/gpu: 1
+  runtimeClassName: "nvidia"
+  nodeSelector:
+    kubernetes.io/hostname: crobputer
 
 config:
   opencodeJson: |

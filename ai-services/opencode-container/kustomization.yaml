@@ -13,17 +13,6 @@ helmCharts:
     valuesFile: values.yaml
     releaseName: opencode
     repo: oci://ghcr.io/ryanbeales/charts
-    version: 1.0.0
+    version: 1.0.1
 
-patches:
-  - target:
-      kind: Deployment
-      name: ollama
-    patch: |-
-      - op: add
-        path: /spec/template/spec/runtimeClassName
-        value: nvidia
-      - op: add
-        path: /spec/template/spec/nodeSelector
-        value:
-          kubernetes.io/hostname: crobputer
+
