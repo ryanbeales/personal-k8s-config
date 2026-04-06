@@ -1,4 +1,5 @@
 # Configuration for opencode-container stack
+runAsRoot: true
 persistence:
   enabled: true
   storageClass: "crobasaurusrex-nfs"
