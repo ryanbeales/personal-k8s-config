@@ -1,11 +1,12 @@
 # Configuration for opencode-container stack
 runAsRoot: true
+splitDeployment: true
 persistence:
   enabled: true
   storageClass: "crobasaurusrex-nfs"
   size: 128Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
 
 ollama:
   enabled: true
