@@ -1,6 +1,6 @@
 # Configuration for opencode-container stack
 runAsRoot: true
-splitDeployment: true
+splitDeployment: false
 persistence:
   enabled: true
   storageClass: "crobasaurusrex-nfs"
