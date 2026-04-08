@@ -20,7 +20,7 @@ ollama:
 config:
   opencodeJson: |
     {
-      "model": "ollama/gpt-oss:20b",
+      "model": "ollama/gemma4:31b",
       "enabled_providers": ["ollama"],
       "provider": {
         "ollama": {
@@ -30,7 +30,7 @@ config:
             "baseURL": "http://ollama:11434/v1"
           },
           "models": {
-            "gpt-oss:20b": { "name": "gpt-oss:20b" }
+            "gemma4:31b": { "name": "gemma4:31b" }
           }
         }
       }
