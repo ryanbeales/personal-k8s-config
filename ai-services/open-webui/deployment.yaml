@@ -24,7 +24,7 @@ spec:
             - name: OLLAMA_BASE_URL
               value: http://ollama.ollama.svc.cluster.local:11434
             - name: DEFAULT_MODELS
-              value: "qwen3.5:9b"
+              value: "gemma4:e4b"
             - name: ENABLE_WEB_SEARCH
               value: "true"
             - name: WEBUI_URL

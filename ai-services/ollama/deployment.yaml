@@ -36,7 +36,7 @@ spec:
             - name: OLLAMA_KEEP_ALIVE
               value: "-1"
             - name: OLLAMA_CONTEXT_LENGTH
-              value: "8192"
+              value: "131072"
           # Ensure we run on a node with GPU available
           resources:
             limits:
@@ -60,8 +60,7 @@ spec:
                     while ! /bin/ollama ps > /dev/null 2>&1; do
                       sleep 5
                     done
-                    /bin/ollama pull qwen3.5:9b
-                    /bin/ollama pull llama3.1
+                    /bin/ollama pull gemma4:e4b
       volumes:
         - name: storage
           persistentVolumeClaim:
