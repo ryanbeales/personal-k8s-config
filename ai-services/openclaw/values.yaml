@@ -10,7 +10,9 @@ app-template:
             CONFIG_MODE: merge
       containers:
         main:
-          env: {}
+          env:
+            OLLAMA_LARGE_API_KEY: "ollama-local"
+            OLLAMA_STANDARD_API_KEY: "ollama-local"
           envFrom:
             - secretRef:
                 name: openclaw-secret
