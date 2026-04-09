@@ -25,5 +25,5 @@ spec:
         - group: ''
           kind: Service
           name: openclaw
-          port: 3000
+          port: 18789
           weight: 1
