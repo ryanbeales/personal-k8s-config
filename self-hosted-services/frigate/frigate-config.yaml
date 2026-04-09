@@ -128,9 +128,6 @@ genai:
   provider: ollama
   base_url: http://ollama.ollama.svc.cluster.local:11434
   model: gemma4:e4b
-  extra_parameters:
-    options:
-      num_ctx: 32768
 objects:
   track:
     - person
