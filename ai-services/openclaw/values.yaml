@@ -8,6 +8,16 @@ app-template:
         init-config:
           env:
             CONFIG_MODE: merge
+        init-auth:
+          image: serhanekicii/openclaw:1.5.15 # Use the same image as main
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              # Ensure auth profiles are created for custom providers
+              openclaw models auth add --provider ollama-large --key ollama-local
+          volumeMounts:
+            - name: data
+              mountPath: /home/node/.openclaw
       containers:
         main:
           env: {}
@@ -100,6 +110,10 @@ app-template:
             "agents": {
               "defaults": {
                 "workspace": "/home/node/.openclaw/workspace",
+                "models": [
+                  "ollama/gemma4:e4b",
+                  "ollama-large/gemma4:26b"
+                ],
                 "model": {
                   "primary": "ollama-large/gemma4:26b"
                 },
