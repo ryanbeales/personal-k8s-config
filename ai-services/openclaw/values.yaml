@@ -10,7 +10,9 @@ app-template:
             CONFIG_MODE: merge
       containers:
         main:
-          env: {}
+          env:
+            OLLAMA2_API_KEY: "ollama-local"
+            OLLAMA_API_KEY: "ollama-local"
           envFrom:
             - secretRef:
                 name: openclaw-secret
@@ -55,7 +57,7 @@ app-template:
             "models": {
               "mode": "replace",
               "providers": {
-                "ollama-large": {
+                "ollama2": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
                   "apiKey": "ollama-local",
                   "api": "ollama",
@@ -100,8 +102,12 @@ app-template:
             "agents": {
               "defaults": {
                 "workspace": "/home/node/.openclaw/workspace",
+                "models": [
+                  "ollama/gemma4:e4b",
+                  "ollama2/gemma4:26b"
+                ],
                 "model": {
-                  "primary": "ollama-large/gemma4:26b"
+                  "primary": "ollama2/gemma4:26b"
                 },
                 "userTimezone": "UTC",
                 "timeoutSeconds": 600,
