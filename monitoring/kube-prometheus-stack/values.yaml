@@ -36,7 +36,7 @@ grafana:
           name: crobasaurusrex-gateway
           namespace: gateways
 
-  defaultDashboardsTimezone: America/Vancover
+  defaultDashboardsTimezone: America/Vancouver
   defaultDashboardsEditable: true
   additionalDataSources:
     - name: Loki
