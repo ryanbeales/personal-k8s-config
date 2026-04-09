@@ -15,7 +15,9 @@ For security, the gateway token is NOT stored in this repository. It must be cre
 Run the following command in your terminal to create the required secret:
 
 ```bash
-kubectl create secret generic openclaw-secret -n openclaw --from-literal=OPENCLAW_GATEWAY_AUTH_TOKEN=f19f6a8e3b2c1d4a5b6e7f8a9c0d1e2f3b4a5c6d7e8f9a0b
+kubectl create secret generic openclaw-secret -n openclaw \
+  --from-literal=OPENCLAW_GATEWAY_AUTH_TOKEN=f19f6a8e3b2c1d4a5b6e7f8a9c0d1e2f3b4a5c6d7e8f9a0b \
+  --from-literal=OPENCLAW_GATEWAY_TOKEN=f19f6a8e3b2c1d4a5b6e7f8a9c0d1e2f3b4a5c6d7e8f9a0b
 ```
 
 #### Token Reference
