@@ -54,7 +54,17 @@ app-template:
                 "ollama": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
                   "apiKey": "ollama-local",
-                  "api": "openai-responses"
+                  "api": "openai-responses",
+                  "models": [
+                    {
+                      "id": "gemma4:26b",
+                      "name": "Gemma 4 26B",
+                      "reasoning": false,
+                      "input": ["text"],
+                      "contextWindow": 131072,
+                      "maxTokens": 8192
+                    }
+                  ]
                 }
               }
             },
