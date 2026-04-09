@@ -10,7 +10,11 @@ app-template:
             OLLAMA_BASE_URL: "http://ollama-large.ollama.svc.cluster.local:11434"
             OPENCLAW_MODEL: "ollama/gemma4:26b"
             SEARXNG_URL: "http://searxng.searxng.svc.cluster.local:8080"
+          envFrom:
+            - secretRef:
+                name: openclaw-secret
           resources:
+
 
             requests:
               cpu: 100m
