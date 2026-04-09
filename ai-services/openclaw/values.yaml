@@ -24,6 +24,8 @@ config:
     OLLAMA_BASE_URL: "http://ollama-large.ollama.svc.cluster.local:11434"
     OPENCLAW_MODEL: "ollama/gemma4:26b"
     SEARXNG_URL: "http://searxng.searxng.svc.cluster.local:8080"
+    OPENCLAW_GATEWAY__CONTROL_UI__DANGEROUSLY_ALLOW_HOST_HEADER_ORIGIN_FALLBACK: "true"
+    OPENCLAW_GATEWAY__CONTROL_UI__ALLOWED_ORIGINS: '["https://openclaw.crobceratops.ryanbeales.com", "https://openclaw.crobasaurusrex.ryanbeales.com"]'
 
 resources:
   requests:
