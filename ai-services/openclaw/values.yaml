@@ -8,19 +8,11 @@ app-template:
         init-config:
           env:
             CONFIG_MODE: merge
-        init-auth:
-          image: serhanekicii/openclaw:1.5.15 # Use the same image as main
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              # Ensure auth profiles are created for custom providers
-              openclaw models auth add --provider ollama-large --key ollama-local
-          volumeMounts:
-            - name: data
-              mountPath: /home/node/.openclaw
       containers:
         main:
-          env: {}
+          env:
+            OLLAMA2_API_KEY: "ollama-local"
+            OLLAMA_API_KEY: "ollama-local"
           envFrom:
             - secretRef:
                 name: openclaw-secret
@@ -65,7 +57,7 @@ app-template:
             "models": {
               "mode": "replace",
               "providers": {
-                "ollama-large": {
+                "ollama2": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
                   "apiKey": "ollama-local",
                   "api": "ollama",
@@ -112,10 +104,10 @@ app-template:
                 "workspace": "/home/node/.openclaw/workspace",
                 "models": [
                   "ollama/gemma4:e4b",
-                  "ollama-large/gemma4:26b"
+                  "ollama2/gemma4:26b"
                 ],
                 "model": {
-                  "primary": "ollama-large/gemma4:26b"
+                  "primary": "ollama2/gemma4:26b"
                 },
                 "userTimezone": "UTC",
                 "timeoutSeconds": 600,
