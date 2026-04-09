@@ -52,11 +52,25 @@ app-template:
             },
             "models": {
               "mode": "replace",
+              "active": [
+                 {
+                   "name": "gemma4:26b",
+                   "provider": "ollama-large",
+                   "alias": "Gemma4 E4B"
+                 },
+                 {
+                   "name": "gemma4:e4b",
+                   "provider": "ollama",
+                   "alias": "Gemma4 26B"
+                 }
+              ],
               "providers": {
-                "ollama": {
+                "ollama-large": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
-                  "apiKey": "ollama-local",
+                  "apiKey": "not-needed",
+                  "type": "ollama",
                   "api": "ollama",
+                  "scan": false,
                   "models": [
                     {
                       "id": "gemma4:26b",
@@ -72,6 +86,7 @@ app-template:
                   "baseUrl": "http://ollama.ollama.svc.cluster.local:11434",
                   "apiKey": "ollama-local",
                   "api": "ollama",
+                  "scan": false,
                   "models": [
                     {
                       "id": "gemma4:e4b",
