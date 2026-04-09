@@ -70,7 +70,7 @@ app-template:
                     }
                   ]
                 },
-                "ollama-standard": {
+                "ollama": {
                   "baseUrl": "http://ollama.ollama.svc.cluster.local:11434",
                   "apiKey": "ollama-local",
                   "api": "ollama",
