@@ -4,6 +4,10 @@
 app-template:
   controllers:
     main:
+      initContainers:
+        init-config:
+          env:
+            CONFIG_MODE: overwrite
       containers:
         main:
           env: {}
