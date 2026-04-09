@@ -10,9 +10,7 @@ app-template:
             CONFIG_MODE: merge
       containers:
         main:
-          env:
-            OLLAMA_LARGE_API_KEY: "ollama-local"
-            OLLAMA_STANDARD_API_KEY: "ollama-local"
+          env: {}
           envFrom:
             - secretRef:
                 name: openclaw-secret
@@ -59,8 +57,6 @@ app-template:
               "providers": {
                 "ollama-large": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
-                  "apiKey": "ollama-local",
-                  "api": "openai-responses",
                   "models": [
                     {
                       "id": "gemma4:26b",
@@ -74,8 +70,6 @@ app-template:
                 },
                 "ollama-standard": {
                   "baseUrl": "http://ollama.ollama.svc.cluster.local:11434",
-                  "apiKey": "ollama-local",
-                  "api": "openai-responses",
                   "models": [
                     {
                       "id": "gemma4:e4b",
