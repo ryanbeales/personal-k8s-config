@@ -35,4 +35,4 @@ app-template:
       size: 5Gi
 
   skills:
-    - noblepayne/searxng-local-search
+    - searxng-local-search
