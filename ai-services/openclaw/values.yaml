@@ -1,0 +1,27 @@
+# OpenClaw Helm Values
+# Upstream: https://github.com/serhanekicii/openclaw-helm
+
+persistence:
+  enabled: true
+  size: 5Gi
+  storageClassName: "crobasaurusrex-nfs" # Default in this cluster
+
+service:
+  type: ClusterIP
+  port: 3000
+
+# OpenClaw specific configuration
+config:
+  # Initial configuration if needed
+  # For local Ollama, we usually use http://ollama.ollama.svc.cluster.local:11434
+  env:
+    OLLAMA_BASE_URL: "http://ollama-large.ollama.svc.cluster.local:11434"
+    OPENCLAW_MODEL: "ollama/gemma4:26b"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 2Gi

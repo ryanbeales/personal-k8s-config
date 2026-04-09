@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ollama-large-nfs-pvc
+  namespace: ollama
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: crobasaurusrex-nfs
+  resources:
+    requests:
+      storage: 256Gi

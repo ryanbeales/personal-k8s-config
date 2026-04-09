@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama-large
+  namespace: ollama
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ollama-large
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ollama-large
+    spec:
+      runtimeClassName: nvidia
+      nodeName: crobputer
+      containers:
+        - name: ollama
+          # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
+          image: ollama/ollama:0.20.4
+          env:
+            - name: OLLAMA_ORIGINS
+              value: "*"
+            - name: OLLAMA_KV_CACHE_TYPE
+              value: "q8_0"
+            - name: OLLAMA_KEEP_ALIVE
+              value: "10m"
+            - name: OLLAMA_CONTEXT_LENGTH
+              value: "32768"
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+          ports:
+            - name: ollama
+              containerPort: 11434
+          volumeMounts:
+            - name: storage
+              mountPath: /root/.ollama
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    while ! /bin/ollama ps > /dev/null 2>&1; do
+                      sleep 5
+                    done
+                    /bin/ollama pull gemma4:26b
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: ollama-large-nfs-pvc
