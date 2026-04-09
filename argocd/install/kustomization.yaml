@@ -49,3 +49,19 @@ patches:
             - pods/exec
           verbs:
             - create
+
+  - target:
+      kind: Deployment
+      name: argocd-repo-server
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: argocd-repo-server
+      spec:
+        template:
+          spec:
+            initContainers:
+            - name: copyutil
+              args:
+              - "/bin/cp --update=none /usr/local/bin/argocd /var/run/argocd/argocd && /bin/ln -sf /var/run/argocd/argocd /var/run/argocd/argocd-cmp-server"
