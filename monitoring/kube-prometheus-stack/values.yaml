@@ -25,10 +25,7 @@ grafana:
       enabled: true
       hostnames:
         - grafana.crobasaurusrex.ryanbeales.com
-<<<<<<< Updated upstream
         - grafana.crobceratops.ryanbeales.com
-=======
->>>>>>> Stashed changes
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
@@ -39,7 +36,7 @@ grafana:
           name: crobasaurusrex-gateway
           namespace: gateways
 
-  defaultDashboardsTimezone: America/Vancover
+  defaultDashboardsTimezone: America/Vancouver
   defaultDashboardsEditable: true
   additionalDataSources:
     - name: Loki
