@@ -10,8 +10,7 @@ app-template:
             OLLAMA_BASE_URL: "http://ollama-large.ollama.svc.cluster.local:11434"
             OPENCLAW_MODEL: "ollama/gemma4:26b"
             SEARXNG_URL: "http://searxng.searxng.svc.cluster.local:8080"
-            OPENCLAW_GATEWAY__CONTROLUI__DANGEROUSLYALLOWHOSTHEADERORIGINFALLBACK: "true"
-            OPENCLAW_GATEWAY__CONTROLUI__ALLOWEDORIGINS: '["https://openclaw.crobceratops.ryanbeales.com", "https://openclaw.crobasaurusrex.ryanbeales.com"]'
+            OPENCLAW_CONFIG: '{"gateway":{"controlUi":{"dangerouslyAllowHostHeaderOriginFallback":true,"allowedOrigins":["https://openclaw.crobceratops.ryanbeales.com","https://openclaw.crobasaurusrex.ryanbeales.com"]}}}'
           resources:
             requests:
               cpu: 100m
