@@ -6,10 +6,7 @@ app-template:
     main:
       containers:
         main:
-          env:
-            OLLAMA_BASE_URL: "http://ollama-large.ollama.svc.cluster.local:11434"
-            OPENCLAW_MODEL: "ollama/gemma4:26b"
-            SEARXNG_URL: "http://searxng.searxng.svc.cluster.local:8080"
+          env: {}
           envFrom:
             - secretRef:
                 name: openclaw-secret
@@ -51,6 +48,16 @@ app-template:
                 ]
               }
             },
+            "models": {
+              "mode": "merge",
+              "providers": {
+                "ollama": {
+                  "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
+                  "apiKey": "ollama-local",
+                  "api": "openai-responses"
+                }
+              }
+            },
             "browser": {
               "enabled": true,
               "defaultProfile": "default",
@@ -65,7 +72,7 @@ app-template:
               "defaults": {
                 "workspace": "/home/node/.openclaw/workspace",
                 "model": {
-                  "primary": "anthropic/claude-opus-4-6"
+                  "primary": "ollama/gemma4:26b"
                 },
                 "userTimezone": "UTC",
                 "timeoutSeconds": 600,
@@ -100,10 +107,31 @@ app-template:
               "profile": "full",
               "web": {
                 "search": {
-                  "enabled": false
+                  "enabled": true,
+                  "provider": "searxng"
                 },
                 "fetch": {
                   "enabled": true
+                }
+              }
+            },
+            "plugins": {
+              "entries": {
+                "anthropic": {
+                  "enabled": true
+                },
+                "browser": {
+                  "enabled": true
+                },
+                "searxng": {
+                  "enabled": true,
+                  "config": {
+                    "webSearch": {
+                      "baseUrl": "http://searxng.searxng.svc.cluster.local:8080",
+                      "categories": "general",
+                      "language": "en"
+                    }
+                  }
                 }
               }
             }
