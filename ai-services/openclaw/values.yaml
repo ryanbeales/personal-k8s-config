@@ -7,7 +7,7 @@ app-template:
       initContainers:
         init-config:
           env:
-            CONFIG_MODE: overwrite
+            CONFIG_MODE: merge
       containers:
         main:
           env: {}
