@@ -53,10 +53,12 @@ app-template:
               }
             },
             "models": {
-              "mode": "merge",
+              "mode": "replace",
               "providers": {
                 "ollama-large": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
+                  "apiKey": "ollama-local",
+                  "api": "ollama",
                   "models": [
                     {
                       "id": "gemma4:26b",
@@ -70,6 +72,8 @@ app-template:
                 },
                 "ollama-standard": {
                   "baseUrl": "http://ollama.ollama.svc.cluster.local:11434",
+                  "apiKey": "ollama-local",
+                  "api": "ollama",
                   "models": [
                     {
                       "id": "gemma4:e4b",
