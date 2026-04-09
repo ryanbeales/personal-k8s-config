@@ -84,6 +84,7 @@ If pod-level diagnostics are insufficient, use the cluster's observability stack
     2. Then restart the CSI NFS node plugin on the affected node: `kubectl delete pod -n kube-system <csi-nfs-node-pod>`
     3. Delete and recreate the affected pod to get a fresh mount attempt.
     4. **If all above fail** (stale kernel NFS state): **reboot the affected node**. This is the only reliable way to clear stale kernel NFS client state. The kernel NFS client does not recover on its own once stuck.
+  - **Prevention (Soft Mounts)**: To prevent this kernel deadlock from happening on future `nfs-server` restarts, the cluster's NFS `StorageClass` has been updated to use `soft` mounts with a shorter timeout (`timeo=50`). Instead of hanging permanently (the default behavior of `hard` mounts), the kernel will abort broken connections and return I/O errors, preventing the phantom session from locking up the node's mount table permanently.
 
 - **ImagePullBackOff**: Verify the tag exists and Renovate bot hasn't pushed a non-existent version.
 - **OOMKilled**: Compare `kubectl top pod` results with the `resources.limits` defined in the manifest.
