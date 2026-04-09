@@ -79,7 +79,7 @@ app-template:
                       "id": "gemma4:e4b",
                       "name": "Gemma 4 E4B (Standard)",
                       "reasoning": false,
-                      "input": ["text", "image", "audio"],
+                      "input": ["text", "image"],
                       "contextWindow": 32768,
                       "maxTokens": 8192
                     }
