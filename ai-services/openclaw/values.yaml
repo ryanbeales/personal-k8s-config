@@ -7,8 +7,10 @@ persistence:
   storageClassName: "crobasaurusrex-nfs" # Default in this cluster
 
 service:
-  type: ClusterIP
-  port: 3000
+  main:
+    ports:
+      http:
+        port: 18789
 
 app-template:
   skills:
