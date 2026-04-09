@@ -128,6 +128,9 @@ genai:
   provider: ollama
   base_url: http://ollama.ollama.svc.cluster.local:11434
   model: gemma4:e4b
+  extra_parameters:
+    options:
+      num_ctx: 32768
 objects:
   track:
     - person
@@ -147,7 +150,9 @@ objects:
   genai:
     enabled: true
     prompt: >-
-      Describe the image in a concise sentence, focusing on the main object (person, car, animal) and its activity.
+      Carefully analyze the image and describe it in a concise but detailed sentence. 
+      Identify the main object (person, car, animal), its specific attributes (color, type), 
+      and exactly what it is doing or its position in the scene.
 audio:
   enabled: true
   listen:
