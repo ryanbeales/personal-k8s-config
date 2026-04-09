@@ -9,6 +9,7 @@ app-template:
           env:
             OLLAMA_BASE_URL: "http://ollama-large.ollama.svc.cluster.local:11434"
             OPENCLAW_MODEL: "ollama/gemma4:26b"
+            OPENCLAW_GATEWAY_TOKEN: "f19f6a8e3b2c1d4a5b6e7f8a9c0d1e2f3b4a5c6d7e8f9a0b"
             SEARXNG_URL: "http://searxng.searxng.svc.cluster.local:8080"
           envFrom:
             - secretRef:
@@ -38,6 +39,10 @@ app-template:
             "gateway": {
               "port": 18789,
               "mode": "local",
+              "auth": {
+                "mode": "token",
+                "token": "f19f6a8e3b2c1d4a5b6e7f8a9c0d1e2f3b4a5c6d7e8f9a0b"
+              },
               "trustedProxies": ["10.0.0.1"],
               "controlUi": {
                 "dangerouslyAllowHostHeaderOriginFallback": true,
