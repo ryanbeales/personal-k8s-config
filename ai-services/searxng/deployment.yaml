@@ -22,6 +22,8 @@ spec:
         env:
         - name: SEARXNG_BASE_URL
           value: https://searxng.crobasaurusrex.ryanbeales.com
+        - name: SEARXNG_PORT
+          value: "8080"
         envFrom:
         - secretRef:
             name: searxng-secret
