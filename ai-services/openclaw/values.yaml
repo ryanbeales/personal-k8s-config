@@ -43,7 +43,11 @@ app-template:
                 "mode": "token",
                 "token": "f19f6a8e3b2c1d4a5b6e7f8a9c0d1e2f3b4a5c6d7e8f9a0b"
               },
-              "trustedProxies": ["10.0.0.1"],
+              "trustedProxies": [
+                "127.0.0.1",
+                "10.0.0.0/8",
+                "10.42.0.0/16"
+              ],
               "controlUi": {
                 "dangerouslyAllowHostHeaderOriginFallback": true,
                 "allowedOrigins": [
