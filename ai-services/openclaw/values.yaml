@@ -64,8 +64,8 @@ app-template:
                       "id": "gemma4:26b",
                       "name": "Gemma 4 26B (Large)",
                       "reasoning": false,
-                      "input": ["text"],
-                      "contextWindow": 131072,
+                      "input": ["text", "image"],
+                      "contextWindow": 32768,
                       "maxTokens": 8192
                     }
                   ]
@@ -80,7 +80,7 @@ app-template:
                       "name": "Gemma 4 E4B (Standard)",
                       "reasoning": false,
                       "input": ["text"],
-                      "contextWindow": 131072,
+                      "contextWindow": 32768,
                       "maxTokens": 8192
                     }
                   ]
