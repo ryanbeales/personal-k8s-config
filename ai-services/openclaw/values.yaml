@@ -52,25 +52,23 @@ app-template:
             },
             "models": {
               "mode": "replace",
-              "active": [
-                 {
-                   "name": "gemma4:26b",
-                   "provider": "ollama-large",
-                   "alias": "Gemma4 E4B"
-                 },
-                 {
-                   "name": "gemma4:e4b",
-                   "provider": "ollama",
-                   "alias": "Gemma4 26B"
-                 }
+              "available": [
+                {
+                  "name": "gemma4:26b",
+                  "provider": "ollama-large",
+                  "alias": "Gemma4 26B"
+                },
+                {
+                  "name": "gemma4:e4b",
+                  "provider": "ollama",
+                  "alias": "Gemma4 E4B"
+                }
               ],
               "providers": {
                 "ollama-large": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
                   "apiKey": "not-needed",
-                  "type": "ollama",
                   "api": "ollama",
-                  "scan": false,
                   "models": [
                     {
                       "id": "gemma4:26b",
@@ -86,7 +84,6 @@ app-template:
                   "baseUrl": "http://ollama.ollama.svc.cluster.local:11434",
                   "apiKey": "ollama-local",
                   "api": "ollama",
-                  "scan": false,
                   "models": [
                     {
                       "id": "gemma4:e4b",
@@ -113,12 +110,9 @@ app-template:
             "agents": {
               "defaults": {
                 "workspace": "/home/node/.openclaw/workspace",
-                "models": [
-                  "ollama/gemma4:e4b",
-                  "ollama/gemma4:26b"
-                ],
                 "model": {
-                  "primary": "ollama/gemma4:26b"
+                  "primary": "ollama/gemma4:e4b",
+                  "fallback": "ollama-large/gemma4:26b"
                 },
                 "userTimezone": "UTC",
                 "timeoutSeconds": 600,
