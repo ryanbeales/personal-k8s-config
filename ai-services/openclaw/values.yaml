@@ -52,6 +52,12 @@ app-template:
             },
             "models": {
               "mode": "replace",
+              "registry": {
+                "only": [
+                  "ollama-large/gemma4:26b",
+                  "ollama/gemma4:e4b"
+                ]
+              },
               "providers": {
                 "ollama-large": {
                   "baseUrl": "http://ollama-large.ollama.svc.cluster.local:11434",
