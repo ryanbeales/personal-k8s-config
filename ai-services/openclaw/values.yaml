@@ -52,16 +52,14 @@ app-template:
             },
             "models": {
               "mode": "replace",
-              "available": [
+              "active": [
                 {
                   "name": "gemma4:26b",
                   "provider": "ollama-large",
-                  "alias": "Gemma4 26B"
                 },
                 {
                   "name": "gemma4:e4b",
                   "provider": "ollama",
-                  "alias": "Gemma4 E4B"
                 }
               ],
               "providers": {
@@ -110,10 +108,7 @@ app-template:
             "agents": {
               "defaults": {
                 "workspace": "/home/node/.openclaw/workspace",
-                "model": {
-                  "primary": "ollama/gemma4:e4b",
-                  "fallback": "ollama-large/gemma4:26b"
-                },
+                "model": "ollama/gemma4:e4b",
                 "userTimezone": "UTC",
                 "timeoutSeconds": 600,
                 "maxConcurrent": 1
