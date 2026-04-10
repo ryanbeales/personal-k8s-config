@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
         - name: open-webui
-          # Get the commit tag for the image from here https://github.com/open-webui/open-webui/releases
-          image: ghcr.io/open-webui/open-webui:git-79f0437
+          # renovate: datasource=github-tags depname=open-webui/open-webui versioning=semver
+          image: ghcr.io/open-webui/open-webui:v0.8.12
           env:
             - name: OLLAMA_BASE_URL
               value: http://ollama.ollama.svc.cluster.local:11434
