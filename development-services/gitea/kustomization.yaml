@@ -11,7 +11,7 @@ helmCharts:
     includeCRDs: true
   - name: actions
     repo: "oci://docker.gitea.com/charts/"
-    version: 0.0.5 # https://gitea.com/gitea/helm-chart/releases
+    version: 0.1.0 # https://gitea.com/gitea/helm-chart/releases
     releaseName: actions
     namespace: gitea
     valuesFile: values-actions.yaml
