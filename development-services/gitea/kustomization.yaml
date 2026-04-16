@@ -4,7 +4,7 @@ namespace: gitea
 helmCharts:
   - name: gitea
     repo: "oci://docker.gitea.com/charts/"
-    version: 12.5.0 # https://gitea.com/gitea/helm-chart/releases
+    version: 12.5.3 # https://gitea.com/gitea/helm-chart/releases
     releaseName: gitea
     namespace: gitea
     valuesFile: values.yaml
