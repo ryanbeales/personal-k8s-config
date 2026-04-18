@@ -20,7 +20,7 @@ spec:
       containers:
         - name: ollama
           # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
-          image: ollama/ollama:0.20.7
+          image: ollama/ollama:0.21.0
           env:
             - name: OLLAMA_ORIGINS
               value: "*"
