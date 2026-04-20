@@ -19,7 +19,7 @@ statefulset:
   actRunner:
     # https://hub.docker.com/r/gitea/act_runner/tags
     # renovate: datasource=gitea-releases depname=gitea/act_runner versioning=docker
-    tag: 0.3.1
+    tag: 0.4.1
     # By default, the helm chart does not populate the labels section of the runner config.
     # This means all jobs start in a bare image without the necessary tools.
     config: |
