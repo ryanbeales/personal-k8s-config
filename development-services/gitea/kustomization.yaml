@@ -4,14 +4,14 @@ namespace: gitea
 helmCharts:
   - name: gitea
     repo: "oci://docker.gitea.com/charts/"
-    version: 12.5.0 # https://gitea.com/gitea/helm-chart/releases
+    version: 12.5.3 # https://gitea.com/gitea/helm-chart/releases
     releaseName: gitea
     namespace: gitea
     valuesFile: values.yaml
     includeCRDs: true
   - name: actions
     repo: "oci://docker.gitea.com/charts/"
-    version: 0.0.5 # https://gitea.com/gitea/helm-chart/releases
+    version: 0.1.0 # https://gitea.com/gitea/helm-chart/releases
     releaseName: actions
     namespace: gitea
     valuesFile: values-actions.yaml
@@ -36,6 +36,9 @@ patches:
       - op: add
         path: /spec/volumeClaimTemplates/0/kind
         value: PersistentVolumeClaim
+      - op: add
+        path: /spec/volumeClaimTemplates/0/spec/storageClassName
+        value: crobasaurusrex-nfs
   - target:
       kind: StatefulSet
       name: gitea-valkey
@@ -46,4 +49,3 @@ patches:
       - op: add
         path: /spec/volumeClaimTemplates/0/kind
         value: PersistentVolumeClaim
-  - path: patch-runner-rootless.yaml
