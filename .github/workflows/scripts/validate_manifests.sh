@@ -69,7 +69,48 @@ for dir in $KUSTOMIZE_ROOTS; do
   fi
 
 
+  # Static Validation
+  echo "#### Static Analysis" >> "$REPORT_FILE"
+
+  # Kubeconform (Schema Validation)
+  echo "Checking schema with kubeconform..."
+  if ! kubeconform -summary -ignore-missing-schemas -kubernetes-version 1.35.0 pr-manifest.yaml > kc-output.log 2>&1; then
+    echo "❌ **Kubeconform Validation Failed**" >> "$REPORT_FILE"
+    echo '```' >> "$REPORT_FILE"
+    cat kc-output.log >> "$REPORT_FILE"
+    echo '```' >> "$REPORT_FILE"
+    HAS_ERRORS=true
+  else
+    echo "✅ Kubernetes schema validation passed." >> "$REPORT_FILE"
+  fi
+
+  # Pluto (Deprecation Detection)
+  echo "Checking for deprecated APIs with pluto..."
+  # pluto detect returns non-zero if it finds deprecated APIs that are removed in the target version
+  if pluto detect pr-manifest.yaml -o markdown > pluto-output.log 2> pluto-error.log; then
+    echo "✅ No deprecated APIs detected." >> "$REPORT_FILE"
+  else
+    if [ -s pluto-output.log ]; then
+      echo "❌ **Pluto Detected Deprecated/Removed APIs**" >> "$REPORT_FILE"
+      cat pluto-output.log >> "$REPORT_FILE"
+      HAS_ERRORS=true
+    else
+       echo "❌ **Pluto Detection Failed (Error)**" >> "$REPORT_FILE"
+       echo '```' >> "$REPORT_FILE"
+       cat pluto-error.log >> "$REPORT_FILE"
+       echo '```' >> "$REPORT_FILE"
+       HAS_ERRORS=true
+    fi
+  fi
+
+  # Kube-linter (Best Practices - Warning only, logs only)
+  echo "Running kube-linter (warnings only in logs)..."
+  kube-linter lint pr-manifest.yaml || true
+
+  echo "" >> "$REPORT_FILE"
+
   # Compare with main branch
+
   echo "#### Manifest Diffs" >> "$REPORT_FILE"
   
   # Ensure we have the latest origin/main

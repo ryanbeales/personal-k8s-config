@@ -25,6 +25,21 @@ jobs:
           curl -L "https://github.com/homeport/dyff/releases/download/${DYFF_VERSION}/dyff_${DYFF_VERSION#v}_linux_amd64.tar.gz" | tar xz dyff
           mv dyff $HOME/bin/
 
+          # Install kubeconform
+          KC_VERSION=$(curl -s https://api.github.com/repos/yannh/kubeconform/releases/latest | jq -r .tag_name)
+          curl -L "https://github.com/yannh/kubeconform/releases/download/${KC_VERSION}/kubeconform-linux-amd64.tar.gz" | tar xz kubeconform
+          mv kubeconform $HOME/bin/
+
+          # Install pluto
+          PLUTO_VERSION=$(curl -s https://api.github.com/repos/FairwindsOps/pluto/releases/latest | jq -r .tag_name)
+          curl -L "https://github.com/FairwindsOps/pluto/releases/download/${PLUTO_VERSION}/pluto_${PLUTO_VERSION#v}_linux_amd64.tar.gz" | tar xz pluto
+          mv pluto $HOME/bin/
+
+          # Install kube-linter
+          KL_VERSION=$(curl -s https://api.github.com/repos/stackrox/kube-linter/releases/latest | jq -r .tag_name)
+          curl -L "https://github.com/stackrox/kube-linter/releases/download/${KL_VERSION}/kube-linter-linux.tar.gz" | tar xz kube-linter
+          mv kube-linter $HOME/bin/
+
       - name: Get Changed Directories
         id: changed-dirs
         uses: tj-actions/changed-files@v47
