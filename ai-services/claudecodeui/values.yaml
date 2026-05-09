@@ -6,3 +6,8 @@ persistence:
   size: 10Gi
   storageClass: "crobasaurusrex-nfs"
   accessMode: ReadWriteOnce
+
+ollama:
+  enabled: true
+  url: "http://ollama.ollama.svc.cluster.local:11434"
+  model: "gemma4:34b"
