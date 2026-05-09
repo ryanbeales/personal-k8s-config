@@ -1,0 +1,29 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: claudecodeui-route
+  namespace: claudecodeui
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobceratops-gateway
+      namespace: gateways
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobasaurusrex-gateway
+      namespace: gateways
+  hostnames:
+    - claudecodeui.crobceratops.ryanbeales.com
+    - claudecodeui.crobasaurusrex.ryanbeales.com
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: claudecodeui
+          port: 80
+          weight: 1
