@@ -9,5 +9,5 @@ persistence:
 
 ollama:
   enabled: true
-  url: "http://ollama.ollama.svc.cluster.local:11434"
-  model: "gemma4:34b"
+  url: "http://ollama-large.ollama.svc.cluster.local:11434"
+  model: "gemma4:26b"
