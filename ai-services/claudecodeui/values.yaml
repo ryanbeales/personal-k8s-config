@@ -7,7 +7,24 @@ persistence:
   storageClass: "crobasaurusrex-nfs"
   accessMode: ReadWriteOnce
 
-ollama:
+ccr:
   enabled: true
-  url: "http://ollama-large.ollama.svc.cluster.local:11434"
-  model: "gemma4:26b"
+  providers:
+    - name: "ollama-large"
+      url: "http://ollama-large.ollama.svc.cluster.local:11434/v1/chat/completions"
+      apiKey: "ollama"
+      models: ["gemma4:26b"]
+    - name: "ollama"
+      url: "http://ollama.ollama.svc.cluster.local:11434/v1/chat/completions"
+      apiKey: "ollama"
+      models: ["gemma4:e4b"]
+  routing:
+    - uiModel: "sonnet"
+      targetProvider: "ollama-large"
+      targetModel: "gemma4:26b"
+    - uiModel: "opus"
+      targetProvider: "ollama-large"
+      targetModel: "gemma4:26b"
+    - uiModel: "haiku"
+      targetProvider: "ollama"
+      targetModel: "gemma4:e4b"
