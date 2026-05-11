@@ -1,6 +1,3 @@
-image:
-  tag: "1.30"
-
 ingress:
   enabled: false
 
