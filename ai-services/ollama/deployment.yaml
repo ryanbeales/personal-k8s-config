@@ -31,7 +31,7 @@ spec:
             - name: OLLAMA_ORIGINS
               value: "*"
             - name: OLLAMA_KV_CACHE_TYPE
-              value: "q8_0"
+              value: "q4_0"
             # Keep the model loaded for 60m
             - name: OLLAMA_KEEP_ALIVE
               value: "-1"
