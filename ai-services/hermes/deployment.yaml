@@ -20,8 +20,12 @@ spec:
         - name: hermes
           image: nousresearch/hermes-agent:latest
           args: ["gateway", "run"]
+          tty: true
+          stdin: true
           env:
             - name: HERMES_DASHBOARD
+              value: "1"
+            - name: HERMES_DASHBOARD_TUI
               value: "1"
 
             - name: API_SERVER_ENABLED
