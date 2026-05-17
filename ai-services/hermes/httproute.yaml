@@ -1,0 +1,29 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: hermes-route
+  namespace: hermes   
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io	
+      kind: Gateway
+      name: crobceratops-gateway
+      namespace: gateways
+    - group: gateway.networking.k8s.io	
+      kind: Gateway
+      name: crobasaurusrex-gateway
+      namespace: gateways
+  hostnames:
+    - hermes.crobceratops.ryanbeales.com
+    - hermes.crobasaurusrex.ryanbeales.com
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+      backendRefs:
+        - group: ''	
+          kind: Service
+          name: hermes
+          port: 9119
+          weight: 1
