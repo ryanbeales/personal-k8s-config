@@ -16,6 +16,21 @@ spec:
       labels:
         app.kubernetes.io/name: hermes
     spec:
+      initContainers:
+        - name: configure-hermes
+          image: nousresearch/hermes-agent:latest
+          securityContext:
+            runAsUser: 10000
+          command:
+            - sh
+            - -c
+            - |
+              /opt/hermes/.venv/bin/hermes config set model.provider custom
+              /opt/hermes/.venv/bin/hermes config set model.base_url http://ollama-large.ollama.svc.cluster.local:11434/v1
+              /opt/hermes/.venv/bin/hermes config set model.default gemma4:26b
+          volumeMounts:
+            - name: storage
+              mountPath: /opt/data
       containers:
         - name: hermes
           image: nousresearch/hermes-agent:latest
