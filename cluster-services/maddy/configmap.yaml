@@ -6,7 +6,7 @@ metadata:
 data:
   maddy.conf: |
     state_dir /data
-    runtime_dir /data/run
+    runtime_dir /tmp/run
 
     tls off
 
@@ -34,7 +34,7 @@ data:
                 deliver_to &local_routing
             }
             destination ryanbeales@gmail.com {
-                deliver_to &ses_relay
+                deliver_to &ses_queue
             }
             default_destination {
                 reject 550 5.1.1 "Destination not allowed. Only ryanbeales@gmail.com or local is permitted."
@@ -49,7 +49,7 @@ data:
                 deliver_to &local_routing
             }
             destination ryanbeales@gmail.com {
-                deliver_to &ses_relay
+                deliver_to &ses_queue
             }
             default_destination {
                 reject 550 5.1.1 "Destination not allowed. Only ryanbeales@gmail.com is permitted."
