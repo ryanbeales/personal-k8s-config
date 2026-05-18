@@ -42,7 +42,7 @@ spec:
               sed -i 's/imaplib.IMAP4_SSL/imaplib.IMAP4/g' /opt/hermes/gateway/platforms/email.py
               sed -i 's/smtp.starttls/# smtp.starttls/g' /opt/hermes/gateway/platforms/email.py
               echo "Starting Hermes Agent gateway..."
-              exec /opt/hermes/.venv/bin/hermes gateway run
+              exec /opt/hermes/docker/entrypoint.sh gateway run
           tty: true
           stdin: true
           env:
