@@ -52,22 +52,24 @@ spec:
               value: "hermes-local-key"
             - name: API_SERVER_CORS_ORIGINS
               value: "*"
-            - name: IMAP_HOST
+            - name: EMAIL_ADDRESS
+              value: "hermes@ryanbeales.com"
+            - name: EMAIL_PASSWORD
+              value: "hermes-local-imap-pass"
+            - name: EMAIL_IMAP_HOST
               value: "maddy.maddy.svc.cluster.local"
-            - name: IMAP_PORT
+            - name: EMAIL_IMAP_PORT
               value: "143"
-            - name: IMAP_USER
-              value: "hermes@ryanbeales.com"
-            - name: IMAP_PASSWORD
-              value: "hermes-local-imap-pass"
-            - name: SMTP_HOST
+            - name: EMAIL_SMTP_HOST
               value: "maddy.maddy.svc.cluster.local"
-            - name: SMTP_PORT
+            - name: EMAIL_SMTP_PORT
               value: "587"
-            - name: SMTP_USER
-              value: "hermes@ryanbeales.com"
-            - name: SMTP_PASSWORD
-              value: "hermes-local-imap-pass"
+            - name: EMAIL_POLL_INTERVAL
+              value: "15"
+            - name: EMAIL_ALLOWED_USERS
+              value: "ryanbeales@gmail.com"
+            - name: EMAIL_HOME_ADDRESS
+              value: "ryanbeales@gmail.com"
           ports:
             - name: api
               containerPort: 8642
