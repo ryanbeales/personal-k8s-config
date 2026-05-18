@@ -29,22 +29,16 @@ data:
     }
 
     smtp tcp://0.0.0.0:25 {
-        source_ip 10.0.0.0/8 192.168.0.0/16 172.16.0.0/12 {
-            default_source {
-                destination $(domain) {
-                    deliver_to &local_routing
-                }
-                destination ryanbeales@gmail.com {
-                    deliver_to &ses_relay
-                }
-                default_destination {
-                    reject 550 5.1.1 "Destination not allowed. Only ryanbeales@gmail.com or local is permitted."
-                }
-            }
-        }
-        
         default_source {
-            reject 550 5.1.1 "Authentication required for external delivery"
+            destination $(domain) {
+                deliver_to &local_routing
+            }
+            destination ryanbeales@gmail.com {
+                deliver_to &ses_relay
+            }
+            default_destination {
+                reject 550 5.1.1 "Destination not allowed. Only ryanbeales@gmail.com or local is permitted."
+            }
         }
     }
 
