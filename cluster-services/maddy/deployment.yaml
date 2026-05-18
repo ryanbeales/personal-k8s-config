@@ -79,7 +79,7 @@ spec:
             - |
               export SES_SMTP_USER=$(cat /data/secrets/smtp_user)
               export SES_SMTP_PASSWORD=$(cat /data/secrets/smtp_pass)
-              exec maddy -config /etc/maddy/maddy.conf
+              exec maddy run
           ports:
             - containerPort: 25
               name: smtp
