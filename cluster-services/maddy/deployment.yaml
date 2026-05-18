@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: maddy
+      annotations:
+        config-version: "2"
     spec:
       initContainers:
         - name: init-credentials
