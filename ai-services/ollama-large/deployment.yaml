@@ -22,6 +22,10 @@ spec:
           # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
           image: ollama/ollama:0.24.0
           env:
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: "compute,utility"
             - name: OLLAMA_ORIGINS
               value: "*"
             - name: OLLAMA_KV_CACHE_TYPE
