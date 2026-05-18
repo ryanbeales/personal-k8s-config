@@ -71,8 +71,6 @@ data:
     }
 
     target.smtp ses_relay tcp://email-smtp.us-west-2.amazonaws.com:587 {
-        tls_client {
-        }
         auth plain {env:SES_SMTP_USER} {env:SES_SMTP_PASSWORD}
     }
 
