@@ -28,6 +28,7 @@ spec:
               /opt/hermes/.venv/bin/hermes config set model.provider custom
               /opt/hermes/.venv/bin/hermes config set model.base_url http://ollama-large.ollama.svc.cluster.local:11434/v1
               /opt/hermes/.venv/bin/hermes config set model.default gemma4:26b
+              yes | /opt/hermes/.venv/bin/hermes mcp add searxng --command npx --env npm_config_yes=true --env SEARXNG_URL=http://searxng.searxng.svc.cluster.local:8080 --args mcp-searxng
           volumeMounts:
             - name: storage
               mountPath: /opt/data
