@@ -13,7 +13,7 @@ spec:
       labels:
         app: maddy
       annotations:
-        config-version: "2"
+        config-version: "3"
     spec:
       initContainers:
         - name: init-credentials
@@ -41,11 +41,25 @@ spec:
               import base64
               import os
 
-              aws_secret = os.environ['AWS_SECRET_ACCESS_KEY'].encode('utf-8')
-              message = b"SendRawEmail"
-              version = b"\x04"
-              signature = hmac.new(aws_secret, message, hashlib.sha256).digest()
-              smtp_password = base64.b64encode(version + signature).decode('utf-8')
+              def sign(key, msg):
+                  return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
+
+              aws_secret = os.environ['AWS_SECRET_ACCESS_KEY']
+              region = "us-west-2"
+              date = "11111111"
+              service = "ses"
+              message = "SendRawEmail"
+              terminal = "aws4_request"
+              version = 0x04
+
+              sig = sign(("AWS4" + aws_secret).encode("utf-8"), date)
+              sig = sign(sig, region)
+              sig = sign(sig, service)
+              sig = sign(sig, terminal)
+              sig = sign(sig, message)
+
+              signature_and_version = bytes([version]) + sig
+              smtp_password = base64.b64encode(signature_and_version).decode("utf-8")
 
               os.makedirs('/data/secrets', exist_ok=True)
               with open("/data/secrets/smtp_pass", "w") as f:
