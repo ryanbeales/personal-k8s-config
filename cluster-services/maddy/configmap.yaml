@@ -44,7 +44,7 @@ data:
 
     submission tcp://0.0.0.0:587 {
         auth &local_authdb
-        source &local_authdb {
+        default_source {
             destination $(domain) {
                 deliver_to &local_routing
             }
@@ -54,9 +54,6 @@ data:
             default_destination {
                 reject 550 5.1.1 "Destination not allowed. Only ryanbeales@gmail.com is permitted."
             }
-        }
-        default_source {
-            reject 501 5.1.1 "Authentication required"
         }
     }
 
