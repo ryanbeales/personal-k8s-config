@@ -35,7 +35,14 @@ spec:
       containers:
         - name: hermes
           image: nousresearch/hermes-agent:latest
-          args: ["gateway", "run"]
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Patching Hermes Agent email adapter for cluster-local plain-text connection..."
+              sed -i 's/imaplib.IMAP4_SSL/imaplib.IMAP4/g' /opt/hermes/gateway/platforms/email.py
+              sed -i 's/smtp.starttls/# smtp.starttls/g' /opt/hermes/gateway/platforms/email.py
+              echo "Starting Hermes Agent gateway..."
+              exec /opt/hermes/.venv/bin/hermes gateway run
           tty: true
           stdin: true
           env:
