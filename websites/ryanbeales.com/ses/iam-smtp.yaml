@@ -19,7 +19,7 @@ spec:
       name: ryanbeales-smtp
   writeConnectionSecretToRef:
     name: ryanbeales-smtp-creds
-    namespace: ryanbeales-com
+    namespace: maddy
   providerConfigRef:
     name: upbound-aws-default
 ---

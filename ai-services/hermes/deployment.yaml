@@ -52,6 +52,22 @@ spec:
               value: "hermes-local-key"
             - name: API_SERVER_CORS_ORIGINS
               value: "*"
+            - name: IMAP_HOST
+              value: "maddy.maddy.svc.cluster.local"
+            - name: IMAP_PORT
+              value: "143"
+            - name: IMAP_USER
+              value: "hermes@ryanbeales.com"
+            - name: IMAP_PASSWORD
+              value: "hermes-local-imap-pass"
+            - name: SMTP_HOST
+              value: "maddy.maddy.svc.cluster.local"
+            - name: SMTP_PORT
+              value: "587"
+            - name: SMTP_USER
+              value: "hermes@ryanbeales.com"
+            - name: SMTP_PASSWORD
+              value: "hermes-local-imap-pass"
           ports:
             - name: api
               containerPort: 8642
