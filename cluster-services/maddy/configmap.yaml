@@ -10,8 +10,8 @@ data:
 
     tls off
 
-    hostname maddy.maddy.svc.cluster.local
-    domain ryanbeales.com
+    $(hostname) = maddy.maddy.svc.cluster.local
+    $(domain) = ryanbeales.com
 
     auth.pass_table local_authdb {
         table sql_table {
