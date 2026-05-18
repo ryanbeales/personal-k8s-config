@@ -11,6 +11,7 @@ REGION = os.environ.get('AWS_REGION', 'us-west-2')
 QUEUE_URL = os.environ.get('SQS_QUEUE_URL')
 DESTINATION_EMAIL = os.environ.get('DESTINATION_EMAIL')
 FORK_FROM_EMAIL = os.environ.get('FORK_FROM_EMAIL', f"forwarder@ryanbeales.com")
+MADDY_HOST = os.environ.get('MADDY_HOST', 'maddy.maddy.svc.cluster.local')
 
 # Backoff configuration
 INITIAL_BACKOFF = 1
@@ -68,6 +69,20 @@ def process_message(message):
     # 1. Download email from S3
     response = s3.get_object(Bucket=bucket_name, Key=object_key)
     raw_email = response['Body'].read()
+
+    # 1.5 Local routing for specific addresses
+    if original_recipient.lower() == 'hermes@ryanbeales.com':
+        print(f"Routing {original_recipient} to internal Maddy server...")
+        try:
+            import smtplib
+            with smtplib.SMTP(MADDY_HOST, 25) as server:
+                server.send_message(email.message_from_bytes(raw_email))
+            print(f"Successfully delivered email to Maddy for {original_recipient}")
+            s3.delete_object(Bucket=bucket_name, Key=object_key)
+            return True
+        except Exception as e:
+            print(f"Error delivering email to Maddy: {e}")
+            return False
 
     # 2. Parse and modify email
     # To bypass SPF/DKIM issues, we rewrite the From header

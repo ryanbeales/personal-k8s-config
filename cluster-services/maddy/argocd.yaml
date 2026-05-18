@@ -1,0 +1,3 @@
+argocd:
+  name: maddy
+  namespace: maddy

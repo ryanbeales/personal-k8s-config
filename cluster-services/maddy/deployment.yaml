@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maddy
+  namespace: maddy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maddy
+  template:
+    metadata:
+      labels:
+        app: maddy
+    spec:
+      initContainers:
+        - name: init-credentials
+          image: python:3.11-alpine
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: ryanbeales-smtp-creds
+                  key: username
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ryanbeales-smtp-creds
+                  key: password
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              cat << 'EOF' > /tmp/gen.py
+              import hmac
+              import hashlib
+              import base64
+              import os
+
+              aws_secret = os.environ['AWS_SECRET_ACCESS_KEY'].encode('utf-8')
+              message = b"SendRawEmail"
+              version = b"\x04"
+              signature = hmac.new(aws_secret, message, hashlib.sha256).digest()
+              smtp_password = base64.b64encode(version + signature).decode('utf-8')
+
+              os.makedirs('/data/secrets', exist_ok=True)
+              with open("/data/secrets/smtp_pass", "w") as f:
+                  f.write(smtp_password)
+              with open("/data/secrets/smtp_user", "w") as f:
+                  f.write(os.environ['AWS_ACCESS_KEY_ID'])
+              EOF
+              python3 /tmp/gen.py
+              
+        - name: init-maddy-accts
+          image: foxcpp/maddy:0.7.1
+          env:
+            - name: HERMES_PASSWORD
+              value: "hermes-local-imap-pass"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /etc/maddy
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              if ! maddy -config /etc/maddy/maddy.conf creds list | grep -q "hermes@ryanbeales.com"; then
+                echo "Creating hermes account..."
+                echo "$HERMES_PASSWORD" | maddy -config /etc/maddy/maddy.conf creds create hermes@ryanbeales.com
+                maddy -config /etc/maddy/maddy.conf imap-acct create hermes@ryanbeales.com
+              fi
+      containers:
+        - name: maddy
+          image: foxcpp/maddy:0.7.1
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              export SES_SMTP_USER=$(cat /data/secrets/smtp_user)
+              export SES_SMTP_PASSWORD=$(cat /data/secrets/smtp_pass)
+              exec maddy -config /etc/maddy/maddy.conf
+          ports:
+            - containerPort: 25
+              name: smtp
+            - containerPort: 143
+              name: imap
+            - containerPort: 587
+              name: submission
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /etc/maddy
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: maddy-data
+        - name: config
+          configMap:
+            name: maddy-config
