@@ -62,14 +62,15 @@ spec:
             - name: data
               mountPath: /data
             - name: config
-              mountPath: /etc/maddy
+              mountPath: /data/maddy.conf
+              subPath: maddy.conf
           command: ["/bin/sh", "-c"]
           args:
             - |
-              if ! maddy -config /etc/maddy/maddy.conf creds list | grep -q "hermes@ryanbeales.com"; then
+              if ! maddy creds list | grep -q "hermes@ryanbeales.com"; then
                 echo "Creating hermes account..."
-                echo "$HERMES_PASSWORD" | maddy -config /etc/maddy/maddy.conf creds create hermes@ryanbeales.com
-                maddy -config /etc/maddy/maddy.conf imap-acct create hermes@ryanbeales.com
+                echo "$HERMES_PASSWORD" | maddy creds create hermes@ryanbeales.com
+                maddy imap-acct create hermes@ryanbeales.com
               fi
       containers:
         - name: maddy
@@ -79,7 +80,7 @@ spec:
             - |
               export SES_SMTP_USER=$(cat /data/secrets/smtp_user)
               export SES_SMTP_PASSWORD=$(cat /data/secrets/smtp_pass)
-              exec maddy run --config /etc/maddy/maddy.conf
+              exec maddy run
           ports:
             - containerPort: 25
               name: smtp
@@ -91,7 +92,8 @@ spec:
             - name: data
               mountPath: /data
             - name: config
-              mountPath: /etc/maddy
+              mountPath: /data/maddy.conf
+              subPath: maddy.conf
       volumes:
         - name: data
           persistentVolumeClaim:
