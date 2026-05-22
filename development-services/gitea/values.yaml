@@ -61,3 +61,5 @@ gitea:
     indexer:
       ISSUE_INDEXER_TYPE: bleve
       REPO_INDEXER_ENABLED: true
+    server:
+      HTTP_PORT: 3000
