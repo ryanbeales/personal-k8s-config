@@ -6,6 +6,10 @@ patches:
       kind: DaemonSet
       name: nfd-worker
     patch: |
+      apiVersion: apps/v1
+      kind: DaemonSet
+      metadata:
+        name: nfd-worker
       spec:
         template:
           spec:
