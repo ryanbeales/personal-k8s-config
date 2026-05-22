@@ -17,6 +17,13 @@ alertmanager:
       - match:
           alertname: Watchdog
         receiver: 'null'
+      - match:
+          alertname: CPUThrottlingHigh
+        receiver: 'null'
+      - match:
+          alertname: NodeMemoryHighUtilization
+          instance: '10.0.0.59:9100'
+        receiver: 'null'
     receivers:
     - name: 'null'
     - name: 'email-notifications'

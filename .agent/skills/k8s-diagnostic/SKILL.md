@@ -88,3 +88,9 @@ If pod-level diagnostics are insufficient, use the cluster's observability stack
 
 - **ImagePullBackOff**: Verify the tag exists and Renovate bot hasn't pushed a non-existent version.
 - **OOMKilled**: Compare `kubectl top pod` results with the `resources.limits` defined in the manifest.
+
+- **NVIDIA GPU Plugin Failure** (`failed to initialize NVML: Driver/library version mismatch`):
+  - **Symptoms**: Pods like `nvidia-device-plugin-daemonset` crashlooping or GPU-dependent pods stuck in `Pending` due to missing GPU capacity. Pod logs show: `failed to initialize NVML: Driver/library version mismatch` or `OCI runtime create failed`.
+  - **Root Cause**: The host node's NVIDIA GPU drivers/libraries were upgraded (e.g., via host updates), but the running kernel has not loaded the new module version, creating a mismatch with the user-space libraries.
+  - **Rectification**: Reboot the affected GPU node (e.g. `croblodocus`) to load the matching kernel module and sync it with the libraries.
+
