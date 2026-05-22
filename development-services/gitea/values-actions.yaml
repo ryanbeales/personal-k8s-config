@@ -13,10 +13,10 @@ statefulset:
     runAsUser: 1000
     runAsGroup: 1000
     fsGroup: 1000
-  actRunner:
-    # https://hub.docker.com/r/gitea/act_runner/tags
-    # renovate: datasource=gitea-releases depname=gitea/act_runner versioning=docker
-    tag: 0.4.1
+  runner:
+    # https://gitea.com/gitea/runner/releases
+    # renovate: datasource=gitea-releases depname=gitea/runner versioning=docker
+    tag: 1.0.5
     # By default, the helm chart does not populate the labels section of the runner config.
     # This means all jobs start in a bare image without the necessary tools.
     config: |
@@ -49,7 +49,7 @@ preExtraInitContainers:
       - -c
       - chown -R 1000:1000 /data
     volumeMounts:
-      - name: data-act-runner
+      - name: data-runner
         mountPath: /data
 
 global:
