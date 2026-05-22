@@ -181,6 +181,9 @@ kubeScheduler:
 kubeControllerManager:
   enabled: false
 
+kubeProxy:
+  enabled: false
+
 kubeStateMetrics:
   namespaceOverride: kube-prometheus-stack
 

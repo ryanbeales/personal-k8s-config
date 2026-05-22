@@ -16,6 +16,16 @@ spec:
       labels:
         app.kubernetes.io/name: open-webui
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - croblodocus
+                      - crobceratops
       containers:
         - name: open-webui
           # renovate: datasource=github-tags depname=open-webui/open-webui versioning=semver

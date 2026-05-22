@@ -1,2 +1,13 @@
 resources:
 - https://github.com/kubernetes-sigs/node-feature-discovery/deployment/overlays/default?ref=v0.18.3
+
+patches:
+  - target:
+      kind: DaemonSet
+      name: nfd-worker
+    patch: |
+      spec:
+        template:
+          spec:
+            tolerations:
+              - operator: Exists

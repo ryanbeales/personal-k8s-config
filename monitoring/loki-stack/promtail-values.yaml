@@ -1,3 +1,15 @@
 config:
   clients:
     - url: http://loki.loki-stack.svc:3100/loki/api/v1/push
+
+tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+  - key: dedicated
+    operator: Equal
+    value: crobputer
+    effect: NoSchedule

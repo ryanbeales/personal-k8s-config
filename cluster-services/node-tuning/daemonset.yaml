@@ -14,6 +14,8 @@ spec:
       labels:
         app.kubernetes.io/name: node-tuning
     spec:
+      tolerations:
+        - operator: Exists
       hostNetwork: true
       hostPID: true
       initContainers:
