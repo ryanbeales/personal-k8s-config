@@ -19,9 +19,10 @@ spec:
       # Switch to the nvidia runtime class to get access to the GPU
       runtimeClassName: nvidia
       
-      # This process is tiny, we have a 1050Ti-4GB, 1060-6GB, and 3060-12GB in the cluster. We won't restrict this to a specific node.
+      # Pins piper to crobceratops to relieve memory pressure on crobasaurusrex
       nodeSelector:
         nvidia.com/gpu.present: "true"
+        kubernetes.io/hostname: crobceratops
 
       containers:
       - name: piper

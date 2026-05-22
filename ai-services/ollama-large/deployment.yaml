@@ -17,6 +17,11 @@ spec:
     spec:
       runtimeClassName: nvidia
       nodeName: crobputer
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: crobputer
+          effect: NoSchedule
       containers:
         - name: ollama
           # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
