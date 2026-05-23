@@ -1,5 +1,13 @@
 namespaceOverride: kube-prometheus-stack
 
+defaultRules:
+  create: true
+  rules:
+    etcd: false
+    kubeScheduler: false
+    kubeControllerManager: false
+    kubeProxy: false
+
 alertmanager:
   config:
     global:
@@ -22,7 +30,9 @@ alertmanager:
         receiver: 'null'
       - match:
           alertname: NodeMemoryHighUtilization
-          instance: '10.0.0.59:9100'
+        receiver: 'null'
+      - match:
+          alertname: InfoInhibitor
         receiver: 'null'
     receivers:
     - name: 'null'
