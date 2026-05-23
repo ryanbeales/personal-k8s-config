@@ -16,7 +16,7 @@ statefulset:
   runner:
     # https://gitea.com/gitea/runner/releases
     # renovate: datasource=gitea-releases depname=gitea/runner versioning=docker
-    tag: 1.0.5
+    tag: 1.0.6
     # By default, the helm chart does not populate the labels section of the runner config.
     # This means all jobs start in a bare image without the necessary tools.
     config: |
