@@ -34,6 +34,10 @@ alertmanager:
       - match:
           alertname: InfoInhibitor
         receiver: 'null'
+      - match_re:
+          alertname: NodeMemoryMajorPagesFaults
+          instance: ^10\.0\.0\.59:.*$
+        receiver: 'null'
     receivers:
     - name: 'null'
     - name: 'email-notifications'
