@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nvidia-mismatch-rebooter
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: nvidia-mismatch-rebooter
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nvidia-mismatch-rebooter
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nvidia-mismatch-rebooter
+    spec:
+      tolerations:
+        - operator: Exists
+      nodeSelector:
+        nvidia.com/gpu.present: "true"
+      hostPID: true
+      containers:
+        - name: rebooter
+          image: alpine:3.18
+          command:
+            - /bin/sh
+            - -c
+            - "/scripts/check-mismatch.sh"
+          securityContext:
+            privileged: true
+          env:
+            - name: CHECK_INTERVAL_SECONDS
+              value: "1800"
+            - name: REBOOT_WINDOW_HOUR
+              value: "4"
+          volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+            - name: tz-config
+              mountPath: /etc/localtime
+              readOnly: true
+            - name: timezone-config
+              mountPath: /etc/timezone
+              readOnly: true
+          resources:
+            limits:
+              cpu: 10m
+              memory: 20Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
+      volumes:
+        - name: script-volume
+          configMap:
+            name: nvidia-mismatch-rebooter-script
+            defaultMode: 0755
+        - name: tz-config
+          hostPath:
+            path: /etc/localtime
+        - name: timezone-config
+          hostPath:
+            path: /etc/timezone
