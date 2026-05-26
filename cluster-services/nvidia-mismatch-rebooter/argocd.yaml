@@ -1,0 +1,3 @@
+argocd:
+  name: nvidia-mismatch-rebooter
+  namespace: kube-system
