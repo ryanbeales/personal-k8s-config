@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: omnivoice
+  name: omnivoice
+  namespace: omnivoice
+spec:
+  internalTrafficPolicy: Cluster
+  ports:
+    - name: http
+      port: 8880
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: omnivoice
+  sessionAffinity: None
+  type: ClusterIP

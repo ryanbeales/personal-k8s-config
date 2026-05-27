@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnivoice
+  namespace: omnivoice
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: omnivoice
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: omnivoice
+    spec:
+      # Switch to the nvidia runtime class to get access to the GPU
+      runtimeClassName: nvidia
+
+      # Schedule omnivoice on GTX 1060 or 1050 Ti
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu.product
+                operator: In
+                values:
+                - NVIDIA-GeForce-GTX-1060-6GB
+                - NVIDIA-GeForce-GTX-1050-Ti-with-Max-Q-Design
+
+      containers:
+      - name: omnivoice
+        image: diogod2r/omnivoice-fastapi:latest
+        env:
+        - name: TZ
+          value: America/Vancouver
+        resources:
+          limits:
+            nvidia.com/gpu: '1'
+        ports:
+        - name: http
+          containerPort: 8880
+        volumeMounts:
+        - name: storage
+          mountPath: /app/models
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: omnivoice-nfs-pvc
