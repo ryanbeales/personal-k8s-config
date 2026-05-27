@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nvidia-gpu-feature-discovery
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: gpu-feature-discovery
+    app.kubernetes.io/version: 0.17.4
+    app.kubernetes.io/part-of: nvidia-gpu
+spec:
+  selector:
+    matchLabels:
+      name: nvidia-gpu-feature-discovery
+  template:
+    metadata:
+      labels:
+        name: nvidia-gpu-feature-discovery
+        app.kubernetes.io/name: gpu-feature-discovery
+        app.kubernetes.io/version: 0.17.4
+        app.kubernetes.io/part-of: nvidia-gpu
+    spec:
+      runtimeClassName: nvidia
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+        - key: dedicated
+          operator: Equal
+          value: crobputer
+          effect: NoSchedule
+      containers:
+        - image: nvcr.io/nvidia/k8s-device-plugin:v0.17.4
+          name: gpu-feature-discovery
+          command: ["/usr/bin/gpu-feature-discovery"]
+          env:
+            - name: GFD_SLEEP_INTERVAL
+              value: "60s"
+            - name: GFD_FAIL_ON_INIT_ERROR
+              value: "false"
+            - name: GFD_OUTPUT_DIR
+              value: "/etc/kubernetes/node-feature-discovery/features.d"
+          volumeMounts:
+            - name: output-dir
+              mountPath: /etc/kubernetes/node-feature-discovery/features.d
+            - name: host-sys
+              mountPath: /sys
+              readOnly: true
+      volumes:
+        - name: output-dir
+          hostPath:
+            path: /etc/kubernetes/node-feature-discovery/features.d
+        - name: host-sys
+          hostPath:
+            path: /sys

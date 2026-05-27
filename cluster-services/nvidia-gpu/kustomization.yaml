@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
 - ./nvidia-runtime.yaml
 - ./daemonset.yaml
+- ./gpu-feature-discovery.yaml
 - ./time-slicing-config.yaml
