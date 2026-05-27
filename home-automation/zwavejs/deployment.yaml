@@ -82,7 +82,7 @@ spec:
               name: usb
       enableServiceLinks: true
       nodeSelector:
-        kubernetes.io/hostname: crobasaurusrex
+        feature.node.kubernetes.io/usb-aeotec-zstick: "true"
       restartPolicy: Always
       securityContext: {}
       terminationGracePeriodSeconds: 30

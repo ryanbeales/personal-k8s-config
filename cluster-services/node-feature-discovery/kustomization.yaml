@@ -1,5 +1,6 @@
 resources:
 - https://github.com/kubernetes-sigs/node-feature-discovery/deployment/overlays/default?ref=v0.18.3
+- usb-devices-rules.yaml
 
 patches:
   - target:
