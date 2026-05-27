@@ -21,8 +21,8 @@ spec:
         app.kubernetes.io/part-of: octoprint
     spec:
       nodeSelector:
-        # Biqu B1 is on crobceratops - this isn't appearing in node-feature-discovery to be portable
-        kubernetes.io/hostname: crobceratops
+        # Biqu B1 is on crobceratops
+        feature.node.kubernetes.io/usb-biqu-b1: "true"
       containers:
       - name: octoprint
         # https://hub.docker.com/r/octoprint/octoprint/tags
