@@ -3,3 +3,4 @@ resources:
 - deployment.yaml
 - service.yaml
 - omnivoice-nfs-pvc.yaml
+- httproute.yaml
