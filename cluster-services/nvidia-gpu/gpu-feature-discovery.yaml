@@ -32,6 +32,8 @@ spec:
         - image: nvcr.io/nvidia/k8s-device-plugin:v0.17.4
           name: gpu-feature-discovery
           command: ["/usr/bin/gpu-feature-discovery"]
+          securityContext:
+            privileged: true
           env:
             - name: GFD_SLEEP_INTERVAL
               value: "60s"
