@@ -19,10 +19,9 @@ spec:
       # Switch to the nvidia runtime class to get access to the GPU
       runtimeClassName: nvidia
       
-      # Pins piper to crobceratops to relieve memory pressure on crobasaurusrex
+      # Schedule piper on GTX 1060
       nodeSelector:
-        nvidia.com/gpu.present: "true"
-        kubernetes.io/hostname: crobceratops
+        nvidia.com/gpu.product: NVIDIA-GeForce-GTX-1060-6GB
 
       containers:
       - name: piper
