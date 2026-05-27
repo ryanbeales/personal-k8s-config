@@ -34,6 +34,5 @@ probes:
 proxy:
   default_role: admin
 
-# Select node with 3060 GPU in it
 nodeSelector:
-  kubernetes.io/hostname: crobceratops
+  nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060

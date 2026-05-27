@@ -20,6 +20,15 @@ spec:
         app.kubernetes.io/part-of: nvidia-gpu
     spec:
       runtimeClassName: nvidia
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                - crobputer
       tolerations:
         - key: nvidia.com/gpu
           operator: Exists

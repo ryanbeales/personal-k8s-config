@@ -20,8 +20,8 @@ spec:
     spec:
       # Switch to the nvidia runtime class to get access to the GPU
       runtimeClassName: nvidia
-      # Run on 3060 GPU node
-      nodeName: crobceratops
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060
       containers:
         - name: ollama
           # renovate: datasource=github-tags depname=ollama/ollama versioning=semver
