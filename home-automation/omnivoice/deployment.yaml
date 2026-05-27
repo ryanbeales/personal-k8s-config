@@ -33,7 +33,8 @@ spec:
 
       containers:
       - name: omnivoice
-        image: diogod2r/omnivoice-fastapi:latest
+        image: ghcr.io/ryanbeales/omnivoice-fastapi-pascal:latest
+        imagePullPolicy: Always
         env:
         - name: TZ
           value: America/Vancouver
