@@ -19,9 +19,9 @@ spec:
       # Switch to the nvidia runtime class to get access to the GPU
       runtimeClassName: nvidia
 
-      # Schedule omnivoice on GTX 1060
+      # Schedule omnivoice on RTX 5060 Ti
       nodeSelector:
-        nvidia.com/gpu.product: NVIDIA-GeForce-GTX-1060-6GB
+        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-5060-Ti
 
       containers:
       - name: omnivoice

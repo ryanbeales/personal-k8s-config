@@ -35,4 +35,4 @@ proxy:
   default_role: admin
 
 nodeSelector:
-  nvidia.com/gpu.product: NVIDIA-GeForce-RTX-5060-Ti-16GB
+  nvidia.com/gpu.product: NVIDIA-GeForce-RTX-5060-Ti
