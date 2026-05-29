@@ -21,13 +21,13 @@ Install drivers:
 For newer GPU architectures (Turing, Ampere, Ada Lovelace, Blackwell, e.g. the RTX 5060 Ti):
 Use the open-source version of the drivers:
 ```bash
-apt install nvidia-headless-580-open nvidia-container-toolkit cuda-drivers-fabricmanager-580 nvidia-cuda-toolkit nvidia-utils-580-open libnvidia-decode-580-open
+apt install nvidia-headless-580-open nvidia-container-toolkit nvidia-cuda-toolkit nvidia-utils-580 libnvidia-decode-580
 ```
 
 > [!WARNING]
 > **Pascal-generation GPUs (GTX 1050 and 1060)** on nodes like `croblodocus` and `crobasaurusrex` **do not support** the NVIDIA open kernel modules. They must continue to use the proprietary, non-open drivers:
 ```bash
-apt install nvidia-headless-580-server nvidia-container-toolkit cuda-drivers-fabricmanager-580 nvidia-cuda-toolkit nvidia-utils-580-server libnvidia-decode-580-server
+apt install nvidia-headless-580-server nvidia-container-toolkit nvidia-cuda-toolkit nvidia-utils-580-server libnvidia-decode-580-server
 ```
 
 *** During the install it will build the nvidia kernel module. If you have secure boot enabled it will ask for a password to build the module which you must confirm on boot or else the kernel will load without this module, you cannot do this remotely. https://wiki.ubuntu.com/UEFI/SecureBoot/DKMS - Days lost here: 3 (I grew up in the days of insecure boot, this is new to me...)
