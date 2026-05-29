@@ -80,7 +80,7 @@ I've added several self-hosted AI services into the cluster to provide local LLM
 - [Open-WebUI](https://openwebui.com/) provides the interface for interacting with models.
 - [ChromaImageGen](https://github.com/ryanbeales/chromaimagegen/tree/main) is my own small creation to provide local image generation using HuggingFace pipelines.
 
-Home-assistant and Frigate are both configured to point to the Ollama instance in the cluster. Currently using the gemma4:e4b model for Frigate snapshot descriptions. Home assistant makes use of the same model as the converstaion piece of the Voice Assistant, and it is pretty decent on the 3060.
+Home-assistant and Frigate are both configured to point to the Ollama instance in the cluster. Currently using the gemma4:e4b model for Frigate snapshot descriptions. Home assistant makes use of the same model as the converstaion piece of the Voice Assistant, and it is pretty decent on the 5060 Ti 16GB.
 
 ## Antigravity
 
@@ -98,7 +98,7 @@ graph TD
 
     M --- Storage[("20TB Storage<br/>(Mirrored Spinning Disk)")]
     M --- G1["Nvidia Geforce 1060 6GB"]
-    W1 --- G2["Nvidia GeForce 3060 12GB"]
+    W1 --- G2["Nvidia GeForce RTX 5060 Ti 16GB"]
     W2 --- G3["Nvidia GeForce 1050Ti 4GB"]
     M --- W1
     M --- W2
@@ -111,7 +111,7 @@ I won't explain the naming convention except that I also acknowledge that it's s
 | Hostname | Role | CPU | RAM | Storage | GPU |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **crobasaurusrex** | Master | AMD Ryzen 7 3700X (8C/16T) | 32GB | 20TB Mirrored (NFS) | Nvidia GTX 1060 6GB |
-| **crobceratops** | Worker | AMD Ryzen 5 5600X (6C/12T) | 32GB | 1TB Local | Nvidia RTX 3060 12GB |
+| **crobceratops** | Worker | AMD Ryzen 5 5600X (6C/12T) | 32GB | 1TB Local | Nvidia RTX 5060 Ti 16GB |
 | **croblodocus** | Worker | Intel Core i9-8950HK (6C/12T) | 32GB | 2TB Local | Nvidia GTX 1050Ti 4GB |
 
 ### Other hardware
