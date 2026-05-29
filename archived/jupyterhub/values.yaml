@@ -34,7 +34,7 @@ singleuser:
   profileList:
     - display_name: "CPU only server - default image (no sudo)"
       description: "Spawns a notebook server"
-    - display_name: "GPU Server - jupyter base image - sudo enabled - crobceratops (3060)"
+    - display_name: "GPU Server - jupyter base image - sudo enabled - crobceratops (5060 Ti 16GB)"
       description: "Spawns a notebook server with access to a GPU and based on the jupyter base image - crobceratops"
       kubespawner_override:
         allow_privilege_escalation: true # Note the form of this name does not match the kubernetes config name.
@@ -45,7 +45,7 @@ singleuser:
         extra_resource_limits:
           nvidia.com/gpu: "1"
         node_selector: 
-          # This one has a 3060 in it, everything else is a 10xx series.
+          # This one has a 5060 Ti 16GB in it, everything else is a 10xx series.
           kubernetes.io/hostname: crobceratops
         extra_pod_config:
           runtimeClassName: nvidia 

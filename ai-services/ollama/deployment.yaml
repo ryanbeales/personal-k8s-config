@@ -21,7 +21,7 @@ spec:
       # Switch to the nvidia runtime class to get access to the GPU
       runtimeClassName: nvidia
       nodeSelector:
-        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060
+        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-5060-Ti-16GB
       containers:
         - name: ollama
           # renovate: datasource=github-tags depname=ollama/ollama versioning=semver

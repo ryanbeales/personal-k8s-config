@@ -17,7 +17,16 @@ sudo apt-get update
 ```
 
 Install drivers:
+
+For newer GPU architectures (Turing, Ampere, Ada Lovelace, Blackwell, e.g. the RTX 5060 Ti):
+Use the open-source version of the drivers:
+```bash
+apt install nvidia-headless-580-open nvidia-container-toolkit cuda-drivers-fabricmanager-580 nvidia-cuda-toolkit nvidia-utils-580-open libnvidia-decode-580-open
 ```
+
+> [!WARNING]
+> **Pascal-generation GPUs (GTX 1050 and 1060)** on nodes like `croblodocus` and `crobasaurusrex` **do not support** the NVIDIA open kernel modules. They must continue to use the proprietary, non-open drivers:
+```bash
 apt install nvidia-headless-580-server nvidia-container-toolkit cuda-drivers-fabricmanager-580 nvidia-cuda-toolkit nvidia-utils-580-server libnvidia-decode-580-server
 ```
 

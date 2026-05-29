@@ -6,4 +6,4 @@ sudo k3s kubectl create secret generic hf-token-secret --from-literal=token={sec
 ```
 
 
-This has been disabled and removed. It's here as an example. It won't start a small model on my 3060, I'll wait until I have access to much larger hardware.
+This has been disabled and removed. It's here as an example. It won't start a small model on my 5060 Ti 16GB, I'll wait until I have access to much larger hardware.

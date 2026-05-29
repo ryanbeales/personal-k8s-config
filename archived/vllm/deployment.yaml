@@ -20,7 +20,7 @@ spec:
     spec:
       # Switch to the nvidia runtime class to get access to the GPU
       runtimeClassName: nvidia
-      # Since we have both a 1060 and a 3060 in the cluster, ensure we run on the 
+      # Since we have both a 1060 and a 5060 Ti 16GB in the cluster, ensure we run on the 
       # faster one by selecting the node with it in. I can't do this via auto generated
       # labels it seems - I could add the label, but this is less work)
       nodeName: crobceratops
@@ -29,7 +29,7 @@ spec:
         image: vllm/vllm-openai:v0.10.1.1 # https://hub.docker.com/r/vllm/vllm-openai/tags
         command: ["/bin/sh", "-c"]
         args: [
-          # We have a 12GB GPU but allow vllm to consume 80% of the total memory (frigate and some others use this GPU too)
+          # We have a 16GB GPU but allow vllm to consume 80% of the total memory (frigate and some others use this GPU too)
           # Add 10GB of CPU offload memory to help with starting.
           "vllm serve google/gemma-3-4b-it --trust-remote-code --enable-chunked-prefill --max-num-batched-tokens 1024 --gpu-memory-utilization 0.8 --cpu-offload-gb 10"
         ]
