@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: maddy-ca-kopia
+  namespace: kopia
+spec:
+  secretName: maddy-ca-tls
+  commonName: maddy-ca-kopia
+  issuerRef:
+    name: local-ca-issuer
+    kind: ClusterIssuer

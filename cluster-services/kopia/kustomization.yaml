@@ -1,5 +1,6 @@
 resources:
 - namespace.yaml
+- certificate.yaml
 - deployment.yaml
 - service.yaml
 - kopia-stash-pvc.yaml

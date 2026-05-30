@@ -20,6 +20,24 @@ spec:
         app.kubernetes.io/instance: kopia
         app.kubernetes.io/name: kopia
     spec:
+      initContainers:
+        - name: combine-certs
+          image: alpine:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              # Copy system CA certs to our shared volume
+              cp -R /etc/ssl/certs/* /shared-certs/
+              # Append our local CA to the combined bundle
+              if [ -f /maddy-ca/ca.crt ]; then
+                cat /maddy-ca/ca.crt >> /shared-certs/ca-certificates.crt
+              fi
+          volumeMounts:
+            - name: combined-ca-certs
+              mountPath: /shared-certs
+            - name: maddy-ca
+              mountPath: /maddy-ca
+              readOnly: true
       containers:
         # https://github.com/kopia/kopia/releases for notes
         # https://hub.docker.com/r/kopia/kopia/tags
@@ -78,6 +96,8 @@ spec:
             # Data backup sources
             - mountPath: /data/stash
               name: stash-backups
+            - name: combined-ca-certs
+              mountPath: /etc/ssl/certs
       restartPolicy: Always
       volumes:
         - name: kopia-config
@@ -86,3 +106,8 @@ spec:
         - name: stash-backups
           persistentVolumeClaim:
             claimName: kopia-stash-claim
+        - name: combined-ca-certs
+          emptyDir: {}
+        - name: maddy-ca
+          secret:
+            secretName: maddy-ca-tls
