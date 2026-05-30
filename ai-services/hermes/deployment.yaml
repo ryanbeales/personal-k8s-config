@@ -40,11 +40,12 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              echo "Patching Hermes Agent email adapter for cluster-local plain-text connection..."
-              sed -i 's/imaplib.IMAP4_SSL/imaplib.IMAP4/g' /opt/hermes/gateway/platforms/email.py
-              sed -i 's/smtp.starttls/# smtp.starttls/g' /opt/hermes/gateway/platforms/email.py
-              echo "Starting Hermes Agent gateway..."
-              exec /init /opt/hermes/docker/main-wrapper.sh gateway run
+              if [ -f /etc/ssl/certs/maddy/ca.crt ]; then
+                echo "Adding local Maddy CA to system trust store..."
+                cat /etc/ssl/certs/maddy/ca.crt >> /etc/ssl/certs/ca-certificates.crt
+              fi
+              echo "Starting s6-overlay init..."
+              exec /init sleep infinity
           tty: true
           stdin: true
           env:
@@ -68,7 +69,7 @@ spec:
             - name: EMAIL_IMAP_HOST
               value: "maddy.maddy.svc.cluster.local"
             - name: EMAIL_IMAP_PORT
-              value: "143"
+              value: "993"
             - name: EMAIL_SMTP_HOST
               value: "maddy.maddy.svc.cluster.local"
             - name: EMAIL_SMTP_PORT
@@ -87,7 +88,13 @@ spec:
           volumeMounts:
             - name: storage
               mountPath: /opt/data
+            - name: maddy-ca
+              mountPath: /etc/ssl/certs/maddy
+              readOnly: true
       volumes:
         - name: storage
           persistentVolumeClaim:
             claimName: hermes-nfs-pvc
+        - name: maddy-ca
+          secret:
+            secretName: maddy-ca-tls

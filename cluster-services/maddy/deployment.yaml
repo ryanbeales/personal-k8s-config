@@ -102,6 +102,8 @@ spec:
               name: smtp
             - containerPort: 143
               name: imap
+            - containerPort: 993
+              name: imaps
             - containerPort: 587
               name: submission
           volumeMounts:
@@ -110,6 +112,9 @@ spec:
             - name: config
               mountPath: /data/maddy.conf
               subPath: maddy.conf
+            - name: tls
+              mountPath: /data/tls
+              readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -117,3 +122,6 @@ spec:
         - name: config
           configMap:
             name: maddy-config
+        - name: tls
+          secret:
+            secretName: maddy-tls
