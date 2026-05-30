@@ -53,6 +53,8 @@ spec:
               value: "1"
             - name: HERMES_DASHBOARD_TUI
               value: "1"
+            - name: HERMES_DASHBOARD_INSECURE
+              value: "1"
 
             - name: API_SERVER_ENABLED
               value: "true"
