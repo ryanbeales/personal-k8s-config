@@ -18,7 +18,8 @@ spec:
     spec:
       initContainers:
         - name: configure-hermes
-          image: nousresearch/hermes-agent:latest
+          # renovate: datasource=github-tags depname=NousResearch/hermes-agent versioning=semver
+          image: ghcr.io/nousresearch/hermes-agent:v0.15.2
           securityContext:
             runAsUser: 10000
           command:
@@ -34,7 +35,8 @@ spec:
               mountPath: /opt/data
       containers:
         - name: hermes
-          image: nousresearch/hermes-agent:latest
+          # renovate: datasource=github-tags depname=NousResearch/hermes-agent versioning=semver
+          image: ghcr.io/nousresearch/hermes-agent:v0.15.2
           command: ["/bin/sh", "-c"]
           args:
             - |
