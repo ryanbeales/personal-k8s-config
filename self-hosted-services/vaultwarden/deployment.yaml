@@ -29,6 +29,16 @@ spec:
         env:
           - name: DOMAIN
             value: "https://vaultwarden.crobasaurusrex.ryanbeales.com"
+          - name: SMTP_HOST
+            value: "maddy.maddy.svc.cluster.local"
+          - name: SMTP_PORT
+            value: "25"
+          - name: SMTP_SECURITY
+            value: "off"
+          - name: SMTP_FROM
+            value: "vaultwarden@ryanbeales.com"
+          - name: SMTP_FROM_NAME
+            value: "Vaultwarden"
             
         ports:
         - containerPort: 80
