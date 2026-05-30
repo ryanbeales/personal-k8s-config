@@ -4,3 +4,4 @@ resources:
 - service.yaml
 - hermes-nfs-pvc.yaml
 - httproute.yaml
+- certificate.yaml

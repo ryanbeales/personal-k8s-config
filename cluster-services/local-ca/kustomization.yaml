@@ -1,0 +1,4 @@
+resources:
+- selfsigned-issuer.yaml
+- ca-certificate.yaml
+- ca-issuer.yaml

@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: maddy-ca-hermes
+  namespace: hermes
+spec:
+  secretName: maddy-ca-tls
+  commonName: maddy-ca-hermes
+  issuerRef:
+    name: local-ca-issuer
+    kind: ClusterIssuer

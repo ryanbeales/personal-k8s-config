@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: maddy-tls
+  namespace: maddy
+spec:
+  secretName: maddy-tls
+  commonName: maddy.maddy.svc.cluster.local
+  dnsNames:
+    - maddy.maddy.svc.cluster.local
+    - maddy.maddy
+  issuerRef:
+    name: local-ca-issuer
+    kind: ClusterIssuer

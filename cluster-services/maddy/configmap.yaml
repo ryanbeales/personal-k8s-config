@@ -8,7 +8,7 @@ data:
     state_dir /data
     runtime_dir /tmp/run
 
-    tls off
+    tls file /data/tls/tls.crt /data/tls/tls.key
 
     $(hostname) = maddy.maddy.svc.cluster.local
     $(domain) = ryanbeales.com
@@ -58,6 +58,11 @@ data:
     }
 
     imap tcp://0.0.0.0:143 {
+        auth &local_authdb
+        storage &local_mailboxes
+    }
+
+    imap tls://0.0.0.0:993 {
         auth &local_authdb
         storage &local_mailboxes
     }
