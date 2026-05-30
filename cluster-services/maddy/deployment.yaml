@@ -80,6 +80,9 @@ spec:
             - name: config
               mountPath: /data/maddy.conf
               subPath: maddy.conf
+            - name: tls
+              mountPath: /data/tls
+              readOnly: true
           command: ["/bin/sh", "-c"]
           args:
             - |
