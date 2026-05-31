@@ -40,6 +40,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
+              touch /.dockerenv
               if [ -f /etc/ssl/certs/maddy/ca.crt ]; then
                 echo "Adding local Maddy CA to system trust store..."
                 cat /etc/ssl/certs/maddy/ca.crt >> /etc/ssl/certs/ca-certificates.crt
