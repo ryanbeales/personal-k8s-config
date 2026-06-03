@@ -103,6 +103,38 @@ for dir in $KUSTOMIZE_ROOTS; do
     fi
   fi
 
+  # Container Image Existence Check
+  echo "Checking container image existence..."
+  # Extract unique image tags
+  IMAGES=$(grep -E '^\s*image:' pr-manifest.yaml | awk '{print $2}' | tr -d '"' | tr -d "'" | sort -u)
+
+  if [ -n "$IMAGES" ]; then
+    IMAGE_ERRORS=""
+    for img in $IMAGES; do
+      # Skip templates, variables, or empty lines
+      if [[ -z "$img" || "$img" =~ [\$\{\}] ]]; then
+        continue
+      fi
+      echo "Checking if image exists: $img"
+      if ! docker manifest inspect "$img" > /dev/null 2>&1; then
+        echo "❌ Image does not exist: $img"
+        IMAGE_ERRORS="${IMAGE_ERRORS}\n- \`$img\`"
+      else
+        echo "✅ Image exists: $img"
+      fi
+    done
+
+    if [ -n "$IMAGE_ERRORS" ]; then
+      echo "❌ **Container Image Validation Failed**" >> "$REPORT_FILE"
+      echo "The following images do not exist in their registries:" >> "$REPORT_FILE"
+      echo -e "$IMAGE_ERRORS" >> "$REPORT_FILE"
+      echo "" >> "$REPORT_FILE"
+      HAS_ERRORS=true
+    else
+      echo "✅ All referenced container images exist." >> "$REPORT_FILE"
+    fi
+  fi
+
   # Kube-linter (Best Practices - Warning only, logs only)
   echo "Running kube-linter (warnings only in logs)..."
   kube-linter lint pr-manifest.yaml || true
