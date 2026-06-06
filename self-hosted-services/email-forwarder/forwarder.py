@@ -72,7 +72,21 @@ def process_message(message):
 
     # 1.5 Local routing for specific addresses
     if original_recipient.lower() == 'hermes@ryanbeales.com':
-        print(f"Routing {original_recipient} to internal Maddy server...")
+        receipt = sns_msg.get('receipt', {})
+        spf_status = receipt.get('spfVerdict', {}).get('status', 'FAIL')
+        dkim_status = receipt.get('dkimVerdict', {}).get('status', 'FAIL')
+        dmarc_status = receipt.get('dmarcVerdict', {}).get('status', 'FAIL')
+
+        # Require all three verification methods to pass to prevent spoofing
+        if spf_status != 'PASS' or dkim_status != 'PASS' or dmarc_status != 'PASS':
+            print(f"WARNING: Rejecting unauthenticated email to hermes@ryanbeales.com. SPF: {spf_status}, DKIM: {dkim_status}, DMARC: {dmarc_status}")
+            try:
+                s3.delete_object(Bucket=bucket_name, Key=object_key)
+            except Exception as e:
+                print(f"Error deleting rejected email from S3: {e}")
+            return True
+
+        print(f"Routing {original_recipient} to internal Maddy server (Authenticated SPF/DKIM/DMARC)...")
         try:
             import smtplib
             with smtplib.SMTP(MADDY_HOST, 25) as server:
