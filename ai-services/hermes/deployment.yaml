@@ -95,6 +95,11 @@ spec:
               value: "ryanbeales@gmail.com"
             - name: EMAIL_HOME_ADDRESS
               value: "ryanbeales@gmail.com"
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-github-secret
+                  key: GITHUB_TOKEN
           ports:
             - name: api
               containerPort: 8642
