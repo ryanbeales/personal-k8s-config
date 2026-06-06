@@ -27,3 +27,5 @@ spec:
           name: omnivoice
           port: 8880
           weight: 1
+      timeouts:
+        request: 300s
