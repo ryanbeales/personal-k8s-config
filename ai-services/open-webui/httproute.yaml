@@ -27,3 +27,5 @@ spec:
           name: open-webui
           port: 8080
           weight: 1
+      timeouts:
+        request: 300s
