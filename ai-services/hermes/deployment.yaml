@@ -16,6 +16,7 @@ spec:
       labels:
         app.kubernetes.io/name: hermes
     spec:
+      serviceAccountName: hermes
       initContainers:
         - name: configure-hermes
           # renovate: datasource=docker depname=nousresearch/hermes-agent versioning=loose
@@ -26,6 +27,12 @@ spec:
             - sh
             - -c
             - |
+              if [ ! -f /opt/data/.local/bin/kubectl ]; then
+                echo "Downloading kubectl..."
+                mkdir -p /opt/data/.local/bin
+                curl -sSL -o /opt/data/.local/bin/kubectl "https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl"
+                chmod +x /opt/data/.local/bin/kubectl
+              fi
               /opt/hermes/.venv/bin/hermes config set model.provider custom
               /opt/hermes/.venv/bin/hermes config set model.base_url http://ollama-large.ollama.svc.cluster.local:11434/v1
               /opt/hermes/.venv/bin/hermes config set model.default hf.co/google/gemma-4-31B-it-qat-q4_0-gguf
