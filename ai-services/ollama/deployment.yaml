@@ -60,7 +60,9 @@ spec:
                     while ! /bin/ollama ps > /dev/null 2>&1; do
                       sleep 5
                     done
-                    /bin/ollama pull hf.co/google/gemma-4-12B-it-qat-q4_0-gguf
+                    if ! /bin/ollama list | grep -q "hf.co/google/gemma-4-12B-it-qat-q4_0-gguf"; then
+                      /bin/ollama pull hf.co/google/gemma-4-12B-it-qat-q4_0-gguf || true
+                    fi
       volumes:
         - name: storage
           persistentVolumeClaim:
