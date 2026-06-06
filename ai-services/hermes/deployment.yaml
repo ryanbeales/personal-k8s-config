@@ -27,10 +27,14 @@ spec:
             - sh
             - -c
             - |
-              if [ ! -f /opt/data/.local/bin/kubectl ]; then
-                echo "Downloading kubectl..."
+              CURRENT_VERSION=""
+              if [ -f /opt/data/.local/bin/kubectl ]; then
+                CURRENT_VERSION=$(/opt/data/.local/bin/kubectl version --client 2>/dev/null | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+")
+              fi
+              if [ "$CURRENT_VERSION" != "v1.35.0" ]; then
+                echo "Downloading kubectl v1.35.0 (current is $CURRENT_VERSION)..."
                 mkdir -p /opt/data/.local/bin
-                curl -sSL -o /opt/data/.local/bin/kubectl "https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl"
+                curl -sSL -o /opt/data/.local/bin/kubectl "https://dl.k8s.io/release/v1.35.0/bin/linux/amd64/kubectl"
                 chmod +x /opt/data/.local/bin/kubectl
               fi
               /opt/hermes/.venv/bin/hermes config set model.provider custom
