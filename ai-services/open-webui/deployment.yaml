@@ -34,7 +34,7 @@ spec:
             - name: OLLAMA_BASE_URL
               value: http://ollama.ollama.svc.cluster.local:11434
             - name: DEFAULT_MODELS
-              value: "gemma4:e4b"
+              value: "hf.co/google/gemma-4-12B-it-qat-q4_0-gguf"
             - name: ENABLE_WEB_SEARCH
               value: "true"
             - name: WEBUI_URL
