@@ -38,7 +38,7 @@ spec:
             - name: OLLAMA_KEEP_ALIVE
               value: "10m"
             - name: OLLAMA_CONTEXT_LENGTH
-              value: "65536"
+              value: "32768"
           resources:
             limits:
               nvidia.com/gpu: "1"
