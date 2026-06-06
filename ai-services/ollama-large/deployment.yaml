@@ -58,7 +58,7 @@ spec:
                     while ! /bin/ollama ps > /dev/null 2>&1; do
                       sleep 5
                     done
-                    /bin/ollama pull gemma4:26b
+                    /bin/ollama pull hf.co/google/gemma-4-31B-it-qat-q4_0-gguf
       volumes:
         - name: storage
           persistentVolumeClaim:
