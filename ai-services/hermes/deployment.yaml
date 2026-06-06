@@ -59,6 +59,13 @@ spec:
                 echo "Adding local Maddy CA to system trust store..."
                 cat /etc/ssl/certs/maddy/ca.crt >> /etc/ssl/certs/ca-certificates.crt
               fi
+              if [ -n "$GITHUB_TOKEN" ]; then
+                echo "Logging into GitHub CLI..."
+                echo "$GITHUB_TOKEN" | /opt/data/gh-cli/bin/gh auth login --with-token || true
+                echo "Setting git config..."
+                git config --global user.name "hermes-agent"
+                git config --global user.email "hermes@ryanbeales.com"
+              fi
               echo "Starting s6-overlay init..."
               exec /init sleep infinity
           tty: true
