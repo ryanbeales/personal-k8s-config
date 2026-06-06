@@ -80,7 +80,7 @@ I've added several self-hosted AI services into the cluster to provide local LLM
 - [Open-WebUI](https://openwebui.com/) provides the interface for interacting with models.
 - [ChromaImageGen](https://github.com/ryanbeales/chromaimagegen/tree/main) is my own small creation to provide local image generation using HuggingFace pipelines.
 
-Home-assistant and Frigate are both configured to point to the Ollama instance in the cluster. Currently using the gemma4:e4b model for Frigate snapshot descriptions. Home assistant makes use of the same model as the converstaion piece of the Voice Assistant, and it is pretty decent on the 5060 Ti 16GB.
+Home-assistant and Frigate are both configured to point to the Ollama instance in the cluster. Currently using the hf.co/google/gemma-4-12B-it-qat-q4_0-gguf model for Frigate snapshot descriptions. Home assistant makes use of the same model as the converstaion piece of the Voice Assistant, and it is pretty decent on the 5060 Ti 16GB.
 
 ## Antigravity
 
