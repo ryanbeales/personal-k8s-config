@@ -1,5 +1,8 @@
 resources:
 - namespace.yaml
+- serviceaccount.yaml
+- clusterrole.yaml
+- clusterrolebinding.yaml
 - deployment.yaml
 - service.yaml
 - hermes-nfs-pvc.yaml
