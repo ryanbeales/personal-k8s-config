@@ -86,17 +86,24 @@ spec:
               chmod 700 /home/github-runner
               chown -R github-runner:github-runner /home/github-runner
 
-              # 4. Log into GitHub CLI as the github-runner user
+              # 4. Copy gh binary to a world-executable system path to bypass NFS traversal permissions for github-runner
+              if [ -f /opt/data/gh-cli/bin/gh ]; then
+                echo "Copying gh binary to /usr/local/bin/gh-binary..."
+                cp /opt/data/gh-cli/bin/gh /usr/local/bin/gh-binary
+                chmod 755 /usr/local/bin/gh-binary
+              fi
+
+              # 5. Log into GitHub CLI as the github-runner user
               if [ -n "$GITHUB_TOKEN" ]; then
                 echo "Logging into GitHub CLI as github-runner..."
-                echo "$GITHUB_TOKEN" | runuser -u github-runner -- /opt/data/gh-cli/bin/gh auth login --with-token || true
+                echo "$GITHUB_TOKEN" | runuser -u github-runner -- /usr/local/bin/gh-binary auth login --with-token || true
                 
                 # Configure git identity for github-runner
                 runuser -u github-runner -- git config --global user.name "hermes-agent"
                 runuser -u github-runner -- git config --global user.email "hermes@ryanbeales.com"
               fi
 
-              # 5. Create a secure wrapper script that blocks credentials leakage (e.g., 'gh auth token')
+              # 6. Create a secure wrapper script that blocks credentials leakage (e.g., 'gh auth token')
               cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh-secure
               #!/bin/bash
               # Filter out unsafe subcommands that could leak the token or execute arbitrary code
@@ -118,12 +125,12 @@ spec:
               esac
 
               # Execute the real gh CLI
-              exec /opt/data/gh-cli/bin/gh "$@"
+              exec /usr/local/bin/gh-binary "$@"
               EOF
               chmod 755 /usr/local/bin/gh-secure
               chown root:root /usr/local/bin/gh-secure
 
-              # 6. Create the public 'gh' command that redirects via sudo
+              # 7. Create the public 'gh' command that redirects via sudo
               cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh
               #!/bin/bash
               exec sudo -H -u github-runner /usr/local/bin/gh-secure "$@"
@@ -131,7 +138,7 @@ spec:
               chmod 755 /usr/local/bin/gh
               chown root:root /usr/local/bin/gh
 
-              # 7. Allow any user in the container (such as hermes) to run gh-secure as github-runner without a password
+              # 8. Allow any user in the container (such as hermes) to run gh-secure as github-runner without a password
               echo "ALL ALL=(github-runner) NOPASSWD: /usr/local/bin/gh-secure" > /etc/sudoers.d/github-runner
               chmod 0440 /etc/sudoers.d/github-runner
 
