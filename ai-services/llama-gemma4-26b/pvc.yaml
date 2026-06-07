@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: llama-gemma4-26b-nfs-pvc
-  namespace: vllm
+  namespace: llama
 spec:
   accessModes:
     - ReadWriteMany
