@@ -98,12 +98,7 @@ spec:
               if [ -n "$GITHUB_TOKEN" ]; then
                 echo "Writing GitHub CLI configuration for github-runner..."
                 mkdir -p /home/github-runner/.config/gh
-                cat << HEOF > /home/github-runner/.config/gh/hosts.yml
-              github.com:
-                  git_protocol: https
-                  user: hermes-agent
-                  oauth_token: $GITHUB_TOKEN
-              HEOF
+                printf "github.com:\n    git_protocol: https\n    user: hermes-agent\n    oauth_token: %s\n" "$GITHUB_TOKEN" > /home/github-runner/.config/gh/hosts.yml
                 chown -R github-runner:github-runner /home/github-runner/.config
                 chmod 600 /home/github-runner/.config/gh/hosts.yml
                 
