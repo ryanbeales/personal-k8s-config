@@ -108,37 +108,13 @@ spec:
               fi
 
               # 6. Create a secure wrapper script that blocks credentials leakage (e.g., 'gh auth token')
-              cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh-secure
-              #!/bin/bash
-              # Filter out unsafe subcommands that could leak the token or execute arbitrary code
-              subcommand=""
-              for arg in "$@"; do
-                # Skip global options to find the subcommand
-                if [[ "$arg" =~ ^- ]]; then
-                  continue
-                fi
-                subcommand="$arg"
-                break
-              done
-
-              case "$subcommand" in
-                auth|config|alias|extension)
-                  echo "Access denied: subcommand '$subcommand' is restricted." >&2
-                  exit 1
-                  ;;
-              esac
-
-              # Execute the real gh CLI
-              exec /usr/local/bin/gh-binary "$@"
-              EOF
+              # We use base64 decoding here to avoid shell parser and yaml indentation issues with heredocs.
+              echo "IyEvYmluL2Jhc2gKIyBGaWx0ZXIgb3V0IHVuc2FmZSBzdWJjb21tYW5kcyB0aGF0IGNvdWxkIGxlYWsgdGhlIHRva2VuIG9yIGV4ZWN1dGUgYXJiaXRyYXJ5IGNvZGUKc3ViY29tbWFuZD0iIgpmb3IgYXJnIGluICIkQCI7IGRvCiAgIyBTa2lwIGdsb2JhbCBvcHRpb25zIHRvIGZpbmQgdGhlIHN1YmNvbW1hbmQKICBpZiBbWyAiJGFyZyIgPX4gXi0gXV07IHRoZW4KICAgIGNvbnRpbnVlCiAgZmkKICBzdWJjb21tYW5kPSIkYXJnIgogIGJyZWFrCmRvbmUKCmNhc2UgIiRzdWJjb21tYW5kIiBpbgogIGF1dGh8Y29uZmlnfGFsaWFzfGV4dGVuc2lvbikKICAgIGVjaG8gIkFjY2VzcyBkZW5pZWQ6IHN1YmNvbW1hbmQgJyRzdWJjb21tYW5kJyBpcyByZXN0cmljdGVkLiIgPiYyCiAgICBleGl0IDEKICAgIDs7CmVzYWMKCiMgRXhlY3V0ZSB0aGUgcmVhbCBnaCBDTEkKZXhlYyAvdXNyL2xvY2FsL2Jpbi9naC1iaW5hcnkgIiRAIgo=" | base64 -d > /usr/local/bin/gh-secure
               chmod 755 /usr/local/bin/gh-secure
               chown root:root /usr/local/bin/gh-secure
 
               # 7. Create the public 'gh' command that redirects via sudo
-              cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh
-              #!/bin/bash
-              exec sudo -H -u github-runner /usr/local/bin/gh-secure "$@"
-              EOF
+              echo "IyEvYmluL2Jhc2gKZXhlYyBzdWRvIC1IIC11IGdpdGh1Yi1ydW5uZXIgL3Vzci9sb2NhbC9iaW4vZ2gtc2VjdXJlICIkQCIK" | base64 -d > /usr/local/bin/gh
               chmod 755 /usr/local/bin/gh
               chown root:root /usr/local/bin/gh
 
