@@ -93,10 +93,19 @@ spec:
                 chmod 755 /usr/local/bin/gh-binary
               fi
 
-              # 5. Log into GitHub CLI as the github-runner user
+              # 5. Log into GitHub CLI as the github-runner user by writing the hosts.yml config file directly.
+              # This bypasses the default scope validation in 'gh auth login' (which requires 'read:org' scope).
               if [ -n "$GITHUB_TOKEN" ]; then
-                echo "Logging into GitHub CLI as github-runner..."
-                echo "$GITHUB_TOKEN" | runuser -u github-runner -- env -u GITHUB_TOKEN -u GH_TOKEN /usr/local/bin/gh-binary auth login --with-token || true
+                echo "Writing GitHub CLI configuration for github-runner..."
+                mkdir -p /home/github-runner/.config/gh
+                cat << HEOF > /home/github-runner/.config/gh/hosts.yml
+              github.com:
+                  git_protocol: https
+                  user: hermes-agent
+                  oauth_token: $GITHUB_TOKEN
+              HEOF
+                chown -R github-runner:github-runner /home/github-runner/.config
+                chmod 600 /home/github-runner/.config/gh/hosts.yml
                 
                 # Configure git identity for github-runner
                 runuser -u github-runner -- git config --global user.name "hermes-agent"
