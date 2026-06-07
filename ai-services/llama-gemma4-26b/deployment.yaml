@@ -54,7 +54,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              llama-server \
+              /llama-server \
                 -m /models/gemma-4-26B_q4_0-it.gguf \
                 -c 131072 \
                 -ctk q4_0 \
