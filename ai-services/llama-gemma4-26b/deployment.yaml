@@ -25,6 +25,8 @@ spec:
       initContainers:
         - name: download-model
           image: curlimages/curl:latest
+          securityContext:
+            runAsUser: 0
           command:
             - sh
             - -c
