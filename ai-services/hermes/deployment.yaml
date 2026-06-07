@@ -40,7 +40,7 @@ spec:
               /opt/hermes/.venv/bin/hermes config set model.provider custom
               /opt/hermes/.venv/bin/hermes config set model.base_url http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
               /opt/hermes/.venv/bin/hermes config set model.default google/gemma-4-26B-A4B-it-qat-q4_0-gguf
-              /opt/hermes/.venv/bin/hermes config set model.context_length 262144
+              /opt/hermes/.venv/bin/hermes config set model.context_length 131072
               yes | /opt/hermes/.venv/bin/hermes mcp add searxng --command npx --env npm_config_yes=true --env SEARXNG_URL=http://searxng.searxng.svc.cluster.local:8080 --args mcp-searxng
           volumeMounts:
             - name: storage
