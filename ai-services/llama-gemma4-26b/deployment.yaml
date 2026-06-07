@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vllm-gemma4-26b
+  name: llama-gemma4-26b
   namespace: vllm
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: vllm-gemma4-26b
+      app.kubernetes.io/name: llama-gemma4-26b
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: vllm-gemma4-26b
+        app.kubernetes.io/name: llama-gemma4-26b
     spec:
       runtimeClassName: nvidia
       nodeName: crobputer
@@ -22,23 +22,19 @@ spec:
           operator: Equal
           value: crobputer
           effect: NoSchedule
-      containers:
-        - name: vllm
-          # renovate: datasource=docker depname=vllm/vllm-openai versioning=semver
-          image: vllm/vllm-openai:v0.10.1.1
-          command: ["/bin/sh", "-c"]
-          args:
+      initContainers:
+        - name: download-model
+          image: curlimages/curl:latest
+          command:
+            - sh
+            - -c
             - |
-              vllm serve NeoChen1024/gemma-4-26B-A4B-it-qat-W4A16 \
-                --gpu-memory-utilization 0.78 \
-                --max-model-len 131072 \
-                --kv-cache-dtype fp8 \
-                --moe-backend marlin \
-                --enable-chunked-prefill \
-                --max-num-batched-tokens 4096 \
-                --trust-remote-code \
-                --host 0.0.0.0 \
-                --port 8000
+              if [ ! -f /models/gemma-4-26B_q4_0-it.gguf ]; then
+                echo "Downloading google/gemma-4-26B-A4B-it-qat-q4_0-gguf..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" -o /models/gemma-4-26B_q4_0-it.gguf "https://huggingface.co/google/gemma-4-26B-A4B-it-qat-q4_0-gguf/resolve/main/gemma-4-26B_q4_0-it.gguf"
+              else
+                echo "Model already downloaded."
+              fi
           env:
             - name: HUGGING_FACE_HUB_TOKEN
               valueFrom:
@@ -46,6 +42,25 @@ spec:
                   name: hf-token-secret
                   key: token
                   optional: true
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /models
+      containers:
+        - name: llama-cpp
+          # renovate: datasource=docker depname=ghcr.io/ggml-org/llama.cpp versioning=loose
+          image: ghcr.io/ggml-org/llama.cpp:server-cuda
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              llama-server \
+                -m /models/gemma-4-26B_q4_0-it.gguf \
+                -c 131072 \
+                -ctk q4_0 \
+                -ctv q4_0 \
+                --flash-attn \
+                -ngl -1 \
+                --host 0.0.0.0 \
+                --port 8000
           resources:
             limits:
               nvidia.com/gpu: "1"
@@ -56,7 +71,7 @@ spec:
               containerPort: 8000
           volumeMounts:
             - name: cache-volume
-              mountPath: /root/.cache/huggingface
+              mountPath: /models
             - name: shm
               mountPath: /dev/shm
           startupProbe:
@@ -78,7 +93,7 @@ spec:
       volumes:
         - name: cache-volume
           persistentVolumeClaim:
-            claimName: vllm-large-nfs-pvc
+            claimName: llama-gemma4-26b-nfs-pvc
         - name: shm
           emptyDir:
             medium: Memory

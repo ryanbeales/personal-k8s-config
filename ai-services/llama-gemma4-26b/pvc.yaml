@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vllm-large-nfs-pvc
+  name: llama-gemma4-26b-nfs-pvc
   namespace: vllm
 spec:
   accessModes:
