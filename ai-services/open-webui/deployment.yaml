@@ -31,10 +31,15 @@ spec:
           # renovate: datasource=github-tags depname=open-webui/open-webui versioning=semver
           image: ghcr.io/open-webui/open-webui:v0.9.6
           env:
-            - name: OLLAMA_BASE_URL
-              value: http://ollama.ollama.svc.cluster.local:11434
+            # llama.cpp exposes an OpenAI-compatible API — connect both the 12b (default)
+            # and 26b instances as separate OpenAI API connections.
+            # Format: name;base_url;key (semicolon-separated, pipe-delimited entries)
+            - name: OPENAI_API_BASE_URL
+              value: "http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1;http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1"
+            - name: OPENAI_API_KEY
+              value: "sk-no-key;sk-no-key"
             - name: DEFAULT_MODELS
-              value: "hf.co/google/gemma-4-12B-it-qat-q4_0-gguf"
+              value: "google/gemma-4-12B-it-qat-q4_0-gguf"
             - name: ENABLE_WEB_SEARCH
               value: "true"
             - name: WEBUI_URL
