@@ -38,9 +38,9 @@ spec:
                 chmod +x /opt/data/.local/bin/kubectl
               fi
               /opt/hermes/.venv/bin/hermes config set model.provider custom
-              /opt/hermes/.venv/bin/hermes config set model.base_url http://ollama-large.ollama.svc.cluster.local:11434/v1
-              /opt/hermes/.venv/bin/hermes config set model.default hf.co/google/gemma-4-31B-it-qat-q4_0-gguf
-              /opt/hermes/.venv/bin/hermes config set model.context_length 32768
+              /opt/hermes/.venv/bin/hermes config set model.base_url http://vllm-gemma4-26b.vllm.svc.cluster.local:8000/v1
+              /opt/hermes/.venv/bin/hermes config set model.default NeoChen1024/gemma-4-26B-A4B-it-qat-W4A16
+              /opt/hermes/.venv/bin/hermes config set model.context_length 131072
               yes | /opt/hermes/.venv/bin/hermes mcp add searxng --command npx --env npm_config_yes=true --env SEARXNG_URL=http://searxng.searxng.svc.cluster.local:8080 --args mcp-searxng
           volumeMounts:
             - name: storage
@@ -53,8 +53,7 @@ spec:
           args:
             - |
               touch /.dockerenv
-              echo "Patching minimum context length check to 32k..."
-              sed -i 's/MINIMUM_CONTEXT_LENGTH = 64_000/MINIMUM_CONTEXT_LENGTH = 32_000/g' /opt/hermes/agent/model_metadata.py
+
               if [ -f /etc/ssl/certs/maddy/ca.crt ]; then
                 echo "Adding local Maddy CA to system trust store..."
                 cat /etc/ssl/certs/maddy/ca.crt >> /etc/ssl/certs/ca-certificates.crt

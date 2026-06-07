@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-gemma4-26b
+  namespace: vllm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vllm-gemma4-26b
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vllm-gemma4-26b
+    spec:
+      runtimeClassName: nvidia
+      nodeName: crobputer
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: crobputer
+          effect: NoSchedule
+      containers:
+        - name: vllm
+          # renovate: datasource=docker depname=vllm/vllm-openai versioning=semver
+          image: vllm/vllm-openai:v0.10.1.1
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              vllm serve NeoChen1024/gemma-4-26B-A4B-it-qat-W4A16 \
+                --gpu-memory-utilization 0.78 \
+                --max-model-len 131072 \
+                --kv-cache-dtype turboquant_4bit_nc \
+                --moe-backend marlin \
+                --enable-chunked-prefill \
+                --max-num-batched-tokens 4096 \
+                --trust-remote-code \
+                --host 0.0.0.0 \
+                --port 8000
+          env:
+            - name: HUGGING_FACE_HUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hf-token-secret
+                  key: token
+                  optional: true
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+            requests:
+              nvidia.com/gpu: "1"
+          ports:
+            - name: http
+              containerPort: 8000
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /root/.cache/huggingface
+            - name: shm
+              mountPath: /dev/shm
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            failureThreshold: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: vllm-large-nfs-pvc
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi

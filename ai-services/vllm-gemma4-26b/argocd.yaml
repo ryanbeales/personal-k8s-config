@@ -1,0 +1,2 @@
+argocd:
+  name: vllm-gemma4-26b
