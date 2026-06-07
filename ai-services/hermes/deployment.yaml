@@ -97,37 +97,37 @@ spec:
               fi
 
               # 5. Create a secure wrapper script that blocks credentials leakage (e.g., 'gh auth token')
-              cat << 'EOF' > /usr/local/bin/gh-secure
-#!/bin/bash
-# Filter out unsafe subcommands that could leak the token or execute arbitrary code
-subcommand=""
-for arg in "$@"; do
-  # Skip global options to find the subcommand
-  if [[ "$arg" =~ ^- ]]; then
-    continue
-  fi
-  subcommand="$arg"
-  break
-done
+              cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh-secure
+              #!/bin/bash
+              # Filter out unsafe subcommands that could leak the token or execute arbitrary code
+              subcommand=""
+              for arg in "$@"; do
+                # Skip global options to find the subcommand
+                if [[ "$arg" =~ ^- ]]; then
+                  continue
+                fi
+                subcommand="$arg"
+                break
+              done
 
-case "$subcommand" in
-  auth|config|alias|extension)
-    echo "Access denied: subcommand '$subcommand' is restricted." >&2
-    exit 1
-    ;;
-esac
+              case "$subcommand" in
+                auth|config|alias|extension)
+                  echo "Access denied: subcommand '$subcommand' is restricted." >&2
+                  exit 1
+                  ;;
+              esac
 
-# Execute the real gh CLI
-exec /opt/data/gh-cli/bin/gh "$@"
-EOF
+              # Execute the real gh CLI
+              exec /opt/data/gh-cli/bin/gh "$@"
+              EOF
               chmod 755 /usr/local/bin/gh-secure
               chown root:root /usr/local/bin/gh-secure
 
               # 6. Create the public 'gh' command that redirects via sudo
-              cat << 'EOF' > /usr/local/bin/gh
-#!/bin/bash
-exec sudo -H -u github-runner /usr/local/bin/gh-secure "$@"
-EOF
+              cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh
+              #!/bin/bash
+              exec sudo -H -u github-runner /usr/local/bin/gh-secure "$@"
+              EOF
               chmod 755 /usr/local/bin/gh
               chown root:root /usr/local/bin/gh
 
