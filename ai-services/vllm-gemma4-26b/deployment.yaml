@@ -32,7 +32,7 @@ spec:
               vllm serve NeoChen1024/gemma-4-26B-A4B-it-qat-W4A16 \
                 --gpu-memory-utilization 0.78 \
                 --max-model-len 131072 \
-                --kv-cache-dtype turboquant_4bit_nc \
+                --kv-cache-dtype fp8 \
                 --moe-backend marlin \
                 --enable-chunked-prefill \
                 --max-num-batched-tokens 4096 \
