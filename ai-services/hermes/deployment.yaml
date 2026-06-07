@@ -58,13 +58,83 @@ spec:
                 echo "Adding local Maddy CA to system trust store..."
                 cat /etc/ssl/certs/maddy/ca.crt >> /etc/ssl/certs/ca-certificates.crt
               fi
-              if [ -n "$GITHUB_TOKEN" ]; then
-                echo "Logging into GitHub CLI..."
-                echo "$GITHUB_TOKEN" | /opt/data/gh-cli/bin/gh auth login --with-token || true
-                echo "Setting git config..."
-                git config --global user.name "hermes-agent"
-                git config --global user.email "hermes@ryanbeales.com"
+
+              # PRIVILEGE SEPARATION FOR GITHUB CLI (gh)
+              # Why: The Hermes agent runs as a non-root user (e.g., 'hermes') inside the shell tools.
+              # If we expose GITHUB_TOKEN directly as an environment variable or keep its configuration
+              # in the agent's home folder, the agent can read and exfiltrate the secret.
+              # Solution:
+              # - Create a dedicated 'github-runner' user whose home directory is strictly restricted (0700).
+              # - Authenticate gh under the 'github-runner' context.
+              # - Provide a secure wrapper script /usr/local/bin/gh-secure that restricts subcommands
+              #   which could leak the token (auth, config, alias, extension).
+              # - Expose a public /usr/local/bin/gh shim that transparently runs gh-secure via sudo -u github-runner.
+
+              # 1. Install sudo (required for privilege separation)
+              if ! command -v sudo >/dev/null 2>&1; then
+                echo "Installing sudo..."
+                apt-get update && apt-get install -y sudo
               fi
+
+              # 2. Create the github-runner user if it doesn't exist
+              if ! id -u github-runner >/dev/null 2>&1; then
+                echo "Creating github-runner user..."
+                useradd -m -s /bin/bash github-runner
+              fi
+
+              # 3. Secure github-runner's home directory (0700) to prevent other users from reading config files
+              chmod 700 /home/github-runner
+              chown -R github-runner:github-runner /home/github-runner
+
+              # 4. Log into GitHub CLI as the github-runner user
+              if [ -n "$GITHUB_TOKEN" ]; then
+                echo "Logging into GitHub CLI as github-runner..."
+                echo "$GITHUB_TOKEN" | runuser -u github-runner -- /opt/data/gh-cli/bin/gh auth login --with-token || true
+                
+                # Configure git identity for github-runner
+                runuser -u github-runner -- git config --global user.name "hermes-agent"
+                runuser -u github-runner -- git config --global user.email "hermes@ryanbeales.com"
+              fi
+
+              # 5. Create a secure wrapper script that blocks credentials leakage (e.g., 'gh auth token')
+              cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh-secure
+              #!/bin/bash
+              # Filter out unsafe subcommands that could leak the token or execute arbitrary code
+              subcommand=""
+              for arg in "$@"; do
+                # Skip global options to find the subcommand
+                if [[ "$arg" =~ ^- ]]; then
+                  continue
+                fi
+                subcommand="$arg"
+                break
+              done
+
+              case "$subcommand" in
+                auth|config|alias|extension)
+                  echo "Access denied: subcommand '$subcommand' is restricted." >&2
+                  exit 1
+                  ;;
+              esac
+
+              # Execute the real gh CLI
+              exec /opt/data/gh-cli/bin/gh "$@"
+              EOF
+              chmod 755 /usr/local/bin/gh-secure
+              chown root:root /usr/local/bin/gh-secure
+
+              # 6. Create the public 'gh' command that redirects via sudo
+              cat << '              EOF' | sed 's/^              //' > /usr/local/bin/gh
+              #!/bin/bash
+              exec sudo -H -u github-runner /usr/local/bin/gh-secure "$@"
+              EOF
+              chmod 755 /usr/local/bin/gh
+              chown root:root /usr/local/bin/gh
+
+              # 7. Allow any user in the container (such as hermes) to run gh-secure as github-runner without a password
+              echo "ALL ALL=(github-runner) NOPASSWD: /usr/local/bin/gh-secure" > /etc/sudoers.d/github-runner
+              chmod 0440 /etc/sudoers.d/github-runner
+
               echo "Starting s6-overlay init..."
               exec /init sleep infinity
           tty: true
