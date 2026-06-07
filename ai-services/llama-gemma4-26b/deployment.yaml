@@ -51,18 +51,8 @@ spec:
         - name: llama-cpp
           # renovate: datasource=docker depname=ghcr.io/ggml-org/llama.cpp versioning=loose
           image: ghcr.io/ggml-org/llama.cpp:server-cuda
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              /llama-server \
-                -m /models/gemma-4-26B_q4_0-it.gguf \
-                -c 131072 \
-                -ctk q4_0 \
-                -ctv q4_0 \
-                --flash-attn \
-                -ngl -1 \
-                --host 0.0.0.0 \
-                --port 8000
+          command: ["sleep"]
+          args: ["3600"]
           resources:
             limits:
               nvidia.com/gpu: "1"
@@ -76,22 +66,6 @@ spec:
               mountPath: /models
             - name: shm
               mountPath: /dev/shm
-          startupProbe:
-            httpGet:
-              path: /health
-              port: 8000
-            failureThreshold: 60
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8000
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8000
-            periodSeconds: 5
       volumes:
         - name: cache-volume
           persistentVolumeClaim:
