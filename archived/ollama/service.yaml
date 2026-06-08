@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: ollama
+  name: ollama
+  namespace: ollama
+spec:
+  internalTrafficPolicy: Cluster
+  ports:
+    - name: ollama
+      port: 11434
+      protocol: TCP
+      targetPort: ollama
+  selector:
+    app.kubernetes.io/name: ollama
+  sessionAffinity: None
+  type: ClusterIP
