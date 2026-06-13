@@ -38,6 +38,18 @@ alertmanager:
           alertname: NodeMemoryMajorPagesFaults
           instance: ^10\.0\.0\.59:.*$
         receiver: 'null'
+      - match:
+          namespace: octoprint
+        receiver: 'null'
+      - match:
+          alertname: NodeDiskIOSaturation
+        receiver: 'null'
+      - match:
+          node: crobputer
+        receiver: 'null'
+      - match_re:
+          instance: ^10\.0\.0\.191:.*$
+        receiver: 'null'
     receivers:
     - name: 'null'
     - name: 'email-notifications'
