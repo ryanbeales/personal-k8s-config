@@ -23,10 +23,18 @@ Before deploying the Hermes agent via ArgoCD, you **must** configure a GitHub Pe
 3. Name it (e.g., `hermes-agent-k8s`) and select the **`repo`** scope.
 4. Generate the token and copy it.
 
-### 2. Create Kubernetes Secret
+### 2. Create Kubernetes Secret (GitHub)
 Deploy the token to the cluster as a secret in the `hermes` namespace:
 
 ```bash
 kubectl create secret generic hermes-github-secret -n hermes --from-literal=GITHUB_TOKEN=ghp_YOUR_TOKEN_HERE
 ```
 *(The `deployment.yaml` references this secret and exposes it to the agent as the `GITHUB_TOKEN` environment variable).*
+
+### 3. Create Kubernetes Secret (Gemini)
+To enable the Gemini integrations/models, deploy your Gemini API key as a secret in the `hermes` namespace:
+
+```bash
+kubectl create secret generic hermes-gemini-secret -n hermes --from-literal=GEMINI_API_KEY=AIzaSyYOUR_KEY_HERE
+```
+*(The `deployment.yaml` references this secret and exposes it to the agent as the `GEMINI_API_KEY` environment variable).*
