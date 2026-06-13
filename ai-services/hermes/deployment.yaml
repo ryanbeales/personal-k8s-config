@@ -105,11 +105,20 @@ spec:
                 # Configure git identity for github-runner
                 runuser -u github-runner -- git config --global user.name "hermes-agent" || echo "ERROR: git config 1 failed"
                 runuser -u github-runner -- git config --global user.email "hermes@ryanbeales.com" || echo "ERROR: git config 2 failed"
+
+                # Configure git identity and credentials for hermes user (UID 10000)
+                echo "Writing Git configuration and credentials for hermes..."
+                runuser -u hermes -- git config --global user.name "hermes-agent" || echo "ERROR: git config hermes name failed"
+                runuser -u hermes -- git config --global user.email "hermes@ryanbeales.com" || echo "ERROR: git config hermes email failed"
+                runuser -u hermes -- git config --global credential.helper store || echo "ERROR: git config hermes helper failed"
+                printf "https://oauth2:%s@github.com\n" "$GITHUB_TOKEN" > /opt/data/.git-credentials
+                chown hermes:hermes /opt/data/.git-credentials
+                chmod 600 /opt/data/.git-credentials
               fi
 
               # 6. Create a secure wrapper script that blocks credentials leakage (e.g., 'gh auth token')
               # We use base64 decoding here to avoid shell parser and yaml indentation issues with heredocs.
-              echo "IyEvYmluL2Jhc2gKIyBGaWx0ZXIgb3V0IHVuc2FmZSBzdWJjb21tYW5kcyB0aGF0IGNvdWxkIGxlYWsgdGhlIHRva2VuIG9yIGV4ZWN1dGUgYXJiaXRyYXJ5IGNvZGUKc3ViY29tbWFuZD0iIgpmb3IgYXJnIGluICIkQCI7IGRvCiAgIyBTa2lwIGdsb2JhbCBvcHRpb25zIHRvIGZpbmQgdGhlIHN1YmNvbW1hbmQKICBpZiBbWyAiJGFyZyIgPX4gXi0gXV07IHRoZW4KICAgIGNvbnRpbnVlCiAgZmkKICBzdWJjb21tYW5kPSIkYXJnIgogIGJyZWFrCmRvbmUKCmNhc2UgIiRzdWJjb21tYW5kIiBpbgogIGF1dGh8Y29uZmlnfGFsaWFzfGV4dGVuc2lvbikKICAgIGVjaG8gIkFjY2VzcyBkZW5pZWQ6IHN1YmNvbW1hbmQgJyRzdWJjb21tYW5kJyBpcyByZXN0cmljdGVkLiIgPiYyCiAgICBleGl0IDEKICAgIDs7CmVzYWMKCiMgRXhlY3V0ZSB0aGUgcmVhbCBnaCBDTEkKZXhlYyAvdXNyL2xvY2FsL2Jpbi9naC1iaW5hcnkgIiRAIgo=" | base64 -d > /usr/local/bin/gh-secure
+              echo "IyEvYmluL2Jhc2gKIyBGaWx0ZXIgb3V0IHVuc2FmZSBzdWJjb21tYW5kcyB0aGF0IGNvdWxkIGxlYWsgdGhlIHRva2VuIG9yIGV4ZWN1dGUgYXJiaXRyYXJ5IGNvZGUKc3ViY29tbWFuZD0iIgpmb3IgYXJnIGluICIkQCI7IGRvCiAgIyBTa2lwIGdsb2JhbCBvcHRpb25zIHRvIGZpbmQgdGhlIHN1YmNvbW1hbmQKICBpZiBbWyAiJGFyZyIgPX4gXi0gXV07IHRoZW4KICAgIGNvbnRpbnVlCiAgZmkKICBzdWJjb21tYW5kPSIkYXJnIgogIGJyZWFrCmRvbmUKCmlmIFsgIiRzdWJjb21tYW5kIiA9ICJhdXRoIiBdOyB0aGVuCiAgIyBGaW5kIHRoZSBzdWItc3ViY29tbWFuZAogIHN1YnN1YmNvbW1hbmQ9IiIKICBmb3VuZF9zdWI9ZmFsc2UKICBmb3IgYXJnIGluICIkQCI7IGRvCiAgICBpZiBbWyAiJGFyZyIgPX4gXi0gXV07IHRoZW4KICAgICAgY29udGludWUKICAgIGZpCiAgICBpZiBbICIkZm91bmRfc3ViIiA9IHRydWUgXTsgdGhlbgogICAgICBzdWJzdWJjb21tYW5kPSIkYXJnIgogICAgICBicmVhawogICAgZmkKICAgIGlmIFsgIiRhcmciID0gImF1dGgiIF07IHRoZW4KICAgICAgZm91bmRfc3ViPXRydWUKICAgIGZpCiAgZG9uZQogIAogICMgQWxsb3cgb25seSBzdGF0dXMsIHNldHVwLWdpdCwgYW5kIGdpdC1jcmVkZW50aWFsCiAgY2FzZSAiJHN1YnN1YmNvbW1hbmQiIGluCiAg  c3RhdHVzfHNldHVwLWdpdHxnaXQtY3JlZGVudGlhbCkKICAgICAgIyBTYWZlIHN1YmNvbW1hbmRzCiAgICAgIDs7CiAgICAqKQogICAgICBlY2hvICJBY2Nlc3MgZGVuaWVkOiAnZ2ggYXV0aCAkc3Vic3ViY29tbWFuZCcgaXMgcmVzdHJpY3RlZC4iID4mMgogICAgICBleGl0IDEKICAgICAgOzsKICBlc2FjCmZpCgppZiBbICIkc3ViY29tbWFuZCIgPSAiY29uZmlnIiBdIHx8IFsgIiRzdWJjb21tYW5kIiA9ICJhbGlhcyIgXiBdIHx8IFsgIiRzdWJjb21tYW5kIiA9ICJleHRlbnNpb24iIF07IHRoZW4KICBlY2hvICJBY2Nlc3MgZGVuaWVkOiBzdWJjb21tYW5kICckc3ViY29tbWFuZCcgaXMgcmVzdHJpY3RlZC4iID4mMgogIGV4aXQgMQpmaQoKIyBFeGVjdXRlIHRoZSByZWFsIGdoIENMSQpleGVjIC91c3IvbG9jYWwvYmluL2doLWJpbmFyeSAiJQAi" | base64 -d > /usr/local/bin/gh-secure
               chmod 755 /usr/local/bin/gh-secure
               chown root:root /usr/local/bin/gh-secure
 
