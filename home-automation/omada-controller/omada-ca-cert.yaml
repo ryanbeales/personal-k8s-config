@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omada-ca-cert
+  namespace: omada-controller
+data:
+  ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIFJDCCAwygAwIBAgIRAJr7ps0l3bkqJdxhCDmA4QQwDQYJKoZIhvcNAQELBQAw
+    ODESMBAGA1UEAwwJbG9jYWxob3N0MRAwDgYDVQQKDAdUUC1MaW5rMRAwDgYDVQQL
+    DAdUUC1MaW5rMB4XDTI2MDYxNTAwMTExNloXDTI4MDkxNzAwMTExNlowODESMBAG
+    A1UEAwwJbG9jYWxob3N0MRAwDgYDVQQKDAdUUC1MaW5rMRAwDgYDVQQLDAdUUC1M
+    aW5rMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAk8rDFZf7sbofCj+e
+    Azj86okjZNTp2pQxmdbfuGggNQMlXFbyHB44qdM7wTb7hf2gGNLzmTaK0sucfc/Z
+    5b2DFv/1m2TvbFmBC33IeHIC5gebwuJL073sfIvKKNQ/sdEJft6UbNncCI+2qqsI
+    yvo8+42FaWQ90PvrcLFfao76KrwSJKlta3w0A04eHGcuYeZ/oyWo6oTtuMTrLktw
+    ai/3L1Uw1uItfMdyCI+fkOl3/kxgl1BjIeJbrGa8Gkxyil4pOQr7G99OKeTAvmsS
+    JrCehQ5uIyZEkUfOKxzSURDcy5+HgI8J4bq902Ob4UrLgnA9zmodFQ2JrTZyz4Lq
+    9mzdsmfn3JtVzde3GSFncLpR5F4P2mDBAaTDmKLEDtTbdrXy+rKHKPe5WzSNNPb2
+    Cyiy4NRRbJP10/fZu5fAtsKVQLr+7uYdq52O6oVMnDtTWwbtAx+4s5nFh9Kkcu4q
+    p+1iMAAz+nc7PJxCzNR5rhpUam29aVALCLW0tutAk2tvTqy0X63XddZqlR4EeZy3
+    gLs8lBZ0cmmz//oQyjEi1TPfXyMY90Cs2iiKzUAD14VqmWeaAbkTjqzDmizE4DZo
+    RkiGR3aSN0FNv+ouJz5rl45WthukiDQgPlA9PUluIGLE6zJ0W5BsUs9k2VPdGw10
+    Px2O56PdD9kCMzuNnxeTp2kIKvMCAwEAAaMpMCcwEwYDVR0lBAwwCgYIKwYBBQUH
+    AwEwEAYDVR0RBAkwB4IFT21hZGEwDQYJKoZIhvcNAQELBQADggIBAAn4OJZ8/P+1
+    EtbIaWdbApLRxpYclvdLvN01LASqpuO335z2DVbSSB3RMIQOZAI8RoLM7/dL+5cp
+    XCfom0GMt2EmS8UtzcpVaKHt90FLyi2MeEE/AtLo8+mG4MwiFFitZgRO++OF9Jwd
+    /TzEQew1eQv4ePBKtF4a90i3ItyC6gaeX4Kcsed8JwNJuBcoMKHzlldoZ4xx2C+f
+    rEHQf4tb0X84qe/BiBNpDqsp0QlimiZc1YVwrxJiQEJ/D1zXr1Vk5Ln9jDHAAKaN
+    OdUV2djK4h1Udmhh4g6cFsZxPX/WD3rngJ76dTjBh8+MX8OAaOcPuk6p4JUiUJ/s
+    58H6s7Nuo+aZrqjT46emdvOFbDP+j/gvG2fVQW1gHjkF+pZaHN+4QyDCoB1BmuQk
+    0Ud+nl0g0o4osmxVQ+OhOTNfdOpdpxivvrblkcKYFC50XBOwcuzlpPElOWpMnJ8a
+    v+3Nz6DTSEazptkfAGht2Q0yyBE9nSLtZlAzdSIPq7YTKW/0DsTsl9Z5Hdg2dwk2
+    rbL/wPqgbUf+426w9IrPOyfGOATDTp0tJWPrFoI4EKQwYAzluUEkH3o93c9vidq0
+    8pq3egpiRakb8xA9XKHRsWiu6Ryeye0IvI9EujPtledEuuKtLG/8GAr6tUg5hukf
+    /GIqR0ULhinhzvuGZpxV4qWXgkfe5j6F
+    -----END CERTIFICATE-----

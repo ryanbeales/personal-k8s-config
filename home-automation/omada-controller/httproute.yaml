@@ -25,5 +25,5 @@ spec:
         - group: ''
           kind: Service
           name: omada-controller
-          port: 8088
+          port: 8043
           weight: 1

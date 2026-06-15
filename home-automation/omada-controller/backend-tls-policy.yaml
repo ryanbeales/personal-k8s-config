@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: omada-backend-tls-policy
+  namespace: omada-controller
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: omada-controller
+  validation:
+    caCertificateRefs:
+      - group: ""
+        kind: ConfigMap
+        name: omada-ca-cert
+    hostname: localhost

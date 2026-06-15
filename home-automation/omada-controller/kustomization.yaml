@@ -6,3 +6,6 @@ resources:
   - service-external.yaml
   - deployment.yaml
   - httproute.yaml
+  - omada-ca-cert.yaml
+  - backend-tls-policy.yaml
+
