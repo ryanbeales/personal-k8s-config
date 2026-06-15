@@ -1,0 +1,8 @@
+namespace: omada-controller
+resources:
+  - namespace.yaml
+  - omada-nfs-pvc.yaml
+  - service.yaml
+  - service-external.yaml
+  - deployment.yaml
+  - httproute.yaml
