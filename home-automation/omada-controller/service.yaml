@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: omada-controller
+  namespace: omada-controller
+  labels:
+    app: omada-controller
+spec:
+  type: ClusterIP
+  selector:
+    app: omada-controller
+  ports:
+    - name: manage-http
+      port: 8088
+      targetPort: manage-http
+      protocol: TCP
+    - name: manage-https
+      port: 8043
+      targetPort: manage-https
+      protocol: TCP

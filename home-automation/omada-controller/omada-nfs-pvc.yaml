@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: omada-nfs-pvc
+  labels:
+    app: omada-controller
+  namespace: omada-controller
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: crobasaurusrex-nfs
+  resources:
+    requests:
+      storage: 10Gi

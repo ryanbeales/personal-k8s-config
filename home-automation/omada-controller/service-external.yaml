@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: omada-controller-external
+  namespace: omada-controller
+  labels:
+    app: omada-controller
+spec:
+  type: LoadBalancer
+  selector:
+    app: omada-controller
+  ports:
+    - name: discovery-udp
+      port: 29810
+      targetPort: discovery-udp
+      protocol: UDP
+    - name: mgmt-v1-tcp
+      port: 29811
+      targetPort: mgmt-v1-tcp
+      protocol: TCP
+    - name: adopt-v1-tcp
+      port: 29812
+      targetPort: adopt-v1-tcp
+      protocol: TCP
+    - name: upgrade-v1-tcp
+      port: 29813
+      targetPort: upgrade-v1-tcp
+      protocol: TCP
+    - name: mgmt-v2-tcp
+      port: 29814
+      targetPort: mgmt-v2-tcp
+      protocol: TCP
+    - name: transfer-v2-tcp
+      port: 29815
+      targetPort: transfer-v2-tcp
+      protocol: TCP
+    - name: rtty-tcp
+      port: 29816
+      targetPort: rtty-tcp
+      protocol: TCP
+    - name: mgmt-v3-tcp
+      port: 29817
+      targetPort: mgmt-v3-tcp
+      protocol: TCP
+    - name: app-discovery
+      port: 27001
+      targetPort: app-discovery
+      protocol: UDP

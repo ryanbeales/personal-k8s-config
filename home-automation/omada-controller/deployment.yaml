@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omada-controller
+  namespace: omada-controller
+  labels:
+    app: omada-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omada-controller
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: omada-controller
+    spec:
+      containers:
+        - name: omada-controller
+          image: mbentley/omada-controller:5.15
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: "America/Vancouver"
+            - name: SHOW_INFO
+              value: "true"
+            - name: SHOW_SERVER_LOGS
+              value: "true"
+            - name: MANAGE_HTTP_PORT
+              value: "8088"
+            - name: MANAGE_HTTPS_PORT
+              value: "8043"
+            - name: PORTAL_HTTP_PORT
+              value: "8088"
+            - name: PORTAL_HTTPS_PORT
+              value: "8843"
+          ports:
+            - name: manage-http
+              containerPort: 8088
+              protocol: TCP
+            - name: manage-https
+              containerPort: 8043
+              protocol: TCP
+            - name: portal-https
+              containerPort: 8843
+              protocol: TCP
+            - name: discovery-udp
+              containerPort: 29810
+              protocol: UDP
+            - name: mgmt-v1-tcp
+              containerPort: 29811
+              protocol: TCP
+            - name: adopt-v1-tcp
+              containerPort: 29812
+              protocol: TCP
+            - name: upgrade-v1-tcp
+              containerPort: 29813
+              protocol: TCP
+            - name: mgmt-v2-tcp
+              containerPort: 29814
+              protocol: TCP
+            - name: transfer-v2-tcp
+              containerPort: 29815
+              protocol: TCP
+            - name: rtty-tcp
+              containerPort: 29816
+              protocol: TCP
+            - name: mgmt-v3-tcp
+              containerPort: 29817
+              protocol: TCP
+            - name: app-discovery
+              containerPort: 27001
+              protocol: UDP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          volumeMounts:
+            - name: omada-data
+              mountPath: /opt/tplink/EAPController/data
+              subPath: data
+            - name: omada-data
+              mountPath: /opt/tplink/EAPController/logs
+              subPath: logs
+      volumes:
+        - name: omada-data
+          persistentVolumeClaim:
+            claimName: omada-nfs-pvc
