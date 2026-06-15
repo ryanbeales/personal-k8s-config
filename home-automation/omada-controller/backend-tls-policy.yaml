@@ -13,4 +13,4 @@ spec:
       - group: ""
         kind: ConfigMap
         name: omada-ca-cert
-    hostname: Omada
+    hostname: omada
