@@ -116,9 +116,13 @@ for dir in $KUSTOMIZE_ROOTS; do
         continue
       fi
       echo "Checking if image exists: $img"
-      if ! docker manifest inspect "$img" > /dev/null 2>&1; then
-        echo "❌ Image does not exist: $img"
-        IMAGE_ERRORS="${IMAGE_ERRORS}\n- \`$img\`"
+      if ! inspect_out=$(docker manifest inspect "$img" 2>&1); then
+        if echo "$inspect_out" | grep -Ei "toomanyrequests|rate exceeded|rate limit" > /dev/null; then
+          echo "⚠️ Rate limit exceeded checking image: $img. Assuming it exists."
+        else
+          echo "❌ Image does not exist: $img (Error: $inspect_out)"
+          IMAGE_ERRORS="${IMAGE_ERRORS}\n- \`$img\`"
+        fi
       else
         echo "✅ Image exists: $img"
       fi
