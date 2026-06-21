@@ -70,29 +70,26 @@ spec:
       # }
     env:
       - name: TF_VAR_opnsense_api_key
-        valueFrom:
-          secretKeyRef:
-            namespace: crossplane-system
-            name: opnsense-creds
-            key: api-key
+        secretKeyRef:
+          namespace: crossplane-system
+          name: opnsense-creds
+          key: api-key
       - name: TF_VAR_opnsense_api_secret
-        valueFrom:
-          secretKeyRef:
-            namespace: crossplane-system
-            name: opnsense-creds
-            key: api-secret
+        secretKeyRef:
+          namespace: crossplane-system
+          name: opnsense-creds
+          key: api-secret
       - name: TF_VAR_router_cert
-        valueFrom:
-          secretKeyRef:
-            namespace: crossplane-system
-            name: router-ryanbeales-com-tls
-            key: tls.crt
+        secretKeyRef:
+          namespace: crossplane-system
+          name: router-ryanbeales-com-tls
+          key: tls.crt
       - name: TF_VAR_router_key
-        valueFrom:
-          secretKeyRef:
-            namespace: crossplane-system
-            name: router-ryanbeales-com-tls
-            key: tls.key
+        secretKeyRef:
+          namespace: crossplane-system
+          name: router-ryanbeales-com-tls
+          key: tls.key
+
   writeConnectionSecretToRef:
     namespace: crossplane-system
     name: opnsense-workspace-secret
