@@ -6,7 +6,10 @@ metadata:
 spec:
   forProvider:
     source: Inline
+    initArgs:
+      - "-upgrade"
     module: |
+
       variable "opnsense_api_key" {
         type      = string
         sensitive = true
