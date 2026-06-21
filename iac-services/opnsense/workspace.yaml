@@ -54,7 +54,7 @@ spec:
       resource "opnsense_firewall_nat_port_forward" "wg_easy" {
         enabled     = true
         sequence    = 100
-        interface   = "wan"
+        interface   = ["wan"]
         ip_protocol = "inet"
         protocol    = "udp"
         
