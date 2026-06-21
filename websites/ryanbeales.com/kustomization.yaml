@@ -14,6 +14,7 @@ resources:
   - dns/blog.ryanbeales.com-validation.yaml
   - dns/www.ryanbeales.com.yaml
   - dns/apex-domain.yaml
+  - dns/router.ryanbeales.com.yaml
   - cloudfront/distribution.yaml
   - cloudfront/function.yaml
   - cloudfront/secret.yaml

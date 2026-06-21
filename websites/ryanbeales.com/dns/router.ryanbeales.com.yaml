@@ -1,0 +1,11 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: router.ryanbeales.com
+spec:
+  forProvider:
+    resourceRecords:
+      - value: 10.0.0.1
+    type: A
+    ttl: 300
+    zoneId: Z2AOZQ8V4DDJEY

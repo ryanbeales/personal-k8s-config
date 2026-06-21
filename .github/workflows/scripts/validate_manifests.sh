@@ -105,39 +105,42 @@ for dir in $KUSTOMIZE_ROOTS; do
 
   # Container Image Existence Check
   echo "Checking container image existence..."
-  # Extract unique image tags
-  IMAGES=$(grep -E '^\s*image:' pr-manifest.yaml | awk '{print $2}' | tr -d '"' | tr -d "'" | sort -u)
+  # Extract unique image tags (only if there are image references to prevent grep failure under pipefail)
+  if grep -E '^\s*image:' pr-manifest.yaml > /dev/null 2>&1; then
+    IMAGES=$(grep -E '^\s*image:' pr-manifest.yaml | awk '{print $2}' | tr -d '"' | tr -d "'" | sort -u)
 
-  if [ -n "$IMAGES" ]; then
-    IMAGE_ERRORS=""
-    for img in $IMAGES; do
-      # Skip templates, variables, or empty lines
-      if [[ -z "$img" || "$img" =~ [\$\{\}] ]]; then
-        continue
-      fi
-      echo "Checking if image exists: $img"
-      if ! inspect_out=$(docker manifest inspect "$img" 2>&1); then
-        if echo "$inspect_out" | grep -Ei "toomanyrequests|rate exceeded|rate limit" > /dev/null; then
-          echo "⚠️ Rate limit exceeded checking image: $img. Assuming it exists."
-        else
-          echo "❌ Image does not exist: $img (Error: $inspect_out)"
-          IMAGE_ERRORS="${IMAGE_ERRORS}\n- \`$img\`"
+    if [ -n "$IMAGES" ]; then
+      IMAGE_ERRORS=""
+      for img in $IMAGES; do
+        # Skip templates, variables, or empty lines
+        if [[ -z "$img" || "$img" =~ [\$\{\}] ]]; then
+          continue
         fi
-      else
-        echo "✅ Image exists: $img"
-      fi
-    done
+        echo "Checking if image exists: $img"
+        if ! inspect_out=$(docker manifest inspect "$img" 2>&1); then
+          if echo "$inspect_out" | grep -Ei "toomanyrequests|rate exceeded|rate limit" > /dev/null; then
+            echo "⚠️ Rate limit exceeded checking image: $img. Assuming it exists."
+          else
+            echo "❌ Image does not exist: $img (Error: $inspect_out)"
+            IMAGE_ERRORS="${IMAGE_ERRORS}\n- \`$img\`"
+          fi
+        else
+          echo "✅ Image exists: $img"
+        fi
+      done
 
-    if [ -n "$IMAGE_ERRORS" ]; then
-      echo "❌ **Container Image Validation Failed**" >> "$REPORT_FILE"
-      echo "The following images do not exist in their registries:" >> "$REPORT_FILE"
-      echo -e "$IMAGE_ERRORS" >> "$REPORT_FILE"
-      echo "" >> "$REPORT_FILE"
-      HAS_ERRORS=true
-    else
-      echo "✅ All referenced container images exist." >> "$REPORT_FILE"
+      if [ -n "$IMAGE_ERRORS" ]; then
+        echo "❌ **Container Image Validation Failed**" >> "$REPORT_FILE"
+        echo "The following images do not exist in their registries:" >> "$REPORT_FILE"
+        echo -e "$IMAGE_ERRORS" >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        HAS_ERRORS=true
+      else
+        echo "✅ All referenced container images exist." >> "$REPORT_FILE"
+      fi
     fi
   fi
+
 
   # Kube-linter (Best Practices - Warning only, logs only)
   echo "Running kube-linter (warnings only in logs)..."
