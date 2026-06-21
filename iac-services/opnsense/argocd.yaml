@@ -1,0 +1,3 @@
+argocd:
+  name: opnsense-config
+  namespace: crossplane-system

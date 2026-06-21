@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: router-ryanbeales-com-cert
+  namespace: crossplane-system
+spec:
+  secretName: router-ryanbeales-com-tls
+  dnsNames:
+    - router.ryanbeales.com
+  issuerRef:
+    name: letsencryptcertmanager
+    kind: ClusterIssuer
