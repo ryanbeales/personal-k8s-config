@@ -49,6 +49,31 @@ spec:
         routers     = ["10.0.0.1"]
         dns_servers = ["10.0.0.1"]
       }
+
+      # WAN Port Forwarding for WireGuard
+      resource "opnsense_firewall_nat_port_forward" "wg_easy" {
+        enabled     = true
+        sequence    = 100
+        interface   = "wan"
+        ip_protocol = "inet"
+        protocol    = "udp"
+        
+        source = {
+          net = "any"
+        }
+        
+        destination = {
+          net  = "wanip"
+          port = "31313"
+        }
+        
+        target = {
+          ip   = "10.0.0.59"
+          port = "32580"
+        }
+        
+        description = "WAN WireGuard UDP 31313 to k3s NodePort 32580"
+      }
       import {
         to = opnsense_kea_dhcpv4_reservation.res_00-e1-00-00-17-b2
         id = "30c6080a-6f81-44b4-956d-85ceb46beb61"
