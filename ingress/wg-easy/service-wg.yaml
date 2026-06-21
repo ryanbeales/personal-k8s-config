@@ -9,6 +9,7 @@ spec:
       port: 31313
       protocol: UDP
       targetPort: wg
+      nodePort: 32580
   selector:
     app.kubernetes.io/name: wg-easy
   type: LoadBalancer
