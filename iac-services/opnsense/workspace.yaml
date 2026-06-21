@@ -74,6 +74,33 @@ spec:
         
         description = "WAN WireGuard UDP 31313 to k3s NodePort 32580"
       }
+
+      # WAN Firewall Rule to allow WireGuard traffic (associated with NAT)
+      resource "opnsense_firewall_filter" "wg_easy" {
+        enabled     = true
+        description = "Allow inbound WireGuard UDP traffic (NodePort)"
+        
+        interface = {
+          interface = ["wan"]
+        }
+        
+        filter = {
+          action      = "pass"
+          direction   = "in"
+          ip_protocol = "inet"
+          protocol    = "udp"
+          
+          source = {
+            net = "any"
+          }
+          
+          destination = {
+            net  = "10.0.0.59"
+            port = "32580"
+          }
+        }
+      }
+
       import {
         to = opnsense_kea_dhcpv4_reservation.res_00-e1-00-00-17-b2
         id = "30c6080a-6f81-44b4-956d-85ceb46beb61"
