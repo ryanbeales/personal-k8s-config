@@ -26,8 +26,6 @@ spec:
               readOnly: true
             - name: zfs-dev
               mountPath: /dev/zfs
-            - name: zfs-mounts
-              mountPath: /proc/self/mounts
           volumes:
           - name: zfs-snapshot-cleanup-script
             configMap:
@@ -35,7 +33,4 @@ spec:
           - name: zfs-dev
             hostPath:
               path: /dev/zfs
-          - name: zfs-mounts
-            hostPath:
-              path: /proc/self/mounts
           restartPolicy: Never
