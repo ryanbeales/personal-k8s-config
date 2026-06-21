@@ -88,7 +88,7 @@ spec:
           action      = "pass"
           direction   = "in"
           ip_protocol = "inet"
-          protocol    = "udp"
+          protocol    = "UDP"
           
           source = {
             net = "any"
