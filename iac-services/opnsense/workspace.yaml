@@ -49,11 +49,21 @@ spec:
         routers     = ["10.0.0.1"]
         dns_servers = ["10.0.0.1"]
       }
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_00-e1-00-00-17-b2
+        id = "30c6080a-6f81-44b4-956d-85ceb46beb61"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "res_00-e1-00-00-17-b2" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.43"
         mac_address = "00:e1:00:00:17:b2"
         description = "Migrated 00:e1:00:00:17:b2"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.eap615-wall-1c-61-b4-37-44-2e
+        id = "35baf3d4-9f89-4f01-9711-766e8af23bba"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "eap615-wall-1c-61-b4-37-44-2e" {
@@ -63,11 +73,21 @@ spec:
         description = "Migrated EAP615-Wall-1C-61-B4-37-44-2E"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.eap615-wall-1c-61-b4-37-54-14
+        id = "3f312e15-5d80-4d9e-9c15-16ec3c80b637"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "eap615-wall-1c-61-b4-37-54-14" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.38"
         mac_address = "1c:61:b4:37:54:14"
         description = "Migrated EAP615-Wall-1C-61-B4-37-54-14"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_04-7c-16-8a-be-65
+        id = "4aff5f95-b0ca-454d-802b-31680c9af1a5"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "res_04-7c-16-8a-be-65" {
@@ -77,11 +97,21 @@ spec:
         description = "Migrated 04:7C:16:8A:BE:65"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.c3524224683391
+        id = "98421f12-f600-48eb-a767-aaf01e057612"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "c3524224683391" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.90"
         mac_address = "04:57:47:9d:c6:21"
         description = "Migrated C3524224683391"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.bose-home-speaker-300
+        id = "d83208cf-2453-435d-84bb-3003924e2bb5"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "bose-home-speaker-300" {
@@ -91,11 +121,21 @@ spec:
         description = "Migrated Bose-Home-Speaker-300"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.reocam
+        id = "f653106b-ad40-40a6-98d6-06bc42ee7526"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "reocam" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.153"
         mac_address = "5c:c3:36:4c:f8:ea"
         description = "Migrated reocam"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_5e-bb-f6-9e-ee-fa
+        id = "1f6df7a4-b8bc-430e-9aa1-9fe64ac9311c"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "res_5e-bb-f6-9e-ee-fa" {
@@ -105,11 +145,21 @@ spec:
         description = "Migrated 5e:bb:f6:9e:ee:fa"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.ryan-s-s26-ultra-107
+        id = "fa2f4d76-46b5-4346-9b88-50ddf35a0101"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "ryan-s-s26-ultra-107" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.56"
         mac_address = "6e:25:d6:8d:cd:e5"
         description = "Migrated Ryan-s-S26-Ultra-107"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.macbookair-91
+        id = "c5416fdf-7be2-4af0-b99d-359cdd930e25"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "macbookair-91" {
@@ -119,11 +169,21 @@ spec:
         description = "Migrated MacBookAir-91"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.amc0910d201f520dfc
+        id = "af5c5f8d-1ec4-476d-877b-d0139d647a5b"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "amc0910d201f520dfc" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.67"
         mac_address = "9c:8e:cd:3d:9b:be"
         description = "Front camera"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.crobasaurusrex
+        id = "5c8388cd-245f-4357-8e7c-5ddb63f5156c"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "crobasaurusrex" {
@@ -133,11 +193,21 @@ spec:
         description = "crobasaurusrex"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.crobtoplite
+        id = "05b67f53-a152-480d-87dc-28ab180ea6ad"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "crobtoplite" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.79"
         mac_address = "20:1e:88:d2:f5:b9"
         description = "Migrated crobtoplite"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.home-assistant-voice-0a0800
+        id = "f48d0183-ad40-4108-90ef-8e67fda3d21b"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "home-assistant-voice-0a0800" {
@@ -147,11 +217,21 @@ spec:
         description = "Migrated home-assistant-voice-0a0800"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_30-68-93-22-6b-ee
+        id = "a3bb0ec4-77a3-4ab9-ab8b-075dbab1cf2b"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "res_30-68-93-22-6b-ee" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.64"
         mac_address = "30:68:93:22:6b:ee"
         description = "Second balcony ep40m"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.ep40m
+        id = "b115b4a5-657b-4b0c-82ea-e834097e8563"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "ep40m" {
@@ -161,11 +241,21 @@ spec:
         description = "Patio"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_30-68-93-22-66-3f
+        id = "4391ee1d-879b-4bb3-ab30-3e3021957645"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "res_30-68-93-22-66-3f" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.250"
         mac_address = "30:68:93:22:66:3f"
         description = "EP40M balcony"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.canona6e40c
+        id = "f17da9c2-e00c-4326-9f12-f596fc95abb7"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "canona6e40c" {
@@ -175,11 +265,21 @@ spec:
         description = "Migrated Canona6e40c"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_38-f9-f5-0c-6d-85
+        id = "aee35ef2-f03c-4d36-878d-5a0847153b6d"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "res_38-f9-f5-0c-6d-85" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.39"
         mac_address = "38:f9:f5:0c:6d:85"
         description = "Migrated 38:f9:f5:0c:6d:85"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.crobgamebox
+        id = "d474b0cf-4983-4b8a-853f-b962cb300948"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "crobgamebox" {
@@ -189,11 +289,21 @@ spec:
         description = "Migrated CROBGAMEBOX"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.meross-smart-plug-110
+        id = "4527fe6c-7cb4-4b3b-96f5-5199293dbe27"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "meross-smart-plug-110" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.160"
         mac_address = "48:e1:e9:15:c0:a9"
         description = "Migrated Meross_Smart_Plug-110"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.meross-smart-plug
+        id = "6a788b59-4352-4389-8e2a-b795ff406338"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "meross-smart-plug" {
@@ -203,11 +313,21 @@ spec:
         description = "Migrated Meross_Smart_Plug"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_48-e1-e9-15-d4-3b
+        id = "965b8cc1-8dcc-44ba-af55-5920c3cd3c2a"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "res_48-e1-e9-15-d4-3b" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.116"
         mac_address = "48:e1:e9:15:d4:3b"
         description = "Migrated 48:e1:e9:15:d4:3b"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.croblodocus
+        id = "31f141d4-4f18-4036-a275-bedad07b1ab0"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "croblodocus" {
@@ -217,11 +337,21 @@ spec:
         description = "Migrated croblodocus"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.macbookair
+        id = "11e0fe00-819e-4e88-9eea-a06736672a29"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "macbookair" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.218"
         mac_address = "56:2b:4c:af:e3:47"
         description = "Migrated MacBookAir"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.mac
+        id = "ebbd173d-8b01-4d31-b685-3fadc76d3111"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "mac" {
@@ -231,11 +361,21 @@ spec:
         description = "Migrated Mac"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.kobo
+        id = "2fef4016-3724-4187-b5c8-e333d6963dd2"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "kobo" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.155"
         mac_address = "58:b0:d4:9d:21:dd"
         description = "Migrated kobo"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_09aa01ac20180af9
+        id = "dcee8237-f385-4be7-88c9-81a32de0c014"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "res_09aa01ac20180af9" {
@@ -245,11 +385,21 @@ spec:
         description = "Migrated 09AA01AC20180AF9"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.res_74-c2-46-42-d0-e9
+        id = "b3187cc8-9498-4374-8265-6af24733e790"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "res_74-c2-46-42-d0-e9" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.17"
         mac_address = "74:c2:46:42:d0:e9"
         description = "Migrated 74:c2:46:42:d0:e9"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.usw-mini
+        id = "12f42866-c99f-4e5a-bc2a-9c313d54e7c9"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "usw-mini" {
@@ -259,11 +409,21 @@ spec:
         description = "Migrated USW_MINI"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.elmde269
+        id = "db86bed5-91ab-439b-8efc-37fe114c2f64"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "elmde269" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.94"
         mac_address = "84:2f:57:a4:e4:30"
         description = "Migrated ELMDE269"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.samsung-range
+        id = "a1e3dddc-987d-4b43-892a-5f4179ca0fde"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "samsung-range" {
@@ -273,11 +433,21 @@ spec:
         description = "Migrated Samsung-Range"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.crobputer
+        id = "8afaf3db-dc01-4992-a34b-38975e73f57a"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "crobputer" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.170"
         mac_address = "88:c9:b3:bf:7d:eb"
         description = "Crobputer"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.hs103
+        id = "627ad1fd-da88-4b64-a9ed-6efeba4ec396"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "hs103" {
@@ -287,11 +457,21 @@ spec:
         description = "Migrated HS103"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.hs103_2
+        id = "e4c89816-6fef-4f7d-85c8-45b09faf42bc"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "hs103_2" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.2"
         mac_address = "98:ba:5f:fd:b9:9d"
         description = "Lava lamp"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.aa-93-66-75-a6-74
+        id = "a9a6846d-d32c-4f1c-8906-e75bc3dceb1a"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "aa-93-66-75-a6-74" {
@@ -301,11 +481,21 @@ spec:
         description = "Migrated aa:93:66:75:a6:74"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.ryan-s-s26-ultra-72
+        id = "d1153b90-a64e-460d-a519-207596cd944c"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "ryan-s-s26-ultra-72" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.244"
         mac_address = "b6:74:df:ed:61:fb"
         description = "Migrated Ryan-s-S26-Ultra-72"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.piframe
+        id = "3d59ba8d-3f9f-49af-810e-9edcaefdf3e2"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "piframe" {
@@ -315,11 +505,21 @@ spec:
         description = "Migrated piframe"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.crobceratops-109
+        id = "7b0cf8bc-26e3-4ff7-80cb-783cb7bc79d6"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "crobceratops-109" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.97"
         mac_address = "bc:f4:d4:40:6f:79"
         description = "Migrated crobceratops-109"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.sm-r920
+        id = "c2252663-8492-4042-a477-052208b865d1"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "sm-r920" {
@@ -329,11 +529,21 @@ spec:
         description = "Migrated SM-R920"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.xbox-112
+        id = "7fa9877d-9827-45bd-b882-edfd591df7ec"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "xbox-112" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.214"
         mac_address = "c4:cb:76:82:e3:c4"
         description = "Migrated XBOX-112"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.xbox
+        id = "b51ca22e-49aa-4a57-8542-ea64f0f15e8d"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "xbox" {
@@ -343,11 +553,21 @@ spec:
         description = "Migrated XBOX"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.wled-2
+        id = "642328d6-db5e-49ad-adff-3b261cdb3d3d"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "wled-2" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.78"
         mac_address = "c8:c9:a3:66:93:86"
         description = "Migrated wled-2"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.wled-wled
+        id = "b3134618-c9c6-44dc-8fdf-f0482e0d9d29"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "wled-wled" {
@@ -357,11 +577,21 @@ spec:
         description = "Migrated wled-WLED"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.wled-wled_2
+        id = "655ddd43-2639-4340-b7b2-c0d2ddc72788"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "wled-wled_2" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.232"
         mac_address = "c8:c9:a3:66:98:92"
         description = "wled-3"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.kp303
+        id = "8d14951d-a69a-414f-9640-c2ae6b97a79f"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "kp303" {
@@ -371,11 +601,21 @@ spec:
         description = "Powerboard"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.e0-51-d8-cf-f5-a5
+        id = "4fe8abf1-bf78-43d2-9545-2da0296fda73"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "e0-51-d8-cf-f5-a5" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.34"
         mac_address = "e0:51:d8:cf:f5:a5"
         description = "Migrated e0:51:d8:cf:f5:a5"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.macbookair_2
+        id = "4d32d163-f261-41be-8538-54d88b7ff52f"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "macbookair_2" {
@@ -385,11 +625,21 @@ spec:
         description = "Migrated MacBookAir"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.mely
+        id = "700a3046-68f9-43f7-a869-fdf6821c47ba"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "mely" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.215"
         mac_address = "f0:c3:71:dd:d5:c3"
         description = "Migrated Mely"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.ryan-s-s26-ultra
+        id = "67335cbf-c57c-4074-8ca1-cf5509135d44"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "ryan-s-s26-ultra" {
@@ -399,11 +649,21 @@ spec:
         description = "Migrated Ryan-s-S26-Ultra"
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_reservation.f8-3b-1d-bd-63-f2
+        id = "5ef014d8-e8df-4abb-afa2-e425e747c9e8"
+      }
+
       resource "opnsense_kea_dhcpv4_reservation" "f8-3b-1d-bd-63-f2" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.219"
         mac_address = "f8:3b:1d:bd:63:f2"
         description = "Migrated f8:3b:1d:bd:63:f2"
+      }
+
+      import {
+        to = opnsense_kea_dhcpv4_reservation.ryan-s-s26-ultra-117
+        id = "2b7d9320-06a3-4dfe-b1fb-a60a9f79f485"
       }
 
       resource "opnsense_kea_dhcpv4_reservation" "ryan-s-s26-ultra-117" {
