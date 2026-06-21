@@ -36,10 +36,16 @@ spec:
         allow_insecure = true
       }
 
+      import {
+        to = opnsense_kea_dhcpv4_subnet.lan
+        id = "95915423-b0c2-445f-842a-ce31598c0071"
+      }
+
       # Kea DHCP Subnet LAN configuration
       resource "opnsense_kea_dhcpv4_subnet" "lan" {
         subnet      = "10.0.0.0/24"
         description = "LAN Subnet managed via Crossplane Terraform"
+        pools       = ["10.0.0.3-10.0.0.254"]
         routers     = ["10.0.0.1"]
         dns_servers = ["10.0.0.1"]
       }
