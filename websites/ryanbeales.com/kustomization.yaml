@@ -15,6 +15,15 @@ resources:
   - dns/www.ryanbeales.com.yaml
   - dns/apex-domain.yaml
   - dns/router.ryanbeales.com.yaml
+  - dns/router.ryanbeales.com-aaaa.yaml
+  - dns/crobasaurusrex-direct-aaaa.yaml
+  - dns/crobasaurusrex-wildcard-aaaa.yaml
+  - dns/crobceretops-direct-aaaa.yaml
+  - dns/crobceretops-wildcard-aaaa.yaml
+  - dns/croblodocus-direct-aaaa.yaml
+  - dns/croblodocus-wildcard-aaaa.yaml
+  - dns/wg.ryanbeales.com.yaml
+  - dns/wg.ryanbeales.com-aaaa.yaml
   - cloudfront/distribution.yaml
   - cloudfront/function.yaml
   - cloudfront/secret.yaml
