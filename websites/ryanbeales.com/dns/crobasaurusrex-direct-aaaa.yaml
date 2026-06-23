@@ -7,7 +7,7 @@ metadata:
 spec:
   forProvider:
     resourceRecords:
-      - value: 2604:3d08:7583:3800::31e2
+      - value: 2604:3d08:7583:3800:1ac0:4dff:fe04:55ff
     type: AAAA
     ttl: 300
     zoneId: Z2AOZQ8V4DDJEY
