@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conduit
+  namespace: conduit
+  labels:
+    app.kubernetes.io/name: conduit
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: conduit
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: conduit
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: conduit
+          # renovate: datasource=docker depname=matrixconduit/matrix-conduit versioning=semver
+          image: matrixconduit/matrix-conduit:v0.9.0
+          env:
+            - name: CONDUIT_SERVER_NAME
+              value: matrix.crobasaurusrex.ryanbeales.com
+            - name: CONDUIT_DATABASE_PATH
+              value: /srv/conduit/db
+            - name: CONDUIT_DATABASE_BACKEND
+              value: rocksdb
+            - name: CONDUIT_PORT
+              value: "6167"
+            - name: CONDUIT_ADDRESS
+              value: 0.0.0.0
+            - name: CONDUIT_ALLOW_REGISTRATION
+              value: "true"
+            - name: CONDUIT_ALLOW_FEDERATION
+              value: "false"
+            - name: CONDUIT_MAX_REQUEST_SIZE
+              value: "20000000"
+            - name: CONDUIT_LOG
+              value: "warn,conduit=info"
+          ports:
+            - name: http
+              containerPort: 6167
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /_matrix/client/versions
+              port: 6167
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /_matrix/client/versions
+              port: 6167
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: storage
+              mountPath: /srv/conduit
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: conduit-pvc
