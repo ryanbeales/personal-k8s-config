@@ -6,7 +6,7 @@ helmCharts:
     repo: oci://ghcr.io/prometheus-community/charts
     releaseName: kube-prometheus-stack
     valuesFile: values.yaml
-    version: 87.1.0
+    version: 87.2.1
 resources:
   - namespace.yaml
 
