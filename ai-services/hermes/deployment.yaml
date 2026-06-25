@@ -172,7 +172,10 @@ spec:
             - name: MATRIX_HOMESERVER
               value: "http://conduit.conduit.svc.cluster.local:6167"
             - name: MATRIX_ACCESS_TOKEN
-              value: "UgKqCued5gNZAOiWVszv4uFlIFpRCZte"
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-matrix-secret
+                  key: MATRIX_ACCESS_TOKEN
             - name: MATRIX_ALLOWED_USERS
               value: "@ryanbeales:matrix.crobasaurusrex.ryanbeales.com"
             - name: GITHUB_TOKEN
