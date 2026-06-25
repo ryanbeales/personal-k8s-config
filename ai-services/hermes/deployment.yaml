@@ -169,13 +169,12 @@ spec:
               value: "ryanbeales@gmail.com"
             - name: EMAIL_HOME_ADDRESS
               value: "ryanbeales@gmail.com"
-            # MATRIX GATEWAY SETTINGS (Uncomment and populate once Conduit is set up)
-            # - name: MATRIX_HOMESERVER
-            #   value: "http://conduit.conduit.svc.cluster.local:6167"
-            # - name: MATRIX_ACCESS_TOKEN
-            #   value: "syt_..."
-            # - name: MATRIX_ALLOWED_USERS
-            #   value: "@ryanbeales:matrix.crobasaurusrex.ryanbeales.com"
+            - name: MATRIX_HOMESERVER
+              value: "http://conduit.conduit.svc.cluster.local:6167"
+            - name: MATRIX_ACCESS_TOKEN
+              value: "UgKqCued5gNZAOiWVszv4uFlIFpRCZte"
+            - name: MATRIX_ALLOWED_USERS
+              value: "@ryanbeales:matrix.crobasaurusrex.ryanbeales.com"
             - name: GITHUB_TOKEN
               valueFrom:
                 secretKeyRef:
