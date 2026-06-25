@@ -26,6 +26,8 @@ spec:
           # renovate: datasource=docker depname=matrixconduit/matrix-conduit versioning=semver
           image: matrixconduit/matrix-conduit:v0.9.0
           env:
+            - name: CONDUIT_CONFIG
+              value: ""
             - name: CONDUIT_SERVER_NAME
               value: matrix.crobasaurusrex.ryanbeales.com
             - name: CONDUIT_DATABASE_PATH
