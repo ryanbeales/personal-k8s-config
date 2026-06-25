@@ -5,7 +5,7 @@ metadata:
 spec:
   forProvider:
     resourceRecords:
-      - value: 70.69.242.53
+      - value: 205.250.235.192
     type: A
     ttl: 300
     zoneId: Z2AOZQ8V4DDJEY
