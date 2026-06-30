@@ -204,7 +204,7 @@ spec:
 
       resource "opnsense_kea_dhcpv4_reservation" "ryan-s-s26-ultra-107" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
-        ip_address  = "10.0.0.56"
+        ip_address  = "10.0.0.129"
         mac_address = "6e:25:d6:8d:cd:e5"
         description = "Migrated Ryan-s-S26-Ultra-107"
       }
