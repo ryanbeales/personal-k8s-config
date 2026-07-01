@@ -22,19 +22,23 @@ Before deploying the Hermes agent via ArgoCD, you **must** configure a GitHub Pe
 2. Click **Generate new token (classic)**.
 3. Name it (e.g., `hermes-agent-k8s`) and select the **`repo`** scope.
 4. Generate the token and copy it.
-
-### 2. Create Kubernetes Secret (GitHub)
-Deploy the token to the cluster as a secret in the `hermes` namespace:
-
+5. Create the Kubernetes secret:
 ```bash
-kubectl create secret generic hermes-github-secret -n hermes --from-literal=GITHUB_TOKEN=ghp_YOUR_TOKEN_HERE
-```
-*(The `deployment.yaml` references this secret and exposes it to the agent as the `GITHUB_TOKEN` environment variable).*
+kubectl create secret generic hermes-github-secret -n hermes --from-literal=GITHUB_TOKEN=ghp_YO...(The `deployment.yaml` references this secret and exposes it to the agent as the `GITHUB_TOKEN` environment variable).*
 
-### 3. Create Kubernetes Secret (Gemini)
+### 2. Create Kubernetes Secret (Gemini)
 To enable the Gemini integrations/models, deploy your Gemini API key as a secret in the `hermes` namespace:
 
 ```bash
-kubectl create secret generic hermes-gemini-secret -n hermes --from-literal=GEMINI_API_KEY=AIzaSyYOUR_KEY_HERE
+kubectl create secret generic hermes-gemini-secret -n hermes --from-literal=GEMINI_API_KEY=AIzaSy...(The `deployment.yaml` references this secret and exposes it to the agent as the `GEMINI_API_KEY` environment variable).*
+
+### 3. Adding SearXNG MCP Support
+If you want to enable SearXNG search capabilities, add the MCP server to your Hermes configuration. 
+
+Run the following command from a terminal with `hermes` access (e.g., within the cluster):
+
+```bash
+hermes mcp add searxng --command npx --args mcp-searxng --env SEARXNG_URL=http://searxng.searxng.svc.cluster.local:8080
 ```
-*(The `deployment.yaml` references this secret and exposes it to the agent as the `GEMINI_API_KEY` environment variable).*
+
+The agent uses the [Aphrodite platform](https://github.com/NousResearch/Aphrodite) to power its tool integrations.
