@@ -29,7 +29,7 @@ spec:
       containers:
         - name: open-webui
           # renovate: datasource=github-tags depname=open-webui/open-webui versioning=semver
-          image: ghcr.io/open-webui/open-webui:v0.10.1
+          image: ghcr.io/open-webui/open-webui:v0.10.2
           env:
             # llama.cpp exposes an OpenAI-compatible API — connect both the 12b (default)
             # and 26b instances as separate OpenAI API connections.
