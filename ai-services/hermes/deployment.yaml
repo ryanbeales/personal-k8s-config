@@ -92,8 +92,16 @@ spec:
               value: "1"
             - name: HERMES_DASHBOARD_TUI
               value: "1"
-            - name: HERMES_DASHBOARD_INSECURE
-              value: "1"
+            - name: HERMES_DASHBOARD_BASIC_AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-dashboard-secret
+                  key: username
+            - name: HERMES_DASHBOARD_BASIC_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-dashboard-secret
+                  key: password
 
             - name: API_SERVER_ENABLED
               value: "true"
