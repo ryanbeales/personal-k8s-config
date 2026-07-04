@@ -37,12 +37,12 @@ kubectl create secret generic hermes-gemini-secret -n hermes --from-literal=GEMI
 *(The `deployment.yaml` references this secret and exposes it to the agent as the `GEMINI_API_KEY` environment variable).*
 
 ### 3. Create Kubernetes Secret (Dashboard Auth)
-To secure the Hermes Dashboard, you must provide a basic auth username and password:
+To secure the Hermes Dashboard, you must provide a basic auth username and password. We recommend generating a strong password using `openssl`:
 
 ```bash
 kubectl create secret generic hermes-dashboard-secret -n hermes \
   --from-literal=username=admin \
-  --from-literal=password='YOUR_PASSWORD'
+  --from-literal=password=$(openssl rand -base64 16)
 ```
 *(The `deployment.yaml` references this secret and exposes it to the agent).*
 
