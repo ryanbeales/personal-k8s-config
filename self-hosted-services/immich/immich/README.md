@@ -1,0 +1,65 @@
+# Immich Charts
+
+Installs [Immich](https://github.com/immich-app/immich), a self-hosted photo and video backup solution directly 
+from your mobile phone. 
+
+> [!CAUTION]
+> The HTTP-based helm repo at https://immich-app.github.io/immich-charts/ has been removed and is no longer receiving updates.
+> Use oci://ghcr.io/immich-app/immich-charts/immich instead.
+
+# Goal
+
+This repo contains helm charts the immich community developed to help deploy Immich on Kubernetes cluster.
+
+It leverages the bjw-s [common-library chart](https://github.com/bjw-s-labs/helm-charts/tree/common-5.0.1/charts/library/common) to make configuration as easy as possible. 
+
+# Installation
+
+The chart is signed with [cosign](https://docs.sigstore.dev/) using keyless
+signing on release, so you can verify it was built by this repository's CI
+before installing:
+
+```
+$ cosign verify \
+  --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+  --certificate-identity-regexp='^https://github\.com/immich-app/immich-charts/\.github/workflows/release\.yaml@refs/tags/immich-' \
+  ghcr.io/immich-app/immich-charts/immich:VERSION
+```
+
+```
+$ helm install --create-namespace --namespace immich immich oci://ghcr.io/immich-app/immich-charts/immich -f values.yaml
+```
+
+You should not copy the full values.yaml from this repository. Only set the values that you want to override.
+
+There are a few things that you are required to configure in your values.yaml before installing the chart:
+* You need to separately create a PVC for your library volume and configure `immich.persistence.library.existingClaim` to reference that PVC
+* You need to make sure that Immich has access to a redis and postgresql instance. 
+  * Redis can be enabled directly in the values.yaml, or by manually setting the `env` to point to an existing instance.
+  * You need to deploy a suitable postgres instance with the vectorchord extension yourself. It is recommended to use [cloudnative-pg](https://cloudnative-pg.io/) with the [tensorchord/cloudnative-vectorchord](https://github.com/tensorchord/cloudnative-vectorchord/pkgs/container/cloudnative-vectorchord) container image. An example cluster manifest can be found [here](./local/cloudnative-pg.yaml).
+* You need to set `image.tag` to the version you want to use, as this chart does not update with every Immich release.
+
+# Configuration
+
+The immich chart is highly customizable. You can see a detailed documentation
+of all possible changes within the `charts/immich/values.yaml` file. Anything not covered there can be done by making direct use of the underlying common library chart (see below).
+
+## Chart architecture 
+
+This chart uses the [common library](https://github.com/bjw-s-labs/helm-charts/tree/common-5.0.1/charts/library/common). Top level keys like `controllers` are applied to every component of the Immich stack, and the entries under the `server`, `microservices`, etc... keys define the specific values for each component. You can freely add more top level keys to be applied to all the components, please reference [the common library's values.yaml](https://github.com/bjw-s-labs/helm-charts/blob/common-5.0.1/charts/library/common/values.yaml) to see what keys are available.
+
+## Uninstalling the Chart
+
+To see the currently installed Immich chart:
+
+```console
+helm ls --namespace immich
+```
+
+To uninstall/delete the `immich` chart:
+
+```console
+helm delete --namespace immich immich
+```
+
+The command removes all the Kubernetes components associated with the chart and deletes the release.

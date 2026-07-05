@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: immich
 helmCharts:
   - name: immich
-    repo: "https://immich-app.github.io/immich-charts"
+    repo: "oci://ghcr.io/immich-app/immich-charts"
     version: 0.13.1 # https://immich-app.github.io/immich-charts/index.yaml / https://github.com/immich-app/immich-charts/releases
     releaseName: immich
     namespace: immich
