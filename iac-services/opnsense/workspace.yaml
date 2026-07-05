@@ -483,7 +483,7 @@ spec:
       resource "opnsense_kea_dhcpv4_reservation" "crobputer" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.191"
-        mac_address = "1a:4b:24:c7:d3:40"
+        mac_address = "5e:bb:f6:9e:ee:fa"
         description = "Crobputer"
       }
 
