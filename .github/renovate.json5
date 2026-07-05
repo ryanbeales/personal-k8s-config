@@ -72,9 +72,7 @@
         "gateway-helm",
         "envoyproxy/gateway-helm",
         "envoyproxy//gateway-helm",
-        "home-assistant/core",
-        "immich",
-        "immich-app/immich"
+        "home-assistant/core"
       ],
       automerge: true
     }
