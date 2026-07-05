@@ -47,6 +47,7 @@ server:
 machine-learning:
   persistence:
     cache:
+      type: persistentVolumeClaim
       existingClaim: immich-mlcache-pvc
 
 valkey:
