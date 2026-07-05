@@ -138,15 +138,15 @@ spec:
       }
 
       import {
-        to = opnsense_kea_dhcpv4_reservation.res_04-7c-16-8a-be-65
+        to = opnsense_kea_dhcpv4_reservation.crobceratops
         id = "4aff5f95-b0ca-454d-802b-31680c9af1a5"
       }
 
-      resource "opnsense_kea_dhcpv4_reservation" "res_04-7c-16-8a-be-65" {
+      resource "opnsense_kea_dhcpv4_reservation" "crobceratops" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.139"
-        mac_address = "04:7c:16:8a:be:65"
-        description = "Migrated 04:7C:16:8A:BE:65"
+        mac_address = "88:c9:b3:bf:7d:eb"
+        description = "crobceratops"
       }
 
       import {
@@ -185,17 +185,7 @@ spec:
         description = "Migrated reocam"
       }
 
-      import {
-        to = opnsense_kea_dhcpv4_reservation.res_5e-bb-f6-9e-ee-fa
-        id = "1f6df7a4-b8bc-430e-9aa1-9fe64ac9311c"
-      }
 
-      resource "opnsense_kea_dhcpv4_reservation" "res_5e-bb-f6-9e-ee-fa" {
-        subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
-        ip_address  = "10.0.0.191"
-        mac_address = "5e:bb:f6:9e:ee:fa"
-        description = "Migrated 5e:bb:f6:9e:ee:fa"
-      }
 
       import {
         to = opnsense_kea_dhcpv4_reservation.ryan-s-s26-ultra-107
@@ -492,8 +482,8 @@ spec:
 
       resource "opnsense_kea_dhcpv4_reservation" "crobputer" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
-        ip_address  = "10.0.0.170"
-        mac_address = "88:c9:b3:bf:7d:eb"
+        ip_address  = "10.0.0.191"
+        mac_address = "1a:4b:24:c7:d3:40"
         description = "Crobputer"
       }
 
