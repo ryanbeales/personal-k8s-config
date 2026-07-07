@@ -145,7 +145,7 @@ spec:
       resource "opnsense_kea_dhcpv4_reservation" "crobceratops" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.139"
-        mac_address = "88:c9:b3:bf:7d:eb"
+        mac_address = "10:5a:95:75:24:09"
         description = "crobceratops"
       }
 
