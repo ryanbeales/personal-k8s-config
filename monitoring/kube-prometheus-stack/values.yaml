@@ -19,7 +19,7 @@ alertmanager:
       group_by: ['job']
       group_wait: 30s
       group_interval: 5m
-      repeat_interval: 12h
+      repeat_interval: 24h
       receiver: 'email-notifications'
       routes:
       - match:
