@@ -42,6 +42,15 @@ alertmanager:
           namespace: octoprint
         receiver: 'null'
       - match:
+          namespace: llama
+        receiver: 'null'
+      - match:
+          alertname: KubeDaemonSetRolloutStuck
+        receiver: 'null'
+      - match:
+          alertname: KubeDaemonSetMisScheduled
+        receiver: 'null'
+      - match:
           alertname: NodeDiskIOSaturation
         receiver: 'null'
       - match:
