@@ -94,3 +94,9 @@ If pod-level diagnostics are insufficient, use the cluster's observability stack
   - **Root Cause**: The host node's NVIDIA GPU drivers/libraries were upgraded (e.g., via host updates), but the running kernel has not loaded the new module version, creating a mismatch with the user-space libraries.
   - **Rectification**: Reboot the affected GPU node (e.g. `croblodocus`) to load the matching kernel module and sync it with the libraries.
 
+- **Conduit/RocksDB Database Corruption** (`Corruption: missing start of fragmented record(2)`):
+  - **Symptoms**: Conduit pod stuck in `CrashLoopBackOff` with database initialization errors in logs.
+  - **Root Cause**: Unclean restarts or filesystem issues, especially when operating on NFS storage (`crobasaurusrex-nfs`).
+  - **Rectification**: Run `ldb repair` using a temporary debug container to recover the database. Follow the detailed steps in [self-hosted-services/conduit/README.md](file:///c:/Users/dimes/src/personal-microk8s-config-1/self-hosted-services/conduit/README.md).
+
+
