@@ -19,14 +19,14 @@ spec:
       # Switch to the nvidia runtime class to get access to GPUs
       runtimeClassName: nvidia
 
-      # Schedule faster-whisper on GTX 1060
+      # Schedule faster-whisper on GTX 3060
       nodeSelector:
-        nvidia.com/gpu.product: NVIDIA-GeForce-GTX-1060-6GB
+        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060
 
       containers:
         - name: faster-whisper
           # Disable - renovate: datasource=github-tags depname=linuxserver/docker-faster-whisper versioning=docker
-          image: lscr.io/linuxserver/faster-whisper:3.1.0-gpu-legacy
+          image: lscr.io/linuxserver/faster-whisper:3.3.1-gpu
           env:
             - name: PUID
               value: "1000"
@@ -35,7 +35,7 @@ spec:
             - name: TZ
               value: America/Vancouver
             - name: WHISPER_MODEL
-              value: Systran/faster-distil-whisper-medium.en
+              value: distil-whisper/distil-large-v3.5-ct2
             - name: WHISPER_LANG
               value: en
           resources:
