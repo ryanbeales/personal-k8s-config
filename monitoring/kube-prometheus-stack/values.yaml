@@ -50,6 +50,14 @@ alertmanager:
       - match:
           alertname: KubeDaemonSetMisScheduled
         receiver: 'null'
+      - match_re:
+          alertname: KubePodNotReady
+          pod: ^(csi-nfs-node-.*|node-tuning-.*|promtail-.*|nfd-worker-.*)$
+        receiver: 'null'
+      - match:
+          alertname: TargetDown
+          job: kubelet
+        receiver: 'null'
       - match:
           alertname: NodeDiskIOSaturation
         receiver: 'null'
