@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nomic-embed-text-nfs-pvc
+  name: llama-nomic-embed-text-nfs-pvc
   namespace: embeddings
 spec:
   accessModes:
