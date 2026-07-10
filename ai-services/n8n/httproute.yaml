@@ -5,8 +5,10 @@ metadata:
   namespace: n8n
 spec:
   parentRefs:
-    - name: internal-gateway
-      namespace: default
+    - group: gateway.networking.k8s.io	
+      kind: Gateway
+      name: crobasaurusrex-gateway
+      namespace: gateways
   hostnames:
     - "n8n.crobasaurusrex.ryanbeales.com"
   rules:

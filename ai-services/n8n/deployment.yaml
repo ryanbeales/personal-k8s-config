@@ -15,6 +15,14 @@ spec:
       labels:
         app.kubernetes.io/name: n8n
     spec:
+      enableServiceLinks: false
+      initContainers:
+        - name: volume-permissions
+          image: busybox:latest
+          command: ["sh", "-c", "chown -R 1000:1000 /home/node/.n8n"]
+          volumeMounts:
+            - name: storage
+              mountPath: /home/node/.n8n
       containers:
         - name: n8n
           # renovate: datasource=docker depname=n8nio/n8n versioning=loose
