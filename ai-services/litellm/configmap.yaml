@@ -21,6 +21,16 @@ data:
           model: openai/qwen2.5-coder-7b-instruct-q4_k_m.gguf
           api_base: http://llama-qwen-coder-7b.qwen-coder.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+      - model_name: faster-whisper
+        litellm_params:
+          model: openai/whisper-1
+          api_base: http://faster-whisper.faster-whisper.svc.cluster.local:10300/v1
+          api_key: "sk-no-key"
+      - model_name: omnivoice
+        litellm_params:
+          model: openai/tts-1
+          api_base: http://omnivoice.omnivoice.svc.cluster.local:8880/v1
+          api_key: "sk-no-key"
 
     router_settings:
       fallbacks:
@@ -32,3 +42,9 @@ data:
           routing_strategy: "latency-based-routing"
         - group_name: "code"
           models: ["qwen-coder-7B"]
+        - group_name: "vision"
+          models: ["gemma-4-12B"]
+        - group_name: "stt"
+          models: ["faster-whisper"]
+        - group_name: "tts"
+          models: ["omnivoice"]
