@@ -35,7 +35,7 @@ spec:
             - name: TZ
               value: America/Vancouver
             - name: WHISPER_MODEL
-              value: distil-whisper/distil-large-v3.5-ct2
+              value: Systran/faster-distil-whisper-medium.en
             - name: WHISPER_LANG
               value: en
           resources:
