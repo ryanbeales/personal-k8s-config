@@ -45,6 +45,11 @@ If pod-level diagnostics are insufficient, use the cluster's observability stack
 
 ## Common Failure Patterns
 
+- **NFS PVC AccessMode Mismatch** (`mount.nfs: Cannot allocate memory`):
+  - **Symptoms**: PVC stuck in `Pending` or Pod stuck in `ContainerCreating`. `kubectl describe pvc` shows "failed to provision volume ... mount failed: exit status 32 ... Cannot allocate memory".
+  - **Root Cause**: Requesting `accessModes: ReadWriteOnce` on an NFS StorageClass (like `crobasaurusrex-nfs`) that is strictly designed for `ReadWriteMany` network pooling. The NFS CSI driver may crash the underlying `mount.nfs` process and emit this generic memory error instead of a helpful access mode validation error.
+  - **Rectification**: Update the PVC YAML manifest to use `accessModes: ReadWriteMany`.
+
 - **NFS Provisioning Failure** (`mount.nfs: Cannot allocate memory`):
   - **Symptoms**: Pods stuck in `ContainerCreating` or PVCs stuck in `Pending` with events showing "failed to provision volume ... mount failed: exit status 32 ... Cannot allocate memory".
   - **Rectification**: Restart the NFS server deployment:
