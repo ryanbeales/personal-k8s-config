@@ -71,7 +71,7 @@ def process_message(message):
     raw_email = response['Body'].read()
 
     # 1.5 Local routing for specific addresses
-    if original_recipient.lower() == 'hermes@ryanbeales.com':
+    if original_recipient.lower() in ['hermes@ryanbeales.com', 'n8n@ryanbeales.com']:
         receipt = sns_msg.get('receipt', {})
         spf_status = receipt.get('spfVerdict', {}).get('status', 'FAIL')
         dkim_status = receipt.get('dkimVerdict', {}).get('status', 'FAIL')
