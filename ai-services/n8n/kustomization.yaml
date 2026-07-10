@@ -1,0 +1,7 @@
+resources:
+  - namespace.yaml
+  - n8n-nfs-pvc.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - httproute.yaml

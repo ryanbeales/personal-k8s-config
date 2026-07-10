@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: n8n-config
+  namespace: n8n
+data:
+  WEBHOOK_URL: "https://n8n.crobasaurusrex.ryanbeales.com"
+  N8N_EMAIL_MODE: "smtp"
+  N8N_SMTP_HOST: "maddy.maddy.svc.cluster.local"
+  N8N_SMTP_PORT: "25"
+  N8N_SMTP_SENDER: "n8n@ryanbeales.com"
+  N8N_SMTP_SSL: "false"
+  N8N_SMTP_STARTTLS: "false"
