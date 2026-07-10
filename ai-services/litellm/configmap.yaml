@@ -6,6 +6,7 @@ metadata:
 data:
   config.yaml: |
     model_list:
+      # Explicit individual models
       - model_name: gemma-4-26B
         litellm_params:
           model: openai/google/gemma-4-26B-A4B-it-qat-q4_0-gguf
@@ -32,19 +33,48 @@ data:
           api_base: http://omnivoice.omnivoice.svc.cluster.local:8880/v1
           api_key: "sk-no-key"
 
+      # Routing Groups (Aliases via repeated model_names)
+      # "auto" group
+      - model_name: auto
+        litellm_params:
+          model: openai/google/gemma-4-26B-A4B-it-qat-q4_0-gguf
+          api_base: http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+      - model_name: auto
+        litellm_params:
+          model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
+          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+
+      # "code" group
+      - model_name: code
+        litellm_params:
+          model: openai/qwen2.5-coder-7b-instruct-q4_k_m.gguf
+          api_base: http://llama-qwen-coder-7b.qwen-coder.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+
+      # "vision" group
+      - model_name: vision
+        litellm_params:
+          model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
+          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+
+      # "stt" group
+      - model_name: stt
+        litellm_params:
+          model: openai/whisper-1
+          api_base: http://faster-whisper.faster-whisper.svc.cluster.local:10300/v1
+          api_key: "sk-no-key"
+
+      # "tts" group
+      - model_name: tts
+        litellm_params:
+          model: openai/tts-1
+          api_base: http://omnivoice.omnivoice.svc.cluster.local:8880/v1
+          api_key: "sk-no-key"
+
     router_settings:
+      routing_strategy: "latency-based-routing"
       fallbacks:
         - {"gemma-4-26B": ["gemma-4-12B"]}
-      
-      routing_groups:
-        - group_name: "auto"
-          models: ["gemma-4-26B", "gemma-4-12B"]
-          routing_strategy: "latency-based-routing"
-        - group_name: "code"
-          models: ["qwen-coder-7B"]
-        - group_name: "vision"
-          models: ["gemma-4-12B"]
-        - group_name: "stt"
-          models: ["faster-whisper"]
-        - group_name: "tts"
-          models: ["omnivoice"]
