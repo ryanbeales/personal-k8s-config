@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nomic-embed-text
+  namespace: embeddings
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nomic-embed-text
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nomic-embed-text
+    spec:
+      runtimeClassName: nvidia
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060
+      initContainers:
+        - name: download-model
+          image: curlimages/curl:latest
+          securityContext:
+            runAsUser: 0
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /models/nomic-embed-text-v1.5.Q4_K_M.gguf ]; then
+                echo "Downloading nomic-embed-text-v1.5..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/nomic-embed-text-v1.5.Q4_K_M.gguf \
+                  "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q4_K_M.gguf"
+              else
+                echo "Model already downloaded."
+              fi
+          env:
+            - name: HUGGING_FACE_HUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hf-token-secret
+                  key: token
+                  optional: true
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /models
+      containers:
+        - name: llama-cpp
+          # renovate: datasource=docker depname=ghcr.io/ggml-org/llama.cpp versioning=loose
+          image: ghcr.io/ggml-org/llama.cpp:server-cuda
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              /app/llama-server \
+                -m /models/nomic-embed-text-v1.5.Q4_K_M.gguf \
+                -c 2048 \
+                --embedding \
+                --flash-attn on \
+                -ngl -1 \
+                --host 0.0.0.0 \
+                --port 8000
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+            requests:
+              nvidia.com/gpu: "1"
+          ports:
+            - name: http
+              containerPort: 8000
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /models
+            - name: shm
+              mountPath: /dev/shm
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            failureThreshold: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: nomic-embed-text-nfs-pvc
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi

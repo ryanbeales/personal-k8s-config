@@ -1,0 +1,3 @@
+argocd:
+  name: nomic-embed-text
+  namespace: embeddings
