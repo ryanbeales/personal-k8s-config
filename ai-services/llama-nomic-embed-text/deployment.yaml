@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qwen-coder-7b
-  namespace: qwen-coder
+  name: llama-nomic-embed-text
+  namespace: embeddings
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: qwen-coder-7b
+      app.kubernetes.io/name: llama-nomic-embed-text
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: qwen-coder-7b
+        app.kubernetes.io/name: llama-nomic-embed-text
     spec:
       runtimeClassName: nvidia
       nodeSelector:
@@ -27,11 +27,11 @@ spec:
             - sh
             - -c
             - |
-              if [ ! -f /models/qwen2.5-coder-7b-instruct-q4_k_m.gguf ]; then
-                echo "Downloading Qwen2.5-Coder-7B-Instruct..."
+              if [ ! -f /models/llama-nomic-embed-text-v1.5.Q4_K_M.gguf ]; then
+                echo "Downloading llama-nomic-embed-text-v1.5..."
                 curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/qwen2.5-coder-7b-instruct-q4_k_m.gguf \
-                  "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF/resolve/main/qwen2.5-coder-7b-instruct-q4_k_m.gguf"
+                  -o /models/llama-nomic-embed-text-v1.5.Q4_K_M.gguf \
+                  "https://huggingface.co/nomic-ai/llama-nomic-embed-text-v1.5-GGUF/resolve/main/llama-nomic-embed-text-v1.5.Q4_K_M.gguf"
               else
                 echo "Model already downloaded."
               fi
@@ -53,11 +53,9 @@ spec:
           args:
             - |
               /app/llama-server \
-                -m /models/qwen2.5-coder-7b-instruct-q4_k_m.gguf \
-                -c 8192 \
-                -np 1 \
-                -ctk q4_0 \
-                -ctv q4_0 \
+                -m /models/llama-nomic-embed-text-v1.5.Q4_K_M.gguf \
+                -c 2048 \
+                --embedding \
                 --flash-attn on \
                 -ngl -1 \
                 --host 0.0.0.0 \
@@ -94,7 +92,7 @@ spec:
       volumes:
         - name: cache-volume
           persistentVolumeClaim:
-            claimName: qwen-coder-7b-nfs-pvc
+            claimName: llama-nomic-embed-text-nfs-pvc
         - name: shm
           emptyDir:
             medium: Memory
