@@ -27,11 +27,11 @@ spec:
             - sh
             - -c
             - |
-              if [ ! -f /models/llama-nomic-embed-text-v1.5.Q4_K_M.gguf ]; then
-                echo "Downloading llama-nomic-embed-text-v1.5..."
+              if [ ! -f /models/nomic-embed-text-v1.5.Q4_K_M.gguf ]; then
+                echo "Downloading nomic-embed-text-v1.5..."
                 curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/llama-nomic-embed-text-v1.5.Q4_K_M.gguf \
-                  "https://huggingface.co/nomic-ai/llama-nomic-embed-text-v1.5-GGUF/resolve/main/llama-nomic-embed-text-v1.5.Q4_K_M.gguf"
+                  -o /models/nomic-embed-text-v1.5.Q4_K_M.gguf \
+                  "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q4_K_M.gguf"
               else
                 echo "Model already downloaded."
               fi
@@ -53,7 +53,7 @@ spec:
           args:
             - |
               /app/llama-server \
-                -m /models/llama-nomic-embed-text-v1.5.Q4_K_M.gguf \
+                -m /models/nomic-embed-text-v1.5.Q4_K_M.gguf \
                 -c 2048 \
                 --embedding \
                 --flash-attn on \
