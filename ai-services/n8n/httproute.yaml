@@ -17,5 +17,8 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: n8n
+        - group: ''
+          kind: Service
+          name: n8n
           port: 5678
+          weight: 1
