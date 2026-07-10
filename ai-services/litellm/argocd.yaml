@@ -1,0 +1,3 @@
+argocd:
+  name: litellm
+  namespace: litellm
