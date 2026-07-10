@@ -38,8 +38,8 @@ spec:
                 chmod +x /opt/data/.local/bin/kubectl
               fi
               /opt/hermes/.venv/bin/hermes config set model.provider custom
-              /opt/hermes/.venv/bin/hermes config set model.base_url http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
-              /opt/hermes/.venv/bin/hermes config set model.default google/gemma-4-26B-A4B-it-qat-q4_0-gguf
+              /opt/hermes/.venv/bin/hermes config set model.base_url http://litellm.litellm.svc.cluster.local:4000/v1
+              /opt/hermes/.venv/bin/hermes config set model.default auto
               /opt/hermes/.venv/bin/hermes config set model.context_length 131072
           volumeMounts:
             - name: storage
