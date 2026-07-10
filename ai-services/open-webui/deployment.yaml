@@ -42,7 +42,7 @@ spec:
               value: "google/gemma-4-12B-it-qat-q4_0-gguf"
             - name: VECTOR_DB
               value: "qdrant"
-            - name: QDRANT_URL
+            - name: QDRANT_URI
               value: "http://qdrant.qdrant.svc.cluster.local:6333"
             - name: RAG_EMBEDDING_ENGINE
               value: "openai"
