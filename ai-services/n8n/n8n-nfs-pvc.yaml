@@ -5,7 +5,7 @@ metadata:
   namespace: n8n
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: crobasaurusrex-nfs
   resources:
     requests:
