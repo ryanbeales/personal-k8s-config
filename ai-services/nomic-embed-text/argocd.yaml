@@ -1,3 +1,3 @@
 argocd:
-  name: nomic-embed-text
+  name: llama-nomic-embed-text
   namespace: embeddings
