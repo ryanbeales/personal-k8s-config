@@ -47,6 +47,14 @@ jobs:
           dir_names: true
           dir_names_exclude_current_dir: true
 
+      - name: Cache Kubeconform Schemas
+        uses: actions/cache@v4
+        with:
+          path: /tmp/kubeconform-cache
+          key: ${{ runner.os }}-kubeconform-schemas-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-kubeconform-schemas-
+
       - name: Build and Validate
         id: build-validate
         run: bash .github/workflows/scripts/validate_manifests.sh "${{ steps.changed-dirs.outputs.all_changed_files }}"
