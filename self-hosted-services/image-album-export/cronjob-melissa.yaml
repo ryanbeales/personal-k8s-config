@@ -19,7 +19,7 @@ spec:
             kubernetes.io/hostname: crobasaurusrex
           containers:
           - name: immich-album-export
-            image: ghcr.io/ryanbeales/immich-album-export:latest
+            image: ghcr.io/ryanbeales/immich-album-export:sha-ed10587
             imagePullPolicy: Always
             env:
             # K8s local URL for immich service
