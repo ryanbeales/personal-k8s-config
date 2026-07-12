@@ -39,6 +39,7 @@ cameras:
         record: preset-record-generic-audio-aac
     snapshots:
       enabled: true
+      height: 500
     zones:
       yard:
         coordinates: 0.998,0.671,0.999,0.998,0,0.998,0.003,0.467,0.174,0.421,0.251,0.341,0.267,0.22,0.61,0.229,0.673,0.384,0.676,0.217,0.71,0.218
@@ -67,6 +68,7 @@ cameras:
         record: preset-record-generic-audio-aac
     snapshots:
       enabled: true
+      height: 500
       required_zones:
         - driveway
     zones:
@@ -126,9 +128,9 @@ review:
       - cats in the planter box
 genai:
   provider: openai
-  base_url: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+  base_url: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
   api_key: sk-no-key
-  model: gemma-4-12b-it-qat-q4_0.gguf
+  model: gemma-4-E4B_q4_0-it.gguf
 objects:
   track:
     - person
