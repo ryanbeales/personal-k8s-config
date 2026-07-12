@@ -145,6 +145,7 @@ objects:
     - motorcycle
     - zebra
     - giraffe
+    - bird
   genai:
     enabled: true
     prompt: >-
