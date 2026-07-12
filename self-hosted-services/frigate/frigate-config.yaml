@@ -88,6 +88,7 @@ detect:
 detectors:
   onnx:
     type: onnx
+    device: Tensorrt
 # https://docs.frigate.video/configuration/object_detectors/#generate-models
 # Download models from https://github.com/Megvii-BaseDetection/YOLOX/tree/main/demo/ONNXRuntime
 model:
