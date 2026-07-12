@@ -93,6 +93,7 @@ model:
   width: 320
   height: 320
   input_tensor: nchw
+  input_dtype: float
   input_pixel_format: rgb
   path: /config/models/yolov9-m-320.onnx
   labelmap_path: /labelmap/coco-80.txt
