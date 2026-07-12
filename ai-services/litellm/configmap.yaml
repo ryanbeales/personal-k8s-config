@@ -99,3 +99,8 @@ data:
       routing_strategy: "latency-based-routing"
       fallbacks:
         - {"agent": ["gemma-4-12B", "gemma-4-E4B"]}
+
+    litellm_settings:
+      callbacks:
+        - prometheus
+      require_auth_for_metrics_endpoint: false
