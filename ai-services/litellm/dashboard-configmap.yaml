@@ -1,0 +1,460 @@
+apiVersion: v1
+data:
+  litellm-dashboard.json: "{\n  \"__inputs\": [\n    {\n      \"name\": \"DS_PROMETHEUS\"\
+    ,\n      \"label\": \"Prometheus\",\n      \"description\": \"\",\n      \"type\"\
+    : \"datasource\",\n      \"pluginId\": \"prometheus\",\n      \"pluginName\":\
+    \ \"Prometheus\"\n    }\n  ],\n  \"__elements\": {},\n  \"__requires\": [\n  \
+    \  {\n      \"type\": \"panel\",\n      \"id\": \"bargauge\",\n      \"name\"\
+    : \"Bar gauge\",\n      \"version\": \"\"\n    },\n    {\n      \"type\": \"grafana\"\
+    ,\n      \"id\": \"grafana\",\n      \"name\": \"Grafana\",\n      \"version\"\
+    : \"12.4.0-19274378403\"\n    },\n    {\n      \"type\": \"datasource\",\n   \
+    \   \"id\": \"prometheus\",\n      \"name\": \"Prometheus\",\n      \"version\"\
+    : \"1.0.0\"\n    },\n    {\n      \"type\": \"panel\",\n      \"id\": \"stat\"\
+    ,\n      \"name\": \"Stat\",\n      \"version\": \"\"\n    },\n    {\n      \"\
+    type\": \"panel\",\n      \"id\": \"timeseries\",\n      \"name\": \"Time series\"\
+    ,\n      \"version\": \"\"\n    }\n  ],\n  \"annotations\": {\n    \"list\": [\n\
+    \      {\n        \"builtIn\": 1,\n        \"datasource\": {\n          \"type\"\
+    : \"grafana\",\n          \"uid\": \"-- Grafana --\"\n        },\n        \"enable\"\
+    : true,\n        \"hide\": true,\n        \"iconColor\": \"rgba(0, 211, 255, 1)\"\
+    ,\n        \"name\": \"Annotations & Alerts\",\n        \"type\": \"dashboard\"\
+    \n      }\n    ]\n  },\n  \"description\": \"LiteLLM Prometheus Metrics\",\n \
+    \ \"editable\": true,\n  \"fiscalYearStartMonth\": 0,\n  \"graphTooltip\": 0,\n\
+    \  \"links\": [],\n  \"panels\": [\n    {\n      \"datasource\": {\n        \"\
+    type\": \"prometheus\",\n        \"uid\": \"${datasource}\"\n      },\n      \"\
+    description\": \"The state of the deployment: 0 = healthy, 1 = partial outage,\
+    \ 2 = complete outage\",\n      \"fieldConfig\": {\n        \"defaults\": {\n\
+    \          \"color\": {\n            \"mode\": \"thresholds\"\n          },\n\
+    \          \"mappings\": [],\n          \"thresholds\": {\n            \"mode\"\
+    : \"absolute\",\n            \"steps\": [\n              {\n                \"\
+    color\": \"green\",\n                \"value\": 0\n              },\n        \
+    \      {\n                \"color\": \"red\",\n                \"value\": 80\n\
+    \              }\n            ]\n          }\n        },\n        \"overrides\"\
+    : [\n          {\n            \"matcher\": {\n              \"id\": \"byFrameRefID\"\
+    ,\n              \"options\": \"A\"\n            },\n            \"properties\"\
+    : [\n              {\n                \"id\": \"mappings\",\n                \"\
+    value\": [\n                  {\n                    \"options\": {\n        \
+    \              \"0\": {\n                        \"color\": \"green\",\n     \
+    \                   \"index\": 0,\n                        \"text\": \"healthy\"\
+    \n                      },\n                      \"1\": {\n                 \
+    \       \"color\": \"yellow\",\n                        \"index\": 1,\n      \
+    \                  \"text\": \"partial outage\"\n                      },\n  \
+    \                    \"2\": {\n                        \"color\": \"red\",\n \
+    \                       \"index\": 2,\n                        \"text\": \"complete\
+    \ outage\"\n                      }\n                    },\n                \
+    \    \"type\": \"value\"\n                  }\n                ]\n           \
+    \   }\n            ]\n          }\n        ]\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 10,\n        \"w\": 24,\n        \"x\": 0,\n        \"y\": 0\n\
+    \      },\n      \"id\": 1,\n      \"options\": {\n        \"colorMode\": \"background\"\
+    ,\n        \"graphMode\": \"none\",\n        \"justifyMode\": \"auto\",\n    \
+    \    \"orientation\": \"auto\",\n        \"percentChangeColorMode\": \"standard\"\
+    ,\n        \"reduceOptions\": {\n          \"calcs\": [\n            \"lastNotNull\"\
+    \n          ],\n          \"fields\": \"\",\n          \"values\": false\n   \
+    \     },\n        \"showPercentChange\": false,\n        \"textMode\": \"auto\"\
+    ,\n        \"wideLayout\": true\n      },\n      \"pluginVersion\": \"12.4.0-19274378403\"\
+    ,\n      \"repeat\": \"model\",\n      \"repeatDirection\": \"h\",\n      \"targets\"\
+    : [\n        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${datasource}\"\n          },\n          \"editorMode\"\
+    : \"code\",\n          \"expr\": \"litellm_deployment_state{job=~\\\"$job\\\"\
+    , instance=~\\\"$instance\\\", litellm_model_name=~\\\"$model\\\"}\",\n      \
+    \    \"legendFormat\": \"{{litellm_model_name}}\",\n          \"range\": true,\n\
+    \          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"LLM Deployment\
+    \ Analytics $model\",\n      \"type\": \"stat\"\n    },\n    {\n      \"datasource\"\
+    : {\n        \"type\": \"prometheus\",\n        \"uid\": \"${datasource}\"\n \
+    \     },\n      \"description\": \"Total latency for a models LLM API call\",\n\
+    \      \"fieldConfig\": {\n        \"defaults\": {\n          \"color\": {\n \
+    \           \"mode\": \"palette-classic\"\n          },\n          \"custom\"\
+    : {\n            \"axisBorderShow\": false,\n            \"axisCenteredZero\"\
+    : false,\n            \"axisColorMode\": \"text\",\n            \"axisLabel\"\
+    : \"\",\n            \"axisPlacement\": \"auto\",\n            \"barAlignment\"\
+    : 0,\n            \"barWidthFactor\": 0.6,\n            \"drawStyle\": \"line\"\
+    ,\n            \"fillOpacity\": 0,\n            \"gradientMode\": \"none\",\n\
+    \            \"hideFrom\": {\n              \"legend\": false,\n             \
+    \ \"tooltip\": false,\n              \"viz\": false\n            },\n        \
+    \    \"insertNulls\": false,\n            \"lineInterpolation\": \"linear\",\n\
+    \            \"lineWidth\": 1,\n            \"pointSize\": 5,\n            \"\
+    scaleDistribution\": {\n              \"type\": \"linear\"\n            },\n \
+    \           \"showPoints\": \"auto\",\n            \"showValues\": false,\n  \
+    \          \"spanNulls\": false,\n            \"stacking\": {\n              \"\
+    group\": \"A\",\n              \"mode\": \"none\"\n            },\n          \
+    \  \"thresholdsStyle\": {\n              \"mode\": \"off\"\n            }\n  \
+    \        },\n          \"mappings\": [],\n          \"thresholds\": {\n      \
+    \      \"mode\": \"absolute\",\n            \"steps\": [\n              {\n  \
+    \              \"color\": \"green\",\n                \"value\": 0\n         \
+    \     },\n              {\n                \"color\": \"red\",\n             \
+    \   \"value\": 80\n              }\n            ]\n          },\n          \"\
+    unit\": \"s\"\n        },\n        \"overrides\": []\n      },\n      \"gridPos\"\
+    : {\n        \"h\": 9,\n        \"w\": 12,\n        \"x\": 0,\n        \"y\":\
+    \ 10\n      },\n      \"id\": 2,\n      \"options\": {\n        \"legend\": {\n\
+    \          \"calcs\": [],\n          \"displayMode\": \"list\",\n          \"\
+    placement\": \"bottom\",\n          \"showLegend\": true\n        },\n       \
+    \ \"tooltip\": {\n          \"hideZeros\": false,\n          \"mode\": \"single\"\
+    ,\n          \"sort\": \"none\"\n        }\n      },\n      \"pluginVersion\"\
+    : \"12.4.0-19274378403\",\n      \"targets\": [\n        {\n          \"datasource\"\
+    : {\n            \"type\": \"prometheus\",\n            \"uid\": \"${datasource}\"\
+    \n          },\n          \"editorMode\": \"code\",\n          \"expr\": \"histogram_quantile(\\\
+    n  0.50,\\n  sum by (model, le) (\\n    rate(litellm_llm_api_latency_metric_bucket{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\\
+    n  )\\n)\",\n          \"legendFormat\": \"{{model}} - p50\",\n          \"range\"\
+    : true,\n          \"refId\": \"A\"\n        },\n        {\n          \"datasource\"\
+    : {\n            \"type\": \"prometheus\",\n            \"uid\": \"${datasource}\"\
+    \n          },\n          \"editorMode\": \"code\",\n          \"expr\": \"histogram_quantile(\\\
+    n  0.90,\\n  sum by (model, le) (\\n    rate(litellm_llm_api_latency_metric_bucket{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\\
+    n  )\\n)\",\n          \"hide\": false,\n          \"legendFormat\": \"{{model}}\
+    \ - p90\",\n          \"range\": true,\n          \"refId\": \"B\"\n        },\n\
+    \        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${datasource}\"\n          },\n          \"editorMode\"\
+    : \"code\",\n          \"expr\": \"histogram_quantile(\\n  0.95,\\n  sum by (model,\
+    \ le) (\\n    rate(litellm_llm_api_latency_metric_bucket{job=~\\\"$job\\\", instance=~\\\
+    \"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\n  )\\n)\",\n    \
+    \      \"hide\": false,\n          \"legendFormat\": \"{{model}} - p95\",\n  \
+    \        \"range\": true,\n          \"refId\": \"C\"\n        },\n        {\n\
+    \          \"datasource\": {\n            \"type\": \"prometheus\",\n        \
+    \    \"uid\": \"${datasource}\"\n          },\n          \"editorMode\": \"code\"\
+    ,\n          \"expr\": \"histogram_quantile(\\n  0.99,\\n  sum by (model, le)\
+    \ (\\n    rate(litellm_llm_api_latency_metric_bucket{job=~\\\"$job\\\", instance=~\\\
+    \"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\n  )\\n)\",\n    \
+    \      \"hide\": false,\n          \"legendFormat\": \"{{model}} - p99\",\n  \
+    \        \"range\": true,\n          \"refId\": \"D\"\n        }\n      ],\n \
+    \     \"title\": \"Models Latency\",\n      \"type\": \"timeseries\"\n    },\n\
+    \    {\n      \"datasource\": {\n        \"type\": \"prometheus\",\n        \"\
+    uid\": \"${datasource}\"\n      },\n      \"description\": \"Time to first token\
+    \ for a models LLM API call\",\n      \"fieldConfig\": {\n        \"defaults\"\
+    : {\n          \"color\": {\n            \"mode\": \"palette-classic\"\n     \
+    \     },\n          \"custom\": {\n            \"axisBorderShow\": false,\n  \
+    \          \"axisCenteredZero\": false,\n            \"axisColorMode\": \"text\"\
+    ,\n            \"axisLabel\": \"\",\n            \"axisPlacement\": \"auto\",\n\
+    \            \"barAlignment\": 0,\n            \"barWidthFactor\": 0.6,\n    \
+    \        \"drawStyle\": \"line\",\n            \"fillOpacity\": 0,\n         \
+    \   \"gradientMode\": \"none\",\n            \"hideFrom\": {\n              \"\
+    legend\": false,\n              \"tooltip\": false,\n              \"viz\": false\n\
+    \            },\n            \"insertNulls\": false,\n            \"lineInterpolation\"\
+    : \"linear\",\n            \"lineWidth\": 1,\n            \"pointSize\": 5,\n\
+    \            \"scaleDistribution\": {\n              \"type\": \"linear\"\n  \
+    \          },\n            \"showPoints\": \"auto\",\n            \"showValues\"\
+    : false,\n            \"spanNulls\": false,\n            \"stacking\": {\n   \
+    \           \"group\": \"A\",\n              \"mode\": \"none\"\n            },\n\
+    \            \"thresholdsStyle\": {\n              \"mode\": \"off\"\n       \
+    \     }\n          },\n          \"mappings\": [],\n          \"thresholds\":\
+    \ {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
+    \     {\n                \"color\": \"green\",\n                \"value\": 0\n\
+    \              },\n              {\n                \"color\": \"red\",\n    \
+    \            \"value\": 80\n              }\n            ]\n          },\n   \
+    \       \"unit\": \"s\"\n        },\n        \"overrides\": []\n      },\n   \
+    \   \"gridPos\": {\n        \"h\": 9,\n        \"w\": 12,\n        \"x\": 12,\n\
+    \        \"y\": 10\n      },\n      \"id\": 3,\n      \"options\": {\n       \
+    \ \"legend\": {\n          \"calcs\": [],\n          \"displayMode\": \"list\"\
+    ,\n          \"placement\": \"bottom\",\n          \"showLegend\": true\n    \
+    \    },\n        \"tooltip\": {\n          \"hideZeros\": false,\n          \"\
+    mode\": \"single\",\n          \"sort\": \"none\"\n        }\n      },\n     \
+    \ \"pluginVersion\": \"12.4.0-19274378403\",\n      \"targets\": [\n        {\n\
+    \          \"datasource\": {\n            \"type\": \"prometheus\",\n        \
+    \    \"uid\": \"${datasource}\"\n          },\n          \"editorMode\": \"code\"\
+    ,\n          \"expr\": \"histogram_quantile(\\n  0.50,\\n  sum by (model, le)\
+    \ (\\n    rate(litellm_llm_api_time_to_first_token_metric_bucket{job=~\\\"$job\\\
+    \", instance=~\\\"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\n\
+    \  )\\n)\",\n          \"legendFormat\": \"{{model}} - p50\",\n          \"range\"\
+    : true,\n          \"refId\": \"A\"\n        },\n        {\n          \"datasource\"\
+    : {\n            \"type\": \"prometheus\",\n            \"uid\": \"${datasource}\"\
+    \n          },\n          \"editorMode\": \"code\",\n          \"expr\": \"histogram_quantile(\\\
+    n  0.90,\\n  sum by (model, le) (\\n    rate(litellm_llm_api_time_to_first_token_metric_bucket{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\\
+    n  )\\n)\",\n          \"hide\": false,\n          \"legendFormat\": \"{{model}}\
+    \ - p90\",\n          \"range\": true,\n          \"refId\": \"B\"\n        },\n\
+    \        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${datasource}\"\n          },\n          \"editorMode\"\
+    : \"code\",\n          \"expr\": \"histogram_quantile(\\n  0.95,\\n  sum by (model,\
+    \ le) (\\n    rate(litellm_llm_api_time_to_first_token_metric_bucket{job=~\\\"\
+    $job\\\", instance=~\\\"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\\
+    n  )\\n)\",\n          \"hide\": false,\n          \"legendFormat\": \"{{model}}\
+    \ - p95\",\n          \"range\": true,\n          \"refId\": \"C\"\n        },\n\
+    \        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${datasource}\"\n          },\n          \"editorMode\"\
+    : \"code\",\n          \"expr\": \"histogram_quantile(\\n  0.99,\\n  sum by (model,\
+    \ le) (\\n    rate(litellm_llm_api_time_to_first_token_metric_bucket{job=~\\\"\
+    $job\\\", instance=~\\\"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval])\\\
+    n  )\\n)\",\n          \"hide\": false,\n          \"legendFormat\": \"{{model}}\
+    \ - p99\",\n          \"range\": true,\n          \"refId\": \"D\"\n        }\n\
+    \      ],\n      \"title\": \"Models Time To First Byte Latency\",\n      \"type\"\
+    : \"timeseries\"\n    },\n    {\n      \"datasource\": {\n        \"type\": \"\
+    prometheus\",\n        \"uid\": \"${datasource}\"\n      },\n      \"description\"\
+    : \"Total spend on LLM requests\",\n      \"fieldConfig\": {\n        \"defaults\"\
+    : {\n          \"color\": {\n            \"mode\": \"thresholds\"\n          },\n\
+    \          \"mappings\": [],\n          \"thresholds\": {\n            \"mode\"\
+    : \"absolute\",\n            \"steps\": [\n              {\n                \"\
+    color\": \"green\",\n                \"value\": 0\n              },\n        \
+    \      {\n                \"color\": \"red\",\n                \"value\": 80\n\
+    \              }\n            ]\n          },\n          \"unit\": \"currencyUSD\"\
+    \n        },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n    \
+    \    \"h\": 9,\n        \"w\": 6,\n        \"x\": 0,\n        \"y\": 19\n    \
+    \  },\n      \"id\": 4,\n      \"options\": {\n        \"displayMode\": \"lcd\"\
+    ,\n        \"legend\": {\n          \"calcs\": [],\n          \"displayMode\"\
+    : \"list\",\n          \"placement\": \"bottom\",\n          \"showLegend\": false\n\
+    \        },\n        \"maxVizHeight\": 300,\n        \"minVizHeight\": 16,\n \
+    \       \"minVizWidth\": 8,\n        \"namePlacement\": \"auto\",\n        \"\
+    orientation\": \"horizontal\",\n        \"reduceOptions\": {\n          \"calcs\"\
+    : [\n            \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n\
+    \          \"values\": false\n        },\n        \"showUnfilled\": true,\n  \
+    \      \"sizing\": \"auto\",\n        \"valueMode\": \"color\"\n      },\n   \
+    \   \"pluginVersion\": \"12.4.0-19274378403\",\n      \"targets\": [\n       \
+    \ {\n          \"datasource\": {\n            \"type\": \"prometheus\",\n    \
+    \        \"uid\": \"${datasource}\"\n          },\n          \"editorMode\": \"\
+    code\",\n          \"exemplar\": false,\n          \"expr\": \"topk(10, sum by\
+    \ (team, team_alias) (litellm_spend_metric_total{job=~\\\"$job\\\", instance=~\\\
+    \"$instance\\\", model=~\\\"$model\\\"}))\",\n          \"instant\": false,\n\
+    \          \"legendFormat\": \"{{team_alias}} {{team}}\",\n          \"range\"\
+    : true,\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"\
+    Total Spend per Team (top 10)\",\n      \"transformations\": [\n        {\n  \
+    \        \"id\": \"reduce\",\n          \"options\": {\n            \"reducers\"\
+    : [\n              \"lastNotNull\"\n            ]\n          }\n        },\n \
+    \       {\n          \"id\": \"sortBy\",\n          \"options\": {\n         \
+    \   \"fields\": {},\n            \"sort\": [\n              {\n              \
+    \  \"desc\": true,\n                \"field\": \"Last *\"\n              }\n \
+    \           ]\n          }\n        },\n        {\n          \"id\": \"rowsToFields\"\
+    ,\n          \"options\": {}\n        }\n      ],\n      \"type\": \"bargauge\"\
+    \n    },\n    {\n      \"datasource\": {\n        \"type\": \"prometheus\",\n\
+    \        \"uid\": \"${datasource}\"\n      },\n      \"description\": \"Total\
+    \ spend on LLM requests\",\n      \"fieldConfig\": {\n        \"defaults\": {\n\
+    \          \"color\": {\n            \"mode\": \"thresholds\"\n          },\n\
+    \          \"mappings\": [],\n          \"thresholds\": {\n            \"mode\"\
+    : \"absolute\",\n            \"steps\": [\n              {\n                \"\
+    color\": \"green\",\n                \"value\": 0\n              },\n        \
+    \      {\n                \"color\": \"red\",\n                \"value\": 80\n\
+    \              }\n            ]\n          },\n          \"unit\": \"currencyUSD\"\
+    \n        },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n    \
+    \    \"h\": 9,\n        \"w\": 6,\n        \"x\": 6,\n        \"y\": 19\n    \
+    \  },\n      \"id\": 5,\n      \"options\": {\n        \"displayMode\": \"gradient\"\
+    ,\n        \"legend\": {\n          \"calcs\": [],\n          \"displayMode\"\
+    : \"list\",\n          \"placement\": \"bottom\",\n          \"showLegend\": false\n\
+    \        },\n        \"maxVizHeight\": 300,\n        \"minVizHeight\": 16,\n \
+    \       \"minVizWidth\": 8,\n        \"namePlacement\": \"auto\",\n        \"\
+    orientation\": \"horizontal\",\n        \"reduceOptions\": {\n          \"calcs\"\
+    : [\n            \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n\
+    \          \"values\": false\n        },\n        \"showUnfilled\": true,\n  \
+    \      \"sizing\": \"auto\",\n        \"valueMode\": \"color\"\n      },\n   \
+    \   \"pluginVersion\": \"12.4.0-19274378403\",\n      \"targets\": [\n       \
+    \ {\n          \"datasource\": {\n            \"type\": \"prometheus\",\n    \
+    \        \"uid\": \"${datasource}\"\n          },\n          \"editorMode\": \"\
+    code\",\n          \"exemplar\": false,\n          \"expr\": \"topk(10, sum by\
+    \ (user, user_email) (litellm_spend_metric_total{job=~\\\"$job\\\", instance=~\\\
+    \"$instance\\\", model=~\\\"$model\\\"}))\",\n          \"instant\": false,\n\
+    \          \"legendFormat\": \"{{user_email}} {{user}}\",\n          \"range\"\
+    : true,\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"\
+    Total Spend per User (top 10)\",\n      \"transformations\": [\n        {\n  \
+    \        \"id\": \"reduce\",\n          \"options\": {\n            \"reducers\"\
+    : [\n              \"lastNotNull\"\n            ]\n          }\n        },\n \
+    \       {\n          \"id\": \"sortBy\",\n          \"options\": {\n         \
+    \   \"fields\": {},\n            \"sort\": [\n              {\n              \
+    \  \"desc\": true,\n                \"field\": \"Last *\"\n              }\n \
+    \           ]\n          }\n        },\n        {\n          \"id\": \"rowsToFields\"\
+    ,\n          \"options\": {}\n        }\n      ],\n      \"type\": \"bargauge\"\
+    \n    },\n    {\n      \"datasource\": {\n        \"type\": \"prometheus\",\n\
+    \        \"uid\": \"${datasource}\"\n      },\n      \"description\": \"Total\
+    \ spend on LLM requests\",\n      \"fieldConfig\": {\n        \"defaults\": {\n\
+    \          \"color\": {\n            \"mode\": \"thresholds\"\n          },\n\
+    \          \"mappings\": [],\n          \"thresholds\": {\n            \"mode\"\
+    : \"absolute\",\n            \"steps\": [\n              {\n                \"\
+    color\": \"green\",\n                \"value\": 0\n              },\n        \
+    \      {\n                \"color\": \"red\",\n                \"value\": 80\n\
+    \              }\n            ]\n          },\n          \"unit\": \"currencyUSD\"\
+    \n        },\n        \"overrides\": []\n      },\n      \"gridPos\": {\n    \
+    \    \"h\": 9,\n        \"w\": 6,\n        \"x\": 12,\n        \"y\": 19\n   \
+    \   },\n      \"id\": 7,\n      \"options\": {\n        \"displayMode\": \"lcd\"\
+    ,\n        \"legend\": {\n          \"calcs\": [],\n          \"displayMode\"\
+    : \"list\",\n          \"placement\": \"bottom\",\n          \"showLegend\": false\n\
+    \        },\n        \"maxVizHeight\": 300,\n        \"minVizHeight\": 16,\n \
+    \       \"minVizWidth\": 8,\n        \"namePlacement\": \"auto\",\n        \"\
+    orientation\": \"horizontal\",\n        \"reduceOptions\": {\n          \"calcs\"\
+    : [\n            \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n\
+    \          \"values\": false\n        },\n        \"showUnfilled\": true,\n  \
+    \      \"sizing\": \"auto\",\n        \"valueMode\": \"color\"\n      },\n   \
+    \   \"pluginVersion\": \"12.4.0-19274378403\",\n      \"targets\": [\n       \
+    \ {\n          \"datasource\": {\n            \"type\": \"prometheus\",\n    \
+    \        \"uid\": \"${datasource}\"\n          },\n          \"editorMode\": \"\
+    code\",\n          \"exemplar\": false,\n          \"expr\": \"topk(10, sum by\
+    \ (model) (litellm_spend_metric_total{job=~\\\"$job\\\", instance=~\\\"$instance\\\
+    \", model=~\\\"$model\\\"}))\",\n          \"instant\": false,\n          \"legendFormat\"\
+    : \"{{model}}\",\n          \"range\": true,\n          \"refId\": \"A\"\n   \
+    \     }\n      ],\n      \"title\": \"Total Spend per Model (top 10)\",\n    \
+    \  \"transformations\": [\n        {\n          \"id\": \"reduce\",\n        \
+    \  \"options\": {\n            \"reducers\": [\n              \"lastNotNull\"\n\
+    \            ]\n          }\n        },\n        {\n          \"id\": \"sortBy\"\
+    ,\n          \"options\": {\n            \"fields\": {},\n            \"sort\"\
+    : [\n              {\n                \"desc\": true,\n                \"field\"\
+    : \"Last *\"\n              }\n            ]\n          }\n        },\n      \
+    \  {\n          \"id\": \"rowsToFields\",\n          \"options\": {}\n       \
+    \ }\n      ],\n      \"type\": \"bargauge\"\n    },\n    {\n      \"datasource\"\
+    : {\n        \"type\": \"prometheus\",\n        \"uid\": \"${datasource}\"\n \
+    \     },\n      \"description\": \"Total spend on LLM requests\",\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": {\n            \"mode\": \"\
+    thresholds\"\n          },\n          \"mappings\": [],\n          \"thresholds\"\
+    : {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
+    \     {\n                \"color\": \"green\",\n                \"value\": 0\n\
+    \              },\n              {\n                \"color\": \"red\",\n    \
+    \            \"value\": 80\n              }\n            ]\n          },\n   \
+    \       \"unit\": \"currencyUSD\"\n        },\n        \"overrides\": []\n   \
+    \   },\n      \"gridPos\": {\n        \"h\": 9,\n        \"w\": 6,\n        \"\
+    x\": 18,\n        \"y\": 19\n      },\n      \"id\": 6,\n      \"options\": {\n\
+    \        \"displayMode\": \"gradient\",\n        \"legend\": {\n          \"calcs\"\
+    : [],\n          \"displayMode\": \"list\",\n          \"placement\": \"bottom\"\
+    ,\n          \"showLegend\": false\n        },\n        \"maxVizHeight\": 300,\n\
+    \        \"minVizHeight\": 16,\n        \"minVizWidth\": 8,\n        \"namePlacement\"\
+    : \"auto\",\n        \"orientation\": \"horizontal\",\n        \"reduceOptions\"\
+    : {\n          \"calcs\": [\n            \"lastNotNull\"\n          ],\n     \
+    \     \"fields\": \"\",\n          \"values\": false\n        },\n        \"showUnfilled\"\
+    : true,\n        \"sizing\": \"auto\",\n        \"valueMode\": \"color\"\n   \
+    \   },\n      \"pluginVersion\": \"12.4.0-19274378403\",\n      \"targets\": [\n\
+    \        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${datasource}\"\n          },\n          \"editorMode\"\
+    : \"code\",\n          \"exemplar\": false,\n          \"expr\": \"topk(10, sum\
+    \ by (user_agent) (litellm_spend_metric_total{job=~\\\"$job\\\", instance=~\\\"\
+    $instance\\\", model=~\\\"$model\\\"}))\",\n          \"instant\": false,\n  \
+    \        \"legendFormat\": \"{{user_agent}}\",\n          \"range\": true,\n \
+    \         \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"Total Spend\
+    \ per User Agent (top 10)\",\n      \"transformations\": [\n        {\n      \
+    \    \"id\": \"reduce\",\n          \"options\": {\n            \"reducers\":\
+    \ [\n              \"lastNotNull\"\n            ]\n          }\n        },\n \
+    \       {\n          \"id\": \"sortBy\",\n          \"options\": {\n         \
+    \   \"fields\": {},\n            \"sort\": [\n              {\n              \
+    \  \"desc\": true,\n                \"field\": \"Last *\"\n              }\n \
+    \           ]\n          }\n        },\n        {\n          \"id\": \"rowsToFields\"\
+    ,\n          \"options\": {}\n        }\n      ],\n      \"type\": \"bargauge\"\
+    \n    },\n    {\n      \"datasource\": {\n        \"type\": \"prometheus\",\n\
+    \        \"uid\": \"${datasource}\"\n      },\n      \"description\": \"Rate of\
+    \ input/output tokens from LLM requests\",\n      \"fieldConfig\": {\n       \
+    \ \"defaults\": {\n          \"color\": {\n            \"mode\": \"palette-classic\"\
+    \n          },\n          \"custom\": {\n            \"axisBorderShow\": false,\n\
+    \            \"axisCenteredZero\": false,\n            \"axisColorMode\": \"text\"\
+    ,\n            \"axisLabel\": \"\",\n            \"axisPlacement\": \"auto\",\n\
+    \            \"barAlignment\": 0,\n            \"barWidthFactor\": 0.6,\n    \
+    \        \"drawStyle\": \"bars\",\n            \"fillOpacity\": 32,\n        \
+    \    \"gradientMode\": \"none\",\n            \"hideFrom\": {\n              \"\
+    legend\": false,\n              \"tooltip\": false,\n              \"viz\": false\n\
+    \            },\n            \"insertNulls\": false,\n            \"lineInterpolation\"\
+    : \"linear\",\n            \"lineWidth\": 1,\n            \"pointSize\": 5,\n\
+    \            \"scaleDistribution\": {\n              \"type\": \"linear\"\n  \
+    \          },\n            \"showPoints\": \"auto\",\n            \"showValues\"\
+    : false,\n            \"spanNulls\": false,\n            \"stacking\": {\n   \
+    \           \"group\": \"A\",\n              \"mode\": \"normal\"\n          \
+    \  },\n            \"thresholdsStyle\": {\n              \"mode\": \"off\"\n \
+    \           }\n          },\n          \"mappings\": [],\n          \"thresholds\"\
+    : {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
+    \     {\n                \"color\": \"green\",\n                \"value\": 0\n\
+    \              },\n              {\n                \"color\": \"red\",\n    \
+    \            \"value\": 80\n              }\n            ]\n          },\n   \
+    \       \"unit\": \"short\"\n        },\n        \"overrides\": [\n          {\n\
+    \            \"matcher\": {\n              \"id\": \"byFrameRefID\",\n       \
+    \       \"options\": \"B\"\n            },\n            \"properties\": [\n  \
+    \            {\n                \"id\": \"custom.transform\",\n              \
+    \  \"value\": \"negative-Y\"\n              }\n            ]\n          }\n  \
+    \      ]\n      },\n      \"gridPos\": {\n        \"h\": 10,\n        \"w\": 24,\n\
+    \        \"x\": 0,\n        \"y\": 28\n      },\n      \"id\": 8,\n      \"maxDataPoints\"\
+    : 60,\n      \"options\": {\n        \"legend\": {\n          \"calcs\": [\n \
+    \           \"lastNotNull\",\n            \"max\"\n          ],\n          \"\
+    displayMode\": \"table\",\n          \"placement\": \"bottom\",\n          \"\
+    showLegend\": true\n        },\n        \"tooltip\": {\n          \"hideZeros\"\
+    : false,\n          \"mode\": \"single\",\n          \"sort\": \"none\"\n    \
+    \    }\n      },\n      \"pluginVersion\": \"12.4.0-19274378403\",\n      \"targets\"\
+    : [\n        {\n          \"datasource\": {\n            \"type\": \"prometheus\"\
+    ,\n            \"uid\": \"${datasource}\"\n          },\n          \"editorMode\"\
+    : \"code\",\n          \"expr\": \"sum by (model, team, team_alias, user, user_email)\
+    \ (rate(litellm_input_tokens_metric_total{job=~\\\"$job\\\", instance=~\\\"$instance\\\
+    \", model=~\\\"$model\\\"}[$__rate_interval]))\",\n          \"legendFormat\"\
+    : \"INPUT {{model}} {{user_email}} {{team_alias}} {{user}} {{team}}\",\n     \
+    \     \"range\": true,\n          \"refId\": \"A\"\n        },\n        {\n  \
+    \        \"datasource\": {\n            \"type\": \"prometheus\",\n          \
+    \  \"uid\": \"${datasource}\"\n          },\n          \"editorMode\": \"code\"\
+    ,\n          \"expr\": \"sum by (model, team, team_alias, user, user_email) (rate(litellm_output_tokens_metric_total{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\", model=~\\\"$model\\\"}[$__rate_interval]))\"\
+    ,\n          \"hide\": false,\n          \"legendFormat\": \"OUTPUT {{model}}\
+    \ {{user_email}} {{team_alias}} {{user}} {{team}}\",\n          \"range\": true,\n\
+    \          \"refId\": \"B\"\n        }\n      ],\n      \"title\": \"Tokens Rate\"\
+    ,\n      \"type\": \"timeseries\"\n    },\n    {\n      \"datasource\": {\n  \
+    \      \"type\": \"prometheus\",\n        \"uid\": \"${datasource}\"\n      },\n\
+    \      \"description\": \"Total number of failed responses from proxy - the client\
+    \ did not get a success response from litellm proxy\",\n      \"fieldConfig\"\
+    : {\n        \"defaults\": {\n          \"color\": {\n            \"mode\": \"\
+    thresholds\"\n          },\n          \"mappings\": [],\n          \"thresholds\"\
+    : {\n            \"mode\": \"absolute\",\n            \"steps\": [\n         \
+    \     {\n                \"color\": \"green\",\n                \"value\": 0\n\
+    \              },\n              {\n                \"color\": \"yellow\",\n \
+    \               \"value\": 5\n              },\n              {\n            \
+    \    \"color\": \"red\",\n                \"value\": 100\n              }\n  \
+    \          ]\n          },\n          \"unit\": \"short\"\n        },\n      \
+    \  \"overrides\": []\n      },\n      \"gridPos\": {\n        \"h\": 9,\n    \
+    \    \"w\": 12,\n        \"x\": 0,\n        \"y\": 38\n      },\n      \"id\"\
+    : 9,\n      \"maxDataPoints\": 60,\n      \"options\": {\n        \"colorMode\"\
+    : \"value\",\n        \"graphMode\": \"area\",\n        \"justifyMode\": \"auto\"\
+    ,\n        \"orientation\": \"auto\",\n        \"percentChangeColorMode\": \"\
+    standard\",\n        \"reduceOptions\": {\n          \"calcs\": [\n          \
+    \  \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n          \"values\"\
+    : false\n        },\n        \"showPercentChange\": false,\n        \"textMode\"\
+    : \"auto\",\n        \"wideLayout\": true\n      },\n      \"pluginVersion\":\
+    \ \"12.4.0-19274378403\",\n      \"targets\": [\n        {\n          \"datasource\"\
+    : {\n            \"type\": \"prometheus\",\n            \"uid\": \"${datasource}\"\
+    \n          },\n          \"editorMode\": \"code\",\n          \"expr\": \"rate(litellm_proxy_failed_requests_metric_total{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[$__rate_interval])\",\n          \"legendFormat\"\
+    : \"__auto\",\n          \"range\": true,\n          \"refId\": \"A\"\n      \
+    \  }\n      ],\n      \"title\": \"Failed Requests\",\n      \"type\": \"stat\"\
+    \n    },\n    {\n      \"datasource\": {\n        \"type\": \"prometheus\",\n\
+    \        \"uid\": \"${datasource}\"\n      },\n      \"description\": \"Number\
+    \ of failed fallback requests from primary model -> fallback model\",\n      \"\
+    fieldConfig\": {\n        \"defaults\": {\n          \"color\": {\n          \
+    \  \"mode\": \"thresholds\"\n          },\n          \"mappings\": [],\n     \
+    \     \"thresholds\": {\n            \"mode\": \"absolute\",\n            \"steps\"\
+    : [\n              {\n                \"color\": \"green\",\n                \"\
+    value\": 0\n              },\n              {\n                \"color\": \"yellow\"\
+    ,\n                \"value\": 5\n              },\n              {\n         \
+    \       \"color\": \"red\",\n                \"value\": 100\n              }\n\
+    \            ]\n          },\n          \"unit\": \"short\"\n        },\n    \
+    \    \"overrides\": []\n      },\n      \"gridPos\": {\n        \"h\": 9,\n  \
+    \      \"w\": 12,\n        \"x\": 12,\n        \"y\": 38\n      },\n      \"id\"\
+    : 10,\n      \"maxDataPoints\": 60,\n      \"options\": {\n        \"colorMode\"\
+    : \"value\",\n        \"graphMode\": \"area\",\n        \"justifyMode\": \"auto\"\
+    ,\n        \"orientation\": \"auto\",\n        \"percentChangeColorMode\": \"\
+    standard\",\n        \"reduceOptions\": {\n          \"calcs\": [\n          \
+    \  \"lastNotNull\"\n          ],\n          \"fields\": \"\",\n          \"values\"\
+    : false\n        },\n        \"showPercentChange\": false,\n        \"textMode\"\
+    : \"auto\",\n        \"wideLayout\": true\n      },\n      \"pluginVersion\":\
+    \ \"12.4.0-19274378403\",\n      \"targets\": [\n        {\n          \"datasource\"\
+    : {\n            \"type\": \"prometheus\",\n            \"uid\": \"${datasource}\"\
+    \n          },\n          \"editorMode\": \"code\",\n          \"expr\": \"rate(litellm_deployment_failed_fallbacks_total{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[$__rate_interval])\",\n          \"legendFormat\"\
+    : \"__auto\",\n          \"range\": true,\n          \"refId\": \"A\"\n      \
+    \  }\n      ],\n      \"title\": \"Failed Fallbacks\",\n      \"type\": \"stat\"\
+    \n    }\n  ],\n  \"preload\": false,\n  \"refresh\": \"1m\",\n  \"schemaVersion\"\
+    : 42,\n  \"tags\": [],\n  \"templating\": {\n    \"list\": [\n      {\n      \
+    \  \"current\": {\n          \"text\": \"\",\n          \"value\": \"${DS_PROMETHEUS}\"\
+    ,\n          \"selected\": true\n        },\n        \"name\": \"datasource\"\
+    ,\n        \"options\": [],\n        \"query\": \"prometheus\",\n        \"refresh\"\
+    : 1,\n        \"regex\": \"\",\n        \"type\": \"datasource\"\n      },\n \
+    \     {\n        \"current\": {},\n        \"definition\": \"label_values(litellm_proxy_total_requests_metric_created,job)\"\
+    ,\n        \"name\": \"job\",\n        \"options\": [],\n        \"query\": {\n\
+    \          \"qryType\": 1,\n          \"query\": \"label_values(litellm_proxy_total_requests_metric_created,job)\"\
+    ,\n          \"refId\": \"PrometheusVariableQueryEditor-VariableQuery\"\n    \
+    \    },\n        \"refresh\": 1,\n        \"regex\": \"\",\n        \"type\":\
+    \ \"query\"\n      },\n      {\n        \"allValue\": \".*\",\n        \"current\"\
+    : {},\n        \"definition\": \"label_values(litellm_proxy_total_requests_metric_created,instance)\"\
+    ,\n        \"includeAll\": true,\n        \"multi\": true,\n        \"name\":\
+    \ \"instance\",\n        \"options\": [],\n        \"query\": {\n          \"\
+    qryType\": 1,\n          \"query\": \"label_values(litellm_proxy_total_requests_metric_created,instance)\"\
+    ,\n          \"refId\": \"PrometheusVariableQueryEditor-VariableQuery\"\n    \
+    \    },\n        \"refresh\": 2,\n        \"regex\": \"\",\n        \"sort\":\
+    \ 1,\n        \"type\": \"query\"\n      },\n      {\n        \"current\": {},\n\
+    \        \"definition\": \"label_values(litellm_deployment_state{job=~\\\"$job\\\
+    \", instance=~\\\"$instance\\\"},litellm_model_name)\",\n        \"includeAll\"\
+    : true,\n        \"multi\": true,\n        \"name\": \"model\",\n        \"options\"\
+    : [],\n        \"query\": {\n          \"qryType\": 1,\n          \"query\": \"\
+    label_values(litellm_deployment_state{job=~\\\"$job\\\", instance=~\\\"$instance\\\
+    \"},litellm_model_name)\",\n          \"refId\": \"PrometheusVariableQueryEditor-VariableQuery\"\
+    \n        },\n        \"refresh\": 1,\n        \"regex\": \"\",\n        \"type\"\
+    : \"query\"\n      }\n    ]\n  },\n  \"time\": {\n    \"from\": \"now-1h\",\n\
+    \    \"to\": \"now\"\n  },\n  \"timepicker\": {},\n  \"timezone\": \"browser\"\
+    ,\n  \"title\": \"LiteLLM\",\n  \"uid\": \"ad8llmv\",\n  \"version\": 11,\n  \"\
+    weekStart\": \"\",\n  \"id\": null,\n  \"gnetId\": 24965\n}"
+kind: ConfigMap
+metadata:
+  labels:
+    grafana_dashboard: '1'
+  name: litellm-dashboard
+  namespace: litellm
