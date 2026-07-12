@@ -47,34 +47,111 @@ extraInitContainers:
       - |
         MODEL_SIZE="m"
         IMG_SIZE="320"
-        MODEL_PATH="/config/models/yolov9-${MODEL_SIZE}-${IMG_SIZE}-opset12.onnx"
+        MODEL_PATH="/config/models/yolov9-${MODEL_SIZE}-${IMG_SIZE}-ultralytics-opset12.onnx"
+        LABEL_PATH="/config/models/coco-80.txt"
+        
+        mkdir -p /config/models
+        
+        # Generate the exact 80-class labelmap expected by YOLOv9
+        cat << 'EOF' > $LABEL_PATH
+        person
+        bicycle
+        car
+        motorcycle
+        airplane
+        bus
+        train
+        truck
+        boat
+        traffic light
+        fire hydrant
+        stop sign
+        parking meter
+        bench
+        bird
+        cat
+        dog
+        horse
+        sheep
+        cow
+        elephant
+        bear
+        zebra
+        giraffe
+        backpack
+        umbrella
+        handbag
+        tie
+        suitcase
+        frisbee
+        skis
+        snowboard
+        sports ball
+        kite
+        baseball bat
+        baseball glove
+        skateboard
+        surfboard
+        tennis racket
+        bottle
+        wine glass
+        cup
+        fork
+        knife
+        spoon
+        bowl
+        banana
+        apple
+        sandwich
+        orange
+        broccoli
+        carrot
+        hot dog
+        pizza
+        donut
+        cake
+        chair
+        couch
+        potted plant
+        bed
+        dining table
+        toilet
+        tv
+        laptop
+        mouse
+        remote
+        keyboard
+        cell phone
+        microwave
+        oven
+        toaster
+        sink
+        refrigerator
+        book
+        clock
+        vase
+        scissors
+        teddy bear
+        hair drier
+        toothbrush
+        EOF
         
         if [ -f "$MODEL_PATH" ]; then
           echo "Model $MODEL_PATH already exists, skipping export."
           exit 0
         fi
         
-        echo "Exporting YOLOv9 ${MODEL_SIZE} model..."
-        apt-get update && apt-get install --no-install-recommends -y cmake libgl1 git curl wget ca-certificates
+        echo "Exporting YOLOv9 ${MODEL_SIZE} model using Ultralytics..."
+        apt-get update && apt-get install --no-install-recommends -y libgl1 libglib2.0-0 curl
         
         curl -LsSf https://astral.sh/uv/install.sh | sh
         export PATH="/root/.local/bin:$PATH"
         
-        mkdir -p /yolov9
-        cd /yolov9
-        git clone https://github.com/WongKinYiu/yolov9.git .
+        # Install Ultralytics and export directly to opset 12
+        uv pip install --system ultralytics onnx onnxslim
+        yolo export model=yolov9${MODEL_SIZE}.pt format=onnx opset=12 simplify=True imgsz=${IMG_SIZE}
         
-        uv pip install --system -r requirements.txt
-        uv pip install --system onnx==1.18.0 onnxruntime onnx-simplifier==0.4.* onnxscript pandas
-        
-        wget -q https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-${MODEL_SIZE}-converted.pt -O yolov9-${MODEL_SIZE}.pt
-        
-        sed -i "s/ckpt = torch.load(attempt_download(w), map_location='cpu')/ckpt = torch.load(attempt_download(w), map_location='cpu', weights_only=False)/g" models/experimental.py
-        
-        python3 export.py --weights ./yolov9-${MODEL_SIZE}.pt --imgsz ${IMG_SIZE} --simplify --include onnx
-        
-        mkdir -p /config/models
-        cp yolov9-${MODEL_SIZE}.onnx $MODEL_PATH
+        cp yolov9${MODEL_SIZE}.onnx $MODEL_PATH
         echo "Successfully exported model to $MODEL_PATH"
     volumeMounts:
       - name: config
