@@ -90,7 +90,7 @@ detect:
 detectors:
   onnx:
     type: onnx
-    device: cuda
+    device: tensorrt
 model:
   model_type: yolo-generic
   width: 320
