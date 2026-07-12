@@ -156,3 +156,19 @@ extraInitContainers:
     volumeMounts:
       - name: config
         mountPath: /config
+  - name: precompile-tensorrt
+    image: ghcr.io/blakeblackshear/frigate:0.17.2-tensorrt
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        MODEL_PATH="/config/models/yolov9-m-320-ultralytics-opset12.onnx"
+        if ! ls /config/models/yolov9-m-320-ultralytics-opset12.onnx_tensorrt_*.engine 1> /dev/null 2>&1; then
+          echo "Precompiling TensorRT engine for $MODEL_PATH..."
+          python3 -c "import onnxruntime as ort; sess = ort.InferenceSession('$MODEL_PATH', providers=[('TensorrtExecutionProvider', {'trt_engine_cache_enable': True, 'trt_engine_cache_path': '/config/models', 'trt_fp16_enable': True})])"
+          echo "Successfully pre-compiled TensorRT engine!"
+        else
+          echo "TensorRT engine already exists. Skipping precompilation."
+        fi
+    volumeMounts:
+      - name: config
+        mountPath: /config
