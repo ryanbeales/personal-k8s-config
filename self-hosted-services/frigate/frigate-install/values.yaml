@@ -71,7 +71,7 @@ extraInitContainers:
         
         sed -i "s/ckpt = torch.load(attempt_download(w), map_location='cpu')/ckpt = torch.load(attempt_download(w), map_location='cpu', weights_only=False)/g" models/experimental.py
         
-        python3 export.py --weights ./yolov9-${MODEL_SIZE}.pt --imgsz ${IMG_SIZE} --simplify --include onnx --opset 12
+        python3 export.py --weights ./yolov9-${MODEL_SIZE}.pt --imgsz ${IMG_SIZE} --simplify --include onnx
         
         mkdir -p /config/models
         cp yolov9-${MODEL_SIZE}.onnx $MODEL_PATH
