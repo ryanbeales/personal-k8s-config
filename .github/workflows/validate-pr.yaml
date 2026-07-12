@@ -48,7 +48,7 @@ jobs:
           dir_names_exclude_current_dir: true
 
       - name: Cache Kubeconform Schemas
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /tmp/kubeconform-cache
           key: ${{ runner.os }}-kubeconform-schemas-${{ github.sha }}
