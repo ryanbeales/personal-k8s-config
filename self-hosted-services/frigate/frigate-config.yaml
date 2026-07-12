@@ -89,7 +89,7 @@ detectors:
   onnx:
     type: onnx
 model:
-  model_type: yolov9
+  model_type: yolo-generic
   width: 320
   height: 320
   input_tensor: nchw
