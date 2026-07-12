@@ -45,7 +45,7 @@ spec:
               fi
               /opt/hermes/.venv/bin/hermes config set model.provider custom
               /opt/hermes/.venv/bin/hermes config set model.base_url http://litellm.litellm.svc.cluster.local:4000/v1
-              /opt/hermes/.venv/bin/hermes config set model.default auto
+              /opt/hermes/.venv/bin/hermes config set model.default agent
               /opt/hermes/.venv/bin/hermes config set model.context_length 131072
           volumeMounts:
             - name: storage

@@ -12,16 +12,19 @@ data:
           model: openai/gemma-4-26B_q4_0-it.gguf
           api_base: http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+          max_parallel_requests: 2
       - model_name: gemma-4-12B
         litellm_params:
           model: openai/gemma-4-12b-it-qat-q4_0.gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+          max_parallel_requests: 2
       - model_name: gemma-4-E4B
         litellm_params:
           model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+          max_parallel_requests: 1
       - model_name: qwen-coder-7B
         litellm_params:
           model: openai/qwen2.5-coder-7b-instruct-q4_k_m.gguf
@@ -38,19 +41,34 @@ data:
           api_base: http://omnivoice.omnivoice.svc.cluster.local:8880/v1
           api_key: "sk-no-key"
 
-      # Routing Groups (Aliases via repeated model_names)
-      # "auto" group
-      - model_name: auto
+      # Routing Groups (Aliases)
+      
+      # "agent" group: Strict fallback chain (26B -> 12B -> E4B)
+      - model_name: agent
         litellm_params:
           model: openai/gemma-4-26B_q4_0-it.gguf
           api_base: http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-      - model_name: auto
+
+      # "vision" group: Latency-based routing between E4B and 12B
+      - model_name: vision
+        litellm_params:
+          model: openai/gemma-4-E4B_q4_0-it.gguf
+          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+      - model_name: vision
         litellm_params:
           model: openai/gemma-4-12b-it-qat-q4_0.gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-      - model_name: auto
+
+      # "assistant" group: Latency-based routing between 12B and E4B
+      - model_name: assistant
+        litellm_params:
+          model: openai/gemma-4-12b-it-qat-q4_0.gguf
+          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+      - model_name: assistant
         litellm_params:
           model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
@@ -61,18 +79,6 @@ data:
         litellm_params:
           model: openai/qwen2.5-coder-7b-instruct-q4_k_m.gguf
           api_base: http://llama-qwen-coder-7b.qwen-coder.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
-
-      # "vision" group
-      - model_name: vision
-        litellm_params:
-          model: openai/gemma-4-12b-it-qat-q4_0.gguf
-          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
-      - model_name: vision
-        litellm_params:
-          model: openai/gemma-4-E4B_q4_0-it.gguf
-          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "stt" group
@@ -92,5 +98,4 @@ data:
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
-        - {"gemma-4-26B": ["gemma-4-12B", "gemma-4-E4B"]}
-        - {"gemma-4-12B": ["gemma-4-E4B"]}
+        - {"agent": ["gemma-4-12B", "gemma-4-E4B"]}
