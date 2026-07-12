@@ -17,6 +17,11 @@ spec:
         - name: litellm
           # renovate: datasource=docker depname=ghcr.io/berriai/litellm versioning=loose
           image: ghcr.io/berriai/litellm:main-latest
+          args:
+            - "--config"
+            - "/app/config.yaml"
+            - "--port"
+            - "4000"
           ports:
             - name: http
               containerPort: 4000
