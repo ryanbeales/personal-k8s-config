@@ -41,7 +41,7 @@ nodeSelector:
 
 extraInitContainers:
   - name: generate-yolov9-model
-    image: python:3.11-slim
+    image: python:3.11
     command: ["/bin/sh", "-c"]
     args:
       - |
@@ -65,7 +65,7 @@ extraInitContainers:
         git clone https://github.com/WongKinYiu/yolov9.git .
         
         uv pip install --system -r requirements.txt
-        uv pip install --system onnx==1.18.0 onnxruntime onnx-simplifier==0.4.* onnxscript
+        uv pip install --system onnx==1.18.0 onnxruntime onnx-simplifier==0.4.* onnxscript pandas
         
         wget -q https://github.com/WongKinYiu/yolov9/releases/download/v0.1/yolov9-${MODEL_SIZE}-converted.pt -O yolov9-${MODEL_SIZE}.pt
         
