@@ -9,17 +9,17 @@ data:
       # Explicit individual models
       - model_name: gemma-4-26B
         litellm_params:
-          model: openai/google/gemma-4-26B-A4B-it-qat-q4_0-gguf
+          model: openai/gemma-4-26B_q4_0-it.gguf
           api_base: http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: gemma-4-12B
         litellm_params:
-          model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
+          model: openai/gemma-4-12b-it-qat-q4_0.gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: gemma-4-E4B
         litellm_params:
-          model: openai/google/gemma-4-E4B_q4_0-it.gguf
+          model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: qwen-coder-7B
@@ -42,17 +42,17 @@ data:
       # "auto" group
       - model_name: auto
         litellm_params:
-          model: openai/google/gemma-4-26B-A4B-it-qat-q4_0-gguf
+          model: openai/gemma-4-26B_q4_0-it.gguf
           api_base: http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: auto
         litellm_params:
-          model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
+          model: openai/gemma-4-12b-it-qat-q4_0.gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: auto
         litellm_params:
-          model: openai/google/gemma-4-E4B_q4_0-it.gguf
+          model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
@@ -66,12 +66,12 @@ data:
       # "vision" group
       - model_name: vision
         litellm_params:
-          model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
+          model: openai/gemma-4-12b-it-qat-q4_0.gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: vision
         litellm_params:
-          model: openai/google/gemma-4-E4B_q4_0-it.gguf
+          model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
