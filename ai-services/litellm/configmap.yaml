@@ -17,6 +17,11 @@ data:
           model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+      - model_name: gemma-4-E4B
+        litellm_params:
+          model: openai/google/gemma-4-E4B_q4_0-it.gguf
+          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
       - model_name: qwen-coder-7B
         litellm_params:
           model: openai/qwen2.5-coder-7b-instruct-q4_k_m.gguf
@@ -45,6 +50,11 @@ data:
           model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+      - model_name: auto
+        litellm_params:
+          model: openai/google/gemma-4-E4B_q4_0-it.gguf
+          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
 
       # "code" group
       - model_name: code
@@ -58,6 +68,11 @@ data:
         litellm_params:
           model: openai/google/gemma-4-12B-it-qat-q4_0-gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+      - model_name: vision
+        litellm_params:
+          model: openai/google/gemma-4-E4B_q4_0-it.gguf
+          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "stt" group
@@ -77,4 +92,5 @@ data:
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
-        - {"gemma-4-26B": ["gemma-4-12B"]}
+        - {"gemma-4-26B": ["gemma-4-12B", "gemma-4-E4B"]}
+        - {"gemma-4-12B": ["gemma-4-E4B"]}
