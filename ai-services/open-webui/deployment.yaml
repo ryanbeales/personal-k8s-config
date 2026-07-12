@@ -35,11 +35,11 @@ spec:
             # and 26b instances as separate OpenAI API connections.
             # Format: name;base_url;key (semicolon-separated, pipe-delimited entries)
             - name: OPENAI_API_BASE_URLS
-              value: "http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1;http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1;http://llama-qwen-coder-7b.qwen-coder.svc.cluster.local:8000/v1"
+              value: "http://litellm.litellm.svc.cluster.local:4000/v1"
             - name: OPENAI_API_KEYS
-              value: "sk-no-key;sk-no-key;sk-no-key"
+              value: "sk-no-key"
             - name: DEFAULT_MODELS
-              value: "google/gemma-4-12B-it-qat-q4_0-gguf"
+              value: "agent"
             - name: VECTOR_DB
               value: "qdrant"
             - name: QDRANT_URI
