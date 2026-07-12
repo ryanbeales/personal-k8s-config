@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llama-gemma4-e4b
+  namespace: llama
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: llama-gemma4-e4b
+  replicas: 1
+  # Recreate avoids two replicas competing for the GPU during rollouts
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: llama-gemma4-e4b
+    spec:
+      runtimeClassName: nvidia
+      # Pin to the node with the RTX 5060 Ti (16GB VRAM)
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060
+      initContainers:
+        - name: download-model
+          image: curlimages/curl:latest
+          securityContext:
+            runAsUser: 0
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /models/gemma-4-E4B_q4_0-it.gguf ]; then
+                echo "Downloading google/gemma-4-E4B_q4_0-it.gguf..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/gemma-4-E4B_q4_0-it.gguf \
+                  "https://huggingface.co/google/gemma-4-E4B-it-qat-q4_0-gguf/resolve/main/gemma-4-E4B_q4_0-it.gguf"
+              else
+                echo "Model already downloaded."
+              fi
+              if [ ! -f /models/gemma-4-E4B-it-mmproj.gguf ]; then
+                echo "Downloading mmproj..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/gemma-4-E4B-it-mmproj.gguf \
+                  "https://huggingface.co/google/gemma-4-E4B-it-qat-q4_0-gguf/resolve/main/gemma-4-E4B-it-mmproj.gguf"
+              fi
+          env:
+            - name: HUGGING_FACE_HUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hf-token-secret
+                  key: token
+                  optional: true
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /models
+      containers:
+        - name: llama-cpp
+          # renovate: datasource=docker depname=ghcr.io/ggml-org/llama.cpp versioning=loose
+          image: ghcr.io/ggml-org/llama.cpp:server-cuda
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              /app/llama-server \
+                -m /models/gemma-4-E4B_q4_0-it.gguf \
+                --mmproj /models/gemma-4-E4B-it-mmproj.gguf \
+                -c 32768 \
+                -np 2 \
+                -ctk q4_0 \
+                -ctv q4_0 \
+                --flash-attn on \
+                -ngl -1 \
+                --host 0.0.0.0 \
+                --port 8000
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+            requests:
+              nvidia.com/gpu: "1"
+          ports:
+            - name: http
+              containerPort: 8000
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /models
+            - name: shm
+              mountPath: /dev/shm
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            # Allow up to 10 minutes for model load
+            failureThreshold: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: llama-gemma4-e4b-nfs-pvc
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi

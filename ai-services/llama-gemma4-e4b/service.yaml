@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: llama-gemma4-e4b
+  namespace: llama
+spec:
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+  selector:
+    app.kubernetes.io/name: llama-gemma4-e4b
