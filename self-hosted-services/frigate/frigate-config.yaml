@@ -88,6 +88,7 @@ detect:
 detectors:
   onnx:
     type: onnx
+    device: cuda
 model:
   model_type: yolo-generic
   width: 320
