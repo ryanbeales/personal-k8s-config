@@ -37,6 +37,12 @@ spec:
               else
                 echo "Model already downloaded."
               fi
+              if [ ! -f /models/mmproj-gemma-4-12b-it-qat-q4_0.gguf ]; then
+                echo "Downloading mmproj..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/mmproj-gemma-4-12b-it-qat-q4_0.gguf \
+                  "https://huggingface.co/google/gemma-4-12B-it-qat-q4_0-gguf/resolve/main/mmproj-gemma-4-12b-it-qat-q4_0.gguf"
+              fi
           env:
             - name: HUGGING_FACE_HUB_TOKEN
               valueFrom:
@@ -56,6 +62,7 @@ spec:
             - |
               /app/llama-server \
                 -m /models/gemma-4-12b-it-qat-q4_0.gguf \
+                --mmproj /models/mmproj-gemma-4-12b-it-qat-q4_0.gguf \
                 -c 32768 \
                 -np 2 \
                 -ctk q4_0 \
