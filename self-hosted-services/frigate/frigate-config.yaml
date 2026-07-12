@@ -95,7 +95,7 @@ model:
   input_tensor: nchw
   input_dtype: float
   input_pixel_format: rgb
-  path: /config/models/yolov9-m-320.onnx
+  path: /config/models/yolov9-m-320-opset12.onnx
   labelmap_path: /labelmap/coco-80.txt
 record:
   enabled: true
