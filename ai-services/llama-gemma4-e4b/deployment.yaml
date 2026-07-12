@@ -104,7 +104,7 @@ spec:
       volumes:
         - name: cache-volume
           persistentVolumeClaim:
-            claimName: llama-gemma4-e4b-local-pvc
+            claimName: llama-gemma4-e4b-nfs-pvc
         - name: shm
           emptyDir:
             medium: Memory
