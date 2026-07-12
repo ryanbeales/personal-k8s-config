@@ -128,9 +128,9 @@ review:
       - cats in the planter box
 genai:
   provider: openai
-  base_url: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
+  base_url: http://litellm.litellm.svc.cluster.local:4000/v1
   api_key: sk-no-key
-  model: gemma-4-E4B_q4_0-it.gguf
+  model: gemma-4-E4B
 objects:
   track:
     - person
