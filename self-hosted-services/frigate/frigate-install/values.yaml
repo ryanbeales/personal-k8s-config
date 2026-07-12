@@ -2,6 +2,7 @@
 env:
   TZ: America/Vancouver
   OMP_WAIT_POLICY: PASSIVE
+  OPENAI_BASE_URL: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
 
 envFromSecrets:
   - reocam-password
