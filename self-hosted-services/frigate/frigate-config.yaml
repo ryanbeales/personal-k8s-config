@@ -91,6 +91,10 @@ detectors:
   onnx:
     type: onnx
     device: tensorrt
+    trt_ep_options:
+      trt_engine_cache_enable: True
+      trt_engine_cache_path: /config/models
+      trt_fp16_enable: True
 model:
   model_type: yolo-generic
   width: 320
