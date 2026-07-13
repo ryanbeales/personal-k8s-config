@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: llama-gemma4-26b
-  replicas: 0
+  replicas: 1
   strategy:
     type: Recreate
   template:
