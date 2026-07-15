@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           # renovate: datasource=github-tags depname=immich-app/immich versioning=semver
-          tag: v3.0.2
+          tag: v3.0.3
         env:
           TZ: America/Vancouver
           DB_HOSTNAME: postgresql.immich.svc.cluster.local
