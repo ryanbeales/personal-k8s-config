@@ -30,7 +30,7 @@ spec:
               value: America/Vancouver
           # https://github.com/esphome/esphome/releases/
           # renovate: datasource=github-tags depname=esphome/esphome versioning=semver
-          image: esphome/esphome:2026.7.1
+          image: esphome/esphome:2026.7.2
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
