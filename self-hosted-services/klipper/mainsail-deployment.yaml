@@ -19,7 +19,7 @@ spec:
           # renovate: datasource=docker depname=ghcr.io/mainsail-crew/mainsail versioning=semver
           image: ghcr.io/mainsail-crew/mainsail:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               name: http
           resources:
             requests:
