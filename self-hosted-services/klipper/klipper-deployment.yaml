@@ -63,6 +63,7 @@ spec:
             - /bin/sh
             - -c
             - |
+              apt-get update && apt-get install -y gcc make python3-dev libffi-dev || true
               if [ -d /home/klippy/klipper ]; then
                 git config --global --add safe.directory /home/klippy/klipper
                 (cd /home/klippy/klipper && git pull origin master || true)
