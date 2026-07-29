@@ -5,7 +5,8 @@ metadata:
   namespace: klipper
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
+  storageClassName: crobasaurusrex-nfs
