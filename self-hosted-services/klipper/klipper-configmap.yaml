@@ -135,7 +135,7 @@ data:
     pin: P1.30
 
     [virtual_sdcard]
-    path: /opt/printer_data/gcodes
+    path: /home/klippy/printer_data/gcodes
     on_error_gcode: CANCEL_PRINT
 
     [pause_resume]
@@ -176,6 +176,9 @@ data:
     [octoprint_compat]
 
     [history]
+
+    [update_manager client z_calibration]
+    is_system_service: False
 
   klipper.config: |
     CONFIG_LOW_LEVEL_OPTIONS=y
