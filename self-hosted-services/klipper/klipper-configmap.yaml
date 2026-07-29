@@ -1,0 +1,190 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: klipper-config
+  namespace: klipper
+data:
+  klipper.cfg: |
+    # Klipper Configuration for BIQU B1 with BTT SKR 1.4
+    [mcu]
+    serial: /dev/ttyACM0
+
+    [printer]
+    kinematics: cartesian
+    max_velocity: 300
+    max_accel: 2500
+    max_z_velocity: 10
+    max_z_accel: 100
+
+    [stepper_x]
+    step_pin: P2.2
+    dir_pin: !P2.6
+    enable_pin: !P2.1
+    microsteps: 16
+    rotation_distance: 40
+    endstop_pin: ^P1.29
+    position_endstop: 0
+    position_max: 235
+    homing_speed: 50
+
+    [tmc2208 stepper_x]
+    uart_pin: P1.10
+    run_current: 0.650
+    stealthchop_threshold: 999999
+
+    [stepper_y]
+    step_pin: P0.19
+    dir_pin: P0.20
+    enable_pin: !P2.8
+    microsteps: 16
+    rotation_distance: 40
+    endstop_pin: ^P1.28
+    position_endstop: 0
+    position_max: 240
+    homing_speed: 50
+
+    [tmc2208 stepper_y]
+    uart_pin: P1.09
+    run_current: 0.650
+    stealthchop_threshold: 999999
+
+    [stepper_z]
+    step_pin: P0.22
+    dir_pin: P2.11
+    enable_pin: !P0.21
+    microsteps: 16
+    rotation_distance: 8
+    endstop_pin: probe:z_virtual_endstop
+    position_max: 270
+    position_min: -2.0
+    homing_speed: 10
+
+    [tmc2208 stepper_z]
+    uart_pin: P1.08
+    run_current: 0.650
+    stealthchop_threshold: 999999
+
+    [extruder]
+    step_pin: P2.13
+    dir_pin: !P0.11
+    enable_pin: !P2.12
+    microsteps: 16
+    rotation_distance: 33.33
+    nozzle_diameter: 0.400
+    filament_diameter: 1.750
+    heater_pin: P2.7
+    sensor_type: EPCOS 100K B57560G104F
+    sensor_pin: P0.23
+    min_temp: 0
+    max_temp: 275
+    control: pid
+    pid_Kp: 49.7482
+    pid_Ki: 6.7483
+    pid_Kd: 91.6859
+
+    [tmc2208 extruder]
+    uart_pin: P1.04
+    run_current: 0.650
+    stealthchop_threshold: 999999
+
+    [heater_bed]
+    heater_pin: P2.5
+    sensor_type: EPCOS 100K B57560G104F
+    sensor_pin: P0.25
+    min_temp: 0
+    max_temp: 120
+    control: pid
+    pid_Kp: 129.4192
+    pid_Ki: 20.7735
+    pid_Kd: 537.5211
+
+    [fan]
+    pin: P2.3
+
+    [bltouch]
+    sensor_pin: ^P0.10
+    control_pin: P2.0
+    x_offset: 24
+    y_offset: -47
+    z_offset: 1.5
+    samples: 2
+
+    [safe_z_home]
+    home_xy_position: 117.5, 117.5
+    speed: 50
+    z_hop: 10
+    z_hop_speed: 5
+
+    [bed_mesh]
+    speed: 120
+    horizontal_move_z: 5
+    mesh_min: 24, 10
+    mesh_max: 210, 190
+    probe_count: 5, 5
+    algorithm: bicubic
+
+    [display]
+    lcd_type: st7920
+    cs_pin: P1.19
+    sclk_pin: P1.21
+    sid_pin: P1.23
+    encoder_pins: ^P3.25, ^P3.26
+    click_pin: ^!P0.28
+
+    [output_pin beeper]
+    pin: P1.30
+
+    [virtual_sdcard]
+    path: /opt/printer_data/gcodes
+    on_error_gcode: CANCEL_PRINT
+
+    [pause_resume]
+
+    [display_status]
+
+    [gcode_macro CANCEL_PRINT]
+    description: Cancel the running print
+    rename_existing: CANCEL_PRINT_BASE
+    gcode:
+      TURN_OFF_HEATERS
+      CANCEL_PRINT_BASE
+
+  moonraker.conf: |
+    [server]
+    host: 0.0.0.0
+    port: 7125
+    klippy_uds_address: /tmp/klippy_uds
+
+    [file_manager]
+    enable_object_processing: True
+
+    [authorization]
+    cors_domains:
+        *://*.crobceratops.ryanbeales.com
+        *://*.crobasaurusrex.ryanbeales.com
+        *://app.fluidd.xyz
+        *://my.mainsail.xyz
+    trusted_clients:
+        10.0.0.0/8
+        127.0.0.0/8
+        169.254.0.0/16
+        172.16.0.0/12
+        192.168.0.0/16
+        FE80::/10
+        ::1/128
+
+    [octoprint_compat]
+
+    [history]
+
+  klipper.config: |
+    CONFIG_LOW_LEVEL_OPTIONS=y
+    CONFIG_MACH_LPC176X=y
+    CONFIG_MCU="lpc1768"
+    CONFIG_BOARD_DIRECTORY="lpc176x"
+    CONFIG_CLOCK_FREQ=100000000
+    CONFIG_USBSERIAL=y
+    CONFIG_FLASH_SIZE=0x80000
+    CONFIG_LPC_SELECT_LPC1768=y
+    CONFIG_LPC_OFFSET_28000=y
+    CONFIG_INITIAL_PINS=""

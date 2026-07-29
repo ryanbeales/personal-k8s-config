@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: klipper
+  namespace: klipper
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: klipper
+      app.kubernetes.io/component: core
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: klipper
+        app.kubernetes.io/component: core
+    spec:
+      nodeSelector:
+        feature.node.kubernetes.io/usb-biqu-b1: "true"
+      volumes:
+        - name: klipper-pvc
+          persistentVolumeClaim:
+            claimName: klipper-pvc
+        - name: klipper-config
+          configMap:
+            name: klipper-config
+        - name: uds-socket
+          emptyDir: {}
+        - name: ttyacm0
+          hostPath:
+            path: /dev/ttyACM0
+            type: CharDevice
+      containers:
+        - name: klippy
+          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
+          image: dimalo/klipper-moonraker:latest
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /opt/printer_data
+              name: klipper-pvc
+            - mountPath: /opt/printer_data/config/klipper.cfg
+              name: klipper-config
+              subPath: klipper.cfg
+            - mountPath: /tmp
+              name: uds-socket
+            - mountPath: /dev/ttyACM0
+              name: ttyacm0
+        - name: moonraker
+          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
+          image: dimalo/klipper-moonraker:latest
+          ports:
+            - containerPort: 7125
+              name: http
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /opt/printer_data
+              name: klipper-pvc
+            - mountPath: /opt/printer_data/config/moonraker.conf
+              name: klipper-config
+              subPath: moonraker.conf
+            - mountPath: /tmp
+              name: uds-socket

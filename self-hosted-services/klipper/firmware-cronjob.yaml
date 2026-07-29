@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: klipper-firmware-builder
+  namespace: klipper
+spec:
+  schedule: "0 3 * * 0" # Weekly at 3:00 AM on Sunday
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          volumes:
+            - name: klipper-pvc
+              persistentVolumeClaim:
+                claimName: klipper-pvc
+            - name: klipper-config
+              configMap:
+                name: klipper-config
+          containers:
+            - name: builder
+              # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
+              image: dimalo/klipper-moonraker:latest
+              resources:
+                requests:
+                  cpu: 250m
+                  memory: 256Mi
+                limits:
+                  cpu: 1000m
+                  memory: 512Mi
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  echo "Building Klipper firmware.bin for LPC1768 BTT SKR 1.4..."
+                  mkdir -p /opt/printer_data/firmware
+                  cd /opt/klipper || cd /home/klippy/klipper
+                  make clean
+                  cp /opt/printer_data/config/klipper.config .config
+                  make olddefconfig
+                  make -j$(nproc)
+                  cp out/klipper.bin /opt/printer_data/firmware/firmware.bin
+                  echo "Firmware successfully generated at /opt/printer_data/firmware/firmware.bin"
+              volumeMounts:
+                - mountPath: /opt/printer_data
+                  name: klipper-pvc
+                - mountPath: /opt/printer_data/config/klipper.config
+                  name: klipper-config
+                  subPath: klipper.config
