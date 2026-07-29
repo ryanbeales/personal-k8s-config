@@ -47,8 +47,9 @@ spec:
             - /bin/sh
             - -c
             - |
-              mkdir -p /home/klippy/printer_data/comms /home/klippy/printer_data/config /home/klippy/printer_data/gcodes /home/klippy/printer_data/logs /home/klippy/printer_data/firmware
-              chmod -R 777 /home/klippy/printer_data
+              mkdir -p /home/klippy/printer_data/comms /home/klippy/printer_data/config /home/klippy/printer_data/gcodes /home/klippy/printer_data/logs /home/klippy/printer_data/firmware /home/klippy/.config
+              chmod -R 777 /home/klippy/printer_data /home/klippy/.config
+              ln -sf /home/klippy/printer_data/config/printer.cfg /home/klippy/.config/printer.cfg
           volumeMounts:
             - mountPath: /home/klippy/printer_data
               name: klipper-pvc
@@ -77,5 +78,8 @@ spec:
             - mountPath: /home/klippy/printer_data/config/moonraker.conf
               name: klipper-config
               subPath: moonraker.conf
+            - mountPath: /home/klippy/.config/printer.cfg
+              name: klipper-config
+              subPath: klipper.cfg
             - mountPath: /dev/ttyACM0
               name: ttyacm0
