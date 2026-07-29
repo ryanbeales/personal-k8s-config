@@ -46,6 +46,12 @@ spec:
         - path:
             type: PathPrefix
             value: /machine
+        - path:
+            type: PathPrefix
+            value: /file
+        - path:
+            type: PathPrefix
+            value: /files
       backendRefs:
         - group: ''
           kind: Service
