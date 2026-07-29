@@ -59,6 +59,15 @@ spec:
           image: dimalo/klipper-moonraker:latest
           securityContext:
             privileged: true
+          command:
+            - /bin/sh
+            - -c
+            - |
+              if [ -d /home/klippy/moonraker ]; then
+                git config --global --add safe.directory /home/klippy/moonraker
+                (cd /home/klippy/moonraker && git pull origin master || true)
+              fi
+              exec supervisord -c /etc/supervisord/conf.d/supervisord.conf
           ports:
             - containerPort: 7125
               name: http
@@ -84,5 +93,11 @@ spec:
             - mountPath: /home/klippy/.config/moonraker.conf
               name: klipper-config
               subPath: moonraker.conf
+            - mountPath: /etc/supervisord/klipper.ini
+              name: klipper-config
+              subPath: klipper.ini
+            - mountPath: /etc/supervisord/moonraker.ini
+              name: klipper-config
+              subPath: moonraker.ini
             - mountPath: /dev/ttyACM0
               name: ttyacm0
