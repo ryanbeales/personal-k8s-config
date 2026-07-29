@@ -65,7 +65,7 @@ spec:
             - |
               if [ -d /home/klippy/moonraker ]; then
                 git config --global --add safe.directory /home/klippy/moonraker
-                (cd /home/klippy/moonraker && git pull origin master || true)
+                (cd /home/klippy/moonraker && git pull origin master && /home/klippy/moonraker-env/bin/pip install -r scripts/moonraker-requirements.txt || true)
               fi
               exec supervisord -c /etc/supervisord/conf.d/supervisord.conf
           ports:
