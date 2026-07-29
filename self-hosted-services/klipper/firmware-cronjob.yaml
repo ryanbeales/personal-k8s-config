@@ -21,8 +21,8 @@ spec:
                 name: klipper-config
           containers:
             - name: builder
-              # renovate: datasource=docker depname=ghcr.io/mkuf/prind/klipper versioning=semver
-              image: ghcr.io/mkuf/prind/klipper:master
+              # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
+              image: dimalo/klipper-moonraker:latest
               resources:
                 requests:
                   cpu: 250m
@@ -37,7 +37,7 @@ spec:
                   set -e
                   echo "Building Klipper firmware.bin for LPC1768 BTT SKR 1.4..."
                   mkdir -p /opt/printer_data/firmware
-                  cd /opt/klipper
+                  cd /opt/klipper || cd /home/klippy/klipper
                   make clean
                   cp /opt/printer_data/config/klipper.config .config
                   make olddefconfig

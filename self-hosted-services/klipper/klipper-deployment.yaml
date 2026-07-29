@@ -35,8 +35,8 @@ spec:
             type: CharDevice
       containers:
         - name: klippy
-          # renovate: datasource=docker depname=ghcr.io/mkuf/prind/klipper versioning=semver
-          image: ghcr.io/mkuf/prind/klipper:master
+          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
+          image: dimalo/klipper-moonraker:latest
           securityContext:
             privileged: true
           resources:
@@ -57,8 +57,8 @@ spec:
             - mountPath: /dev/ttyACM0
               name: ttyacm0
         - name: moonraker
-          # renovate: datasource=docker depname=ghcr.io/mkuf/prind/moonraker versioning=semver
-          image: ghcr.io/mkuf/prind/moonraker:master
+          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
+          image: dimalo/klipper-moonraker:latest
           ports:
             - containerPort: 7125
               name: http
