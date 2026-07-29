@@ -36,17 +36,17 @@ spec:
                 - |
                   set -e
                   echo "Building Klipper firmware.bin for LPC1768 BTT SKR 1.4..."
-                  mkdir -p /opt/printer_data/firmware
-                  cd /opt/klipper || cd /home/klippy/klipper
+                  mkdir -p /home/klippy/printer_data/firmware
+                  cd /home/klippy/klipper
                   make clean
-                  cp /opt/printer_data/config/klipper.config .config
+                  cp /home/klippy/printer_data/config/klipper.config .config
                   make olddefconfig
                   make -j$(nproc)
-                  cp out/klipper.bin /opt/printer_data/firmware/firmware.bin
-                  echo "Firmware successfully generated at /opt/printer_data/firmware/firmware.bin"
+                  cp out/klipper.bin /home/klippy/printer_data/firmware/firmware.bin
+                  echo "Firmware successfully generated at /home/klippy/printer_data/firmware/firmware.bin"
               volumeMounts:
-                - mountPath: /opt/printer_data
+                - mountPath: /home/klippy/printer_data
                   name: klipper-pvc
-                - mountPath: /opt/printer_data/config/klipper.config
+                - mountPath: /home/klippy/printer_data/config/klipper.config
                   name: klipper-config
                   subPath: klipper.config
