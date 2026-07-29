@@ -63,6 +63,10 @@ spec:
             - /bin/sh
             - -c
             - |
+              if [ -d /home/klippy/klipper ]; then
+                git config --global --add safe.directory /home/klippy/klipper
+                (cd /home/klippy/klipper && git pull origin master || true)
+              fi
               if [ -d /home/klippy/moonraker ]; then
                 git config --global --add safe.directory /home/klippy/moonraker
                 (cd /home/klippy/moonraker && git pull origin master && /home/klippy/moonraker-env/bin/pip install -r scripts/moonraker-requirements.txt || true)
