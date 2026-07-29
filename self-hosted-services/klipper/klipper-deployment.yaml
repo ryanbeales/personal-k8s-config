@@ -19,7 +19,7 @@ spec:
         app.kubernetes.io/component: core
     spec:
       nodeSelector:
-        kubernetes.io/hostname: crobceratops
+        feature.node.kubernetes.io/usb-biqu-b1: "true"
       volumes:
         - name: klipper-pvc
           persistentVolumeClaim:
@@ -30,6 +30,7 @@ spec:
         - name: ttyacm0
           hostPath:
             path: /dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_0800D001AF48A4E55D37A3EBF50020C4-if00
+            type: CharDevice
       initContainers:
         - name: init-permissions
           # renovate: datasource=docker depname=busybox versioning=semver
