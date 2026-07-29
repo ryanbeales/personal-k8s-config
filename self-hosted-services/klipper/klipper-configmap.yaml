@@ -177,8 +177,8 @@ data:
 
     [history]
 
-    [update_manager client z_calibration]
-    is_system_service: False
+    [update_manager]
+    enable_auto_refresh: True
 
   klipper.ini: |
     [program:klipper]
