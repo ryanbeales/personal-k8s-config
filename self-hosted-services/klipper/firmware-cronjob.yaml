@@ -23,6 +23,13 @@ spec:
             - name: builder
               # renovate: datasource=docker depname=mkuf/klipper versioning=semver
               image: mkuf/klipper:v0.12.0-38
+              resources:
+                requests:
+                  cpu: 250m
+                  memory: 256Mi
+                limits:
+                  cpu: 1000m
+                  memory: 512Mi
               command:
                 - /bin/sh
                 - -c
