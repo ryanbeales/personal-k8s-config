@@ -36,7 +36,7 @@ spec:
                 - |
                   set -e
                   echo "Updating packages and installing Klipper compilation tools..."
-                  apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git make gcc-arm-none-eabi binutils-arm-none-eabi python3
+                  apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git make gcc cpp gcc-arm-none-eabi binutils-arm-none-eabi python3
                   echo "Building Klipper firmware.bin for LPC1768 BTT SKR 1.4..."
                   mkdir -p /tmp/klipper_build
                   git clone --depth 1 https://github.com/Klipper3d/klipper.git /tmp/klipper_build
