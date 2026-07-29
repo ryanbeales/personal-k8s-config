@@ -21,8 +21,8 @@ spec:
                 name: klipper-config
           containers:
             - name: builder
-              # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
-              image: dimalo/klipper-moonraker:latest
+              # renovate: datasource=docker depname=ubuntu versioning=ubuntu
+              image: ubuntu:22.04
               resources:
                 requests:
                   cpu: 250m
@@ -35,13 +35,16 @@ spec:
                 - -c
                 - |
                   set -e
+                  echo "Updating packages and installing Klipper compilation tools..."
+                  apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git make gcc-arm-none-eabi binutils-arm-none-eabi python3
                   echo "Building Klipper firmware.bin for LPC1768 BTT SKR 1.4..."
-                  mkdir -p /home/klippy/printer_data/firmware
-                  cd /home/klippy/klipper
-                  make clean
+                  mkdir -p /tmp/klipper_build
+                  git clone --depth 1 https://github.com/Klipper3d/klipper.git /tmp/klipper_build
+                  cd /tmp/klipper_build
                   cp /home/klippy/printer_data/config/klipper.config .config
                   make olddefconfig
                   make -j$(nproc)
+                  mkdir -p /home/klippy/printer_data/firmware
                   cp out/klipper.bin /home/klippy/printer_data/firmware/firmware.bin
                   echo "Firmware successfully generated at /home/klippy/printer_data/firmware/firmware.bin"
               volumeMounts:

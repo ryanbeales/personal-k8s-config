@@ -30,6 +30,28 @@ spec:
         - name: ttyacm0
           hostPath:
             path: /dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_0800D001AF48A4E55D37A3EBF50020C4-if00
+      initContainers:
+        - name: init-permissions
+          # renovate: datasource=docker depname=busybox versioning=semver
+          image: busybox:1.36
+          securityContext:
+            runAsUser: 0
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p /home/klippy/printer_data/comms /home/klippy/printer_data/config /home/klippy/printer_data/gcodes /home/klippy/printer_data/logs /home/klippy/printer_data/firmware
+              chmod -R 777 /home/klippy/printer_data
+          volumeMounts:
+            - mountPath: /home/klippy/printer_data
+              name: klipper-pvc
       containers:
         - name: klipper
           # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
