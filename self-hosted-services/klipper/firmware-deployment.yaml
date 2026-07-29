@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firmware-server
+  namespace: klipper
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: firmware-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: firmware-server
+    spec:
+      volumes:
+        - name: klipper-pvc
+          persistentVolumeClaim:
+            claimName: klipper-pvc
+      containers:
+        - name: nginx
+          # renovate: datasource=docker depname=nginxinc/nginx-unprivileged versioning=semver
+          image: nginxinc/nginx-unprivileged:1.27-alpine
+          ports:
+            - containerPort: 8080
+              name: http
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html/
+              name: klipper-pvc
+              subPath: firmware
+              readOnly: true

@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - klipper-pvc.yaml
+  - klipper-configmap.yaml
+  - klipper-deployment.yaml
+  - klipper-service.yaml
+  - mainsail-deployment.yaml
+  - mainsail-service.yaml
+  - firmware-cronjob.yaml
+  - firmware-deployment.yaml
+  - firmware-service.yaml
+  - httproute.yaml

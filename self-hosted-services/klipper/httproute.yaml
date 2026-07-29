@@ -1,0 +1,61 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: klipper-route
+  namespace: klipper
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobceratops-gateway
+      namespace: gateways
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobasaurusrex-gateway
+      namespace: gateways
+  hostnames:
+    - klipper.crobceratops.ryanbeales.com
+    - klipper.crobasaurusrex.ryanbeales.com
+  rules:
+    - matches:
+        - path:
+            type: Exact
+            value: /firmware.bin
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: firmware-service
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+        - path:
+            type: PathPrefix
+            value: /websocket
+        - path:
+            type: PathPrefix
+            value: /printer
+        - path:
+            type: PathPrefix
+            value: /server
+        - path:
+            type: PathPrefix
+            value: /access
+        - path:
+            type: PathPrefix
+            value: /machine
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: klipper-service
+          port: 7125
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: mainsail-service
+          port: 80
