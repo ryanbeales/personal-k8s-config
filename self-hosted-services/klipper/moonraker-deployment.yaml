@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moonraker
+  namespace: klipper
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: moonraker
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: moonraker
+        app.kubernetes.io/component: api
+    spec:
+      volumes:
+        - name: klipper-pvc
+          persistentVolumeClaim:
+            claimName: klipper-pvc
+        - name: klipper-config
+          configMap:
+            name: klipper-config
+      containers:
+        - name: moonraker
+          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
+          image: dimalo/klipper-moonraker:latest
+          securityContext:
+            runAsUser: 0
+          command:
+            - /bin/sh
+            - -c
+            - |
+              if [ -d /home/klippy/moonraker ]; then
+                git config --global --add safe.directory /home/klippy/moonraker
+                (cd /home/klippy/moonraker && git pull origin master && /home/klippy/moonraker-env/bin/pip install -r scripts/moonraker-requirements.txt || true)
+              fi
+              exec /home/klippy/moonraker-env/bin/python /home/klippy/moonraker/moonraker/moonraker.py -l /home/klippy/printer_data/logs/moonraker.log -c /home/klippy/printer_data/config/moonraker.conf
+          ports:
+            - containerPort: 7125
+              name: http
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /home/klippy/printer_data
+              name: klipper-pvc
+            - mountPath: /home/klippy/printer_data/config/moonraker.conf
+              name: klipper-config
+              subPath: moonraker.conf
