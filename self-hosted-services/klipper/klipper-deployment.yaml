@@ -41,19 +41,16 @@ spec:
             - /bin/sh
             - -c
             - |
+              set -e -x
               mkdir -p /opt/printer_data/config /opt/printer_data/logs /opt/printer_data/gcodes /opt/printer_data/run /opt/printer_data/comms
               chown -R 1000:1000 /opt/printer_data || true
               chmod -R 777 /opt/printer_data || true
-
-              if [ ! -f /opt/printer_data/config/printer.cfg ] || [ ! -s /opt/printer_data/config/printer.cfg ]; then
-                cat /tmp/config/klipper.cfg > /opt/printer_data/config/printer.cfg
-              fi
-              if [ ! -f /opt/printer_data/config/moonraker.conf ] || [ ! -s /opt/printer_data/config/moonraker.conf ]; then
-                cat /tmp/config/moonraker.conf > /opt/printer_data/config/moonraker.conf
-              fi
-
+              ls -la /tmp/config
+              cat /tmp/config/klipper.cfg > /opt/printer_data/config/printer.cfg
+              cat /tmp/config/moonraker.conf > /opt/printer_data/config/moonraker.conf
               chown -R 1000:1000 /opt/printer_data || true
               chmod -R 777 /opt/printer_data || true
+              ls -la /opt/printer_data/config
           volumeMounts:
             - mountPath: /opt/printer_data
               name: klipper-pvc
