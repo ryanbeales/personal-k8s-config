@@ -62,6 +62,18 @@ spec:
           volumeMounts:
             - mountPath: /opt/printer_data
               name: klipper-pvc
+            - mountPath: /opt/printer_data/config
+              name: klipper-pvc
+              subPath: config
+            - mountPath: /opt/printer_data/gcodes
+              name: klipper-pvc
+              subPath: gcodes
+            - mountPath: /opt/printer_data/logs
+              name: klipper-pvc
+              subPath: logs
+            - mountPath: /opt/printer_data/comms
+              name: klipper-pvc
+              subPath: comms
             - mountPath: /opt/printer_data/run
               name: socket-dir
             - mountPath: /dev/ttyACM0
@@ -82,5 +94,17 @@ spec:
           volumeMounts:
             - mountPath: /opt/printer_data
               name: klipper-pvc
+            - mountPath: /opt/printer_data/config
+              name: klipper-pvc
+              subPath: config
+            - mountPath: /opt/printer_data/gcodes
+              name: klipper-pvc
+              subPath: gcodes
+            - mountPath: /opt/printer_data/logs
+              name: klipper-pvc
+              subPath: logs
+            - mountPath: /opt/printer_data/comms
+              name: klipper-pvc
+              subPath: comms
             - mountPath: /opt/printer_data/run
               name: socket-dir
