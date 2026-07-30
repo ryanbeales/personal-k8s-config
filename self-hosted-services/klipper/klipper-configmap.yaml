@@ -110,7 +110,7 @@ data:
     samples: 2
 
     [safe_z_home]
-    home_xy_position: 117.5, 117.5
+    home_xy_position: 93.5, 164.5
     speed: 50
     z_hop: 10
     z_hop_speed: 5
