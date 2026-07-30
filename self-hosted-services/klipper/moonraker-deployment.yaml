@@ -31,6 +31,11 @@ spec:
           image: dimalo/klipper-moonraker:latest
           securityContext:
             runAsUser: 0
+          env:
+            - name: HOME
+              value: /home/klippy
+            - name: USER
+              value: root
           command:
             - /bin/sh
             - -c
