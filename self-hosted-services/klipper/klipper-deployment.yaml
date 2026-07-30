@@ -37,7 +37,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - mkdir -p /opt/printer_data/config /opt/printer_data/logs /opt/printer_data/comms /opt/printer_data/run /opt/printer_data/gcodes && chmod -R 777 /opt/printer_data && rm -rf /opt/printer_data/config/printer.cfg
+            - mkdir -p /opt/printer_data/config /opt/printer_data/logs /opt/printer_data/comms /opt/printer_data/run /opt/printer_data/gcodes && chmod -R 777 /opt/printer_data && rm -rf /opt/printer_data/run/* /opt/printer_data/comms/* /opt/printer_data/config/printer.cfg
           volumeMounts:
             - mountPath: /opt/printer_data
               name: klipper-pvc
