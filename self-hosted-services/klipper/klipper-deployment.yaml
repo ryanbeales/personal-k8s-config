@@ -21,7 +21,7 @@ spec:
       nodeSelector:
         feature.node.kubernetes.io/usb-biqu-b1: "true"
       securityContext:
-        supplementalGroups: [20, 5]
+        supplementalGroups: [20, 5, 14]
       volumes:
         - name: klipper-pvc
           persistentVolumeClaim:
@@ -31,7 +31,7 @@ spec:
             name: klipper-config
         - name: ttyacm0
           hostPath:
-            path: /dev/serial/by-id/usb-Klipper_lpc1768_01D00008E5A448AFEBA3375DC42000F5-if00
+            path: /dev/ttyACM0
       initContainers:
         - name: init-permissions
           # renovate: datasource=docker depname=busybox versioning=semver
@@ -64,6 +64,7 @@ spec:
           image: dimalo/klipper-moonraker:latest
           securityContext:
             privileged: true
+            runAsUser: 0
           command:
             - /bin/sh
             - -c
