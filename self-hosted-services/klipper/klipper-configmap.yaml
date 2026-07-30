@@ -169,23 +169,24 @@ data:
       {% set y_park = printer.toolhead.axis_maximum.y|float - 5.0 %}
       {% set z_park = [printer.toolhead.position.z + 10.0, printer.toolhead.axis_maximum.z]|min %}
       G90
-      G1 Z{{ z_park }} F600
-      G1 X{{ x_park }} Y{{ y_park }} F6000
+      G1 Z{z_park} F600
+      G1 X{x_park} Y{y_park} F6000
 
   moonraker.conf: |
     [server]
     host: 0.0.0.0
     port: 7125
     klippy_uds_address: /opt/printer_data/run/klipper.sock
+    config_examples_path: /opt/printer_data/config
+    docs_path: /opt/printer_data/config
 
     [machine]
     provider: none
     validate_service: False
+    validate_config: False
 
     [file_manager]
     enable_object_processing: True
-    config_examples_path: /opt/printer_data/config
-    docs_path: /opt/printer_data/config
 
     [authorization]
     cors_domains:
