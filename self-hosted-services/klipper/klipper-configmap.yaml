@@ -22,7 +22,7 @@ data:
     enable_pin: !P2.1
     microsteps: 16
     rotation_distance: 40
-    endstop_pin: ^P1.29
+    endstop_pin: ^!P1.29
     position_endstop: 0
     position_max: 235
     homing_speed: 50
@@ -38,13 +38,13 @@ data:
     enable_pin: !P2.8
     microsteps: 16
     rotation_distance: 40
-    endstop_pin: ^P1.28
+    endstop_pin: ^!P1.28
     position_endstop: 0
     position_max: 240
     homing_speed: 50
 
     [tmc2208 stepper_y]
-    uart_pin: P1.09
+    uart_pin: P1.9
     run_current: 0.650
     stealthchop_threshold: 999999
 
@@ -56,11 +56,11 @@ data:
     rotation_distance: 8
     endstop_pin: probe:z_virtual_endstop
     position_max: 270
-    position_min: -2.0
+    position_min: -5.0
     homing_speed: 10
 
     [tmc2208 stepper_z]
-    uart_pin: P1.08
+    uart_pin: P1.8
     run_current: 0.650
     stealthchop_threshold: 999999
 
@@ -75,7 +75,7 @@ data:
     heater_pin: P2.7
     sensor_type: EPCOS 100K B57560G104F
     sensor_pin: P0.23
-    min_temp: 0
+    min_temp: -100
     max_temp: 275
     control: pid
     pid_Kp: 49.7482
@@ -83,7 +83,7 @@ data:
     pid_Kd: 91.6859
 
     [tmc2208 extruder]
-    uart_pin: P1.04
+    uart_pin: P1.4
     run_current: 0.650
     stealthchop_threshold: 999999
 
@@ -91,7 +91,7 @@ data:
     heater_pin: P2.5
     sensor_type: EPCOS 100K B57560G104F
     sensor_pin: P0.25
-    min_temp: 0
+    min_temp: -100
     max_temp: 120
     control: pid
     pid_Kp: 129.4192
@@ -110,7 +110,7 @@ data:
     samples: 2
 
     [safe_z_home]
-    home_xy_position: 117.5, 117.5
+    home_xy_position: 93.5, 164.5
     speed: 50
     z_hop: 10
     z_hop_speed: 5
@@ -135,12 +135,25 @@ data:
     pin: P1.30
 
     [virtual_sdcard]
-    path: /home/klippy/printer_data/gcodes
+    path: /opt/printer_data/gcodes
     on_error_gcode: CANCEL_PRINT
 
     [pause_resume]
 
     [display_status]
+
+    [gcode_macro PAUSE]
+    description: Pause the running print
+    rename_existing: PAUSE_BASE
+    gcode:
+      PAUSE_BASE
+      _TOOLHEAD_PARK_PAUSE_CANCEL
+
+    [gcode_macro RESUME]
+    description: Resume the running print
+    rename_existing: RESUME_BASE
+    gcode:
+      RESUME_BASE
 
     [gcode_macro CANCEL_PRINT]
     description: Cancel the running print
@@ -149,11 +162,28 @@ data:
       TURN_OFF_HEATERS
       CANCEL_PRINT_BASE
 
+    [gcode_macro _TOOLHEAD_PARK_PAUSE_CANCEL]
+    description: Helper to park toolhead on pause or cancel
+    gcode:
+      {% set x_park = printer.toolhead.axis_maximum.x|float - 5.0 %}
+      {% set y_park = printer.toolhead.axis_maximum.y|float - 5.0 %}
+      {% set z_park = [printer.toolhead.position.z + 10.0, printer.toolhead.axis_maximum.z]|min %}
+      G90
+      G1 Z{z_park} F600
+      G1 X{x_park} Y{y_park} F6000
+
   moonraker.conf: |
     [server]
     host: 0.0.0.0
     port: 7125
-    klippy_uds_address: /tmp/klippy_uds
+    klippy_uds_address: /opt/printer_data/run/klipper.sock
+    config_examples_path: /opt/printer_data/config
+    docs_path: /opt/printer_data/config
+
+    [machine]
+    provider: none
+    validate_service: False
+    validate_config: False
 
     [file_manager]
     enable_object_processing: True
@@ -182,9 +212,9 @@ data:
 
   klipper.ini: |
     [program:klipper]
-    user=klippy
-    command=run_in_venv /home/klippy/klippy-env python /home/klippy/klipper/klippy/klippy.py -a /tmp/klippy_uds -l /var/log/klipper/klipper.log /home/klippy/printer_data/config/printer.cfg
-    environment=USER=klippy,HOME=/home/klippy
+    user=root
+    command=run_in_venv /home/klippy/klippy-env python /home/klippy/klipper/klippy/klippy.py -a /opt/printer_data/run/klipper.sock -l /opt/printer_data/logs/klippy.log /opt/printer_data/config/printer.cfg
+    environment=USER=root,HOME=/home/klippy
     stdout_logfile=/dev/fd/1
     stdout_logfile_maxbytes = 0
     stderr_logfile=/dev/fd/2
@@ -195,9 +225,9 @@ data:
 
   moonraker.ini: |
     [program:moonraker]
-    user=klippy
-    command=run_in_venv /home/klippy/moonraker-env python /home/klippy/moonraker/moonraker/moonraker.py -l /var/log/klipper/moonraker.log -c /home/klippy/printer_data/config/moonraker.conf
-    environment=USER=klippy,HOME=/home/klippy
+    user=root
+    command=run_in_venv /home/klippy/moonraker-env python /home/klippy/moonraker/moonraker/moonraker.py -l /opt/printer_data/logs/moonraker.log -c /opt/printer_data/config/moonraker.conf
+    environment=USER=root,HOME=/home/klippy
     stdout_logfile=/dev/fd/1
     stdout_logfile_maxbytes = 0
     stderr_logfile=/dev/fd/2

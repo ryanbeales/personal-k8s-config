@@ -6,6 +6,7 @@ resources:
   - klipper-configmap.yaml
   - klipper-deployment.yaml
   - klipper-service.yaml
+  - moonraker-service.yaml
   - mainsail-deployment.yaml
   - mainsail-service.yaml
   - firmware-cronjob.yaml

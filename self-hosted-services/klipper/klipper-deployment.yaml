@@ -29,80 +29,82 @@ spec:
             name: klipper-config
         - name: ttyacm0
           hostPath:
-            path: /dev/serial/by-id/usb-marlinfw.org_Marlin_USB_Device_0800D001AF48A4E55D37A3EBF50020C4-if00
+            path: /dev/serial/by-id/usb-Klipper_lpc1768_01D00008E5A448AFEBA3375DC42000F5-if00
+            type: CharDevice
+        - name: socket-dir
+          emptyDir: {}
       initContainers:
-        - name: init-permissions
+        - name: init-dirs
           # renovate: datasource=docker depname=busybox versioning=semver
           image: busybox:1.36
-          securityContext:
-            runAsUser: 0
-          resources:
-            requests:
-              cpu: 50m
-              memory: 32Mi
-            limits:
-              cpu: 200m
-              memory: 64Mi
           command:
             - /bin/sh
             - -c
-            - |
-              mkdir -p /home/klippy/printer_data/comms /home/klippy/printer_data/config /home/klippy/printer_data/gcodes /home/klippy/printer_data/logs /home/klippy/printer_data/firmware /home/klippy/.config
-              chmod -R 777 /home/klippy/printer_data /home/klippy/.config
-              echo "z_calibration" > /home/klippy/printer_data/moonraker.asvc
+            - "set -e -x; mkdir -p /opt/printer_data/config /opt/printer_data/logs /opt/printer_data/gcodes /opt/printer_data/run /opt/printer_data/comms; ls -la /opt/printer_data/config; if [ ! -f /opt/printer_data/config/printer.cfg ]; then echo 'Copying printer.cfg'; cat /tmp/config/klipper.cfg > /opt/printer_data/config/printer.cfg; else echo 'printer.cfg already exists'; fi; if [ ! -f /opt/printer_data/config/moonraker.conf ]; then echo 'Copying moonraker.conf'; cat /tmp/config/moonraker.conf > /opt/printer_data/config/moonraker.conf; else echo 'moonraker.conf already exists'; fi; chown -R 1000:1000 /opt/printer_data || true; chmod -R 777 /opt/printer_data || true; ls -la /opt/printer_data/config"
           volumeMounts:
-            - mountPath: /home/klippy/printer_data
+            - mountPath: /opt/printer_data
               name: klipper-pvc
+            - mountPath: /tmp/config
+              name: klipper-config
       containers:
         - name: klipper
-          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
-          image: dimalo/klipper-moonraker:latest
+          # renovate: datasource=docker depname=mkuf/klipper versioning=semver
+          image: mkuf/klipper:latest
           securityContext:
             privileged: true
-          command:
-            - /bin/sh
-            - -c
-            - |
-              apt-get update && apt-get install -y gcc make python3-dev libffi-dev || true
-              if [ -d /home/klippy/klipper ]; then
-                git config --global --add safe.directory /home/klippy/klipper
-                (cd /home/klippy/klipper && git pull origin master || true)
-              fi
-              if [ -d /home/klippy/moonraker ]; then
-                git config --global --add safe.directory /home/klippy/moonraker
-                (cd /home/klippy/moonraker && git pull origin master && /home/klippy/moonraker-env/bin/pip install -r scripts/moonraker-requirements.txt || true)
-              fi
-              exec supervisord -c /etc/supervisord/conf.d/supervisord.conf
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /opt/printer_data
+              name: klipper-pvc
+            - mountPath: /opt/printer_data/config
+              name: klipper-pvc
+              subPath: config
+            - mountPath: /opt/printer_data/gcodes
+              name: klipper-pvc
+              subPath: gcodes
+            - mountPath: /opt/printer_data/logs
+              name: klipper-pvc
+              subPath: logs
+            - mountPath: /opt/printer_data/comms
+              name: klipper-pvc
+              subPath: comms
+            - mountPath: /opt/printer_data/run
+              name: socket-dir
+            - mountPath: /dev/ttyACM0
+              name: ttyacm0
+        - name: moonraker
+          # renovate: datasource=docker depname=mkuf/moonraker versioning=semver
+          image: mkuf/moonraker:latest
           ports:
             - containerPort: 7125
               name: http
           resources:
             requests:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 100m
+              memory: 128Mi
             limits:
-              cpu: 1000m
-              memory: 512Mi
+              cpu: 500m
+              memory: 256Mi
           volumeMounts:
-            - mountPath: /home/klippy/printer_data
+            - mountPath: /opt/printer_data
               name: klipper-pvc
-            - mountPath: /home/klippy/printer_data/config/printer.cfg
-              name: klipper-config
-              subPath: klipper.cfg
-            - mountPath: /home/klippy/printer_data/config/moonraker.conf
-              name: klipper-config
-              subPath: moonraker.conf
-            - mountPath: /home/klippy/.config/printer.cfg
-              name: klipper-config
-              subPath: klipper.cfg
-            - mountPath: /home/klippy/.config/moonraker.conf
-              name: klipper-config
-              subPath: moonraker.conf
-            - mountPath: /etc/supervisord/klipper.ini
-              name: klipper-config
-              subPath: klipper.ini
-            - mountPath: /etc/supervisord/moonraker.ini
-              name: klipper-config
-              subPath: moonraker.ini
-            - mountPath: /dev/ttyACM0
-              name: ttyacm0
+            - mountPath: /opt/printer_data/config
+              name: klipper-pvc
+              subPath: config
+            - mountPath: /opt/printer_data/gcodes
+              name: klipper-pvc
+              subPath: gcodes
+            - mountPath: /opt/printer_data/logs
+              name: klipper-pvc
+              subPath: logs
+            - mountPath: /opt/printer_data/comms
+              name: klipper-pvc
+              subPath: comms
+            - mountPath: /opt/printer_data/run
+              name: socket-dir
