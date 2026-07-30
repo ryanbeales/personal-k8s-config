@@ -24,3 +24,7 @@ resources:
   - immich-postgres-pv.yaml
   - immich-postgres-pvc.yaml
   - httproute.yaml
+images:
+  - name: docker.io/valkey/valkey
+    newName: docker.io/valkey/valkey
+    newTag: "9.1-alpine"
