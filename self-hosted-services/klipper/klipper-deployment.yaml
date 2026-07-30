@@ -49,10 +49,13 @@ spec:
             - |
               mkdir -p /home/klippy/printer_data/comms /home/klippy/printer_data/config /home/klippy/printer_data/gcodes /home/klippy/printer_data/logs /home/klippy/printer_data/firmware /home/klippy/.config
               chmod -R 777 /home/klippy/printer_data /home/klippy/.config
+              chmod 666 /dev/ttyACM0 || true
               echo "z_calibration" > /home/klippy/printer_data/moonraker.asvc
           volumeMounts:
             - mountPath: /home/klippy/printer_data
               name: klipper-pvc
+            - mountPath: /dev/ttyACM0
+              name: ttyacm0
       containers:
         - name: klipper
           # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
@@ -72,6 +75,7 @@ spec:
                 git config --global --add safe.directory /home/klippy/moonraker
                 (cd /home/klippy/moonraker && git pull origin master && /home/klippy/moonraker-env/bin/pip install -r scripts/moonraker-requirements.txt || true)
               fi
+              chmod 666 /dev/ttyACM0 || true
               exec supervisord -c /etc/supervisord/conf.d/supervisord.conf
           ports:
             - containerPort: 7125
