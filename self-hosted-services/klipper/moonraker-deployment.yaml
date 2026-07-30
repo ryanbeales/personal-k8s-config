@@ -25,6 +25,17 @@ spec:
         - name: klipper-config
           configMap:
             name: klipper-config
+      initContainers:
+        - name: init-dirs
+          # renovate: datasource=docker depname=busybox versioning=semver
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - mkdir -p /opt/printer_data/config /opt/printer_data/logs /opt/printer_data/comms /opt/printer_data/gcodes && chmod -R 777 /opt/printer_data
+          volumeMounts:
+            - mountPath: /opt/printer_data
+              name: klipper-pvc
       containers:
         - name: moonraker
           # renovate: datasource=docker depname=mkuf/moonraker versioning=semver
