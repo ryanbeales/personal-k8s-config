@@ -56,7 +56,7 @@ data:
     rotation_distance: 8
     endstop_pin: probe:z_virtual_endstop
     position_max: 270
-    position_min: -2.0
+    position_min: -5.0
     homing_speed: 10
 
     [tmc2208 stepper_z]
