@@ -142,6 +142,19 @@ data:
 
     [display_status]
 
+    [gcode_macro PAUSE]
+    description: Pause the running print
+    rename_existing: PAUSE_BASE
+    gcode:
+      PAUSE_BASE
+      _TOOLHEAD_PARK_PAUSE_CANCEL
+
+    [gcode_macro RESUME]
+    description: Resume the running print
+    rename_existing: RESUME_BASE
+    gcode:
+      RESUME_BASE
+
     [gcode_macro CANCEL_PRINT]
     description: Cancel the running print
     rename_existing: CANCEL_PRINT_BASE
@@ -149,14 +162,30 @@ data:
       TURN_OFF_HEATERS
       CANCEL_PRINT_BASE
 
+    [gcode_macro _TOOLHEAD_PARK_PAUSE_CANCEL]
+    description: Helper to park toolhead on pause or cancel
+    gcode:
+      {% set x_park = printer.toolhead.axis_maximum.x|float - 5.0 %}
+      {% set y_park = printer.toolhead.axis_maximum.y|float - 5.0 %}
+      {% set z_park = [printer.toolhead.position.z + 10.0, printer.toolhead.axis_maximum.z]|min %}
+      G90
+      G1 Z{{ z_park }} F600
+      G1 X{{ x_park }} Y{{ y_park }} F6000
+
   moonraker.conf: |
     [server]
     host: 0.0.0.0
     port: 7125
     klippy_uds_address: /opt/printer_data/run/klipper.sock
 
+    [machine]
+    provider: none
+    validate_service: False
+
     [file_manager]
     enable_object_processing: True
+    config_examples_path: /opt/printer_data/config
+    docs_path: /opt/printer_data/config
 
     [authorization]
     cors_domains:
