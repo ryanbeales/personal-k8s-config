@@ -36,15 +36,6 @@ spec:
           image: mkuf/klipper:latest
           securityContext:
             privileged: true
-          env:
-            - name: HOME
-              value: /home/klippy
-          args:
-            - /home/klippy/printer_data/config/printer.cfg
-            - -a
-            - /home/klippy/printer_data/comms/klippy.sock
-            - -l
-            - /home/klippy/printer_data/logs/klippy.log
           resources:
             requests:
               cpu: 100m
@@ -53,9 +44,9 @@ spec:
               cpu: 1000m
               memory: 512Mi
           volumeMounts:
-            - mountPath: /home/klippy/printer_data
+            - mountPath: /opt/printer_data
               name: klipper-pvc
-            - mountPath: /home/klippy/printer_data/config/printer.cfg
+            - mountPath: /opt/printer_data/config/printer.cfg
               name: klipper-config
               subPath: klipper.cfg
             - mountPath: /dev/ttyACM0
