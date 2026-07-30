@@ -40,10 +40,21 @@ spec:
           command:
             - /bin/sh
             - -c
-            - mkdir -p /opt/printer_data/config /opt/printer_data/logs /opt/printer_data/gcodes && chown -R 1000:1000 /opt/printer_data || true && chmod -R 777 /opt/printer_data || true && rm -rf /opt/printer_data/config/printer.cfg /opt/printer_data/config/moonraker.conf
+            - |
+              mkdir -p /opt/printer_data/config /opt/printer_data/logs /opt/printer_data/gcodes
+              if [ ! -f /opt/printer_data/config/printer.cfg ]; then
+                cp /tmp/config/klipper.cfg /opt/printer_data/config/printer.cfg
+              fi
+              if [ ! -f /opt/printer_data/config/moonraker.conf ]; then
+                cp /tmp/config/moonraker.conf /opt/printer_data/config/moonraker.conf
+              fi
+              chown -R 1000:1000 /opt/printer_data || true
+              chmod -R 777 /opt/printer_data || true
           volumeMounts:
             - mountPath: /opt/printer_data
               name: klipper-pvc
+            - mountPath: /tmp/config
+              name: klipper-config
       containers:
         - name: klipper
           # renovate: datasource=docker depname=mkuf/klipper versioning=semver
@@ -62,9 +73,6 @@ spec:
               name: klipper-pvc
             - mountPath: /opt/printer_data/run
               name: socket-dir
-            - mountPath: /opt/printer_data/config/printer.cfg
-              name: klipper-config
-              subPath: klipper.cfg
             - mountPath: /dev/ttyACM0
               name: ttyacm0
         - name: moonraker
@@ -85,6 +93,3 @@ spec:
               name: klipper-pvc
             - mountPath: /opt/printer_data/run
               name: socket-dir
-            - mountPath: /opt/printer_data/config/moonraker.conf
-              name: klipper-config
-              subPath: moonraker.conf
