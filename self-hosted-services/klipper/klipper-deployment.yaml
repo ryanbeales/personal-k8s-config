@@ -29,7 +29,8 @@ spec:
             name: klipper-config
         - name: ttyacm0
           hostPath:
-            path: /dev/ttyACM0
+            path: /dev/serial/by-id/usb-Klipper_lpc1768_01D00008E5A448AFEBA3375DC42000F5-if00
+            type: CharDevice
         - name: socket-dir
           emptyDir: {}
       initContainers:
