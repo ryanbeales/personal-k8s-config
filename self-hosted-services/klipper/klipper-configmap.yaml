@@ -153,7 +153,7 @@ data:
     [server]
     host: 0.0.0.0
     port: 7125
-    klippy_uds_address: /tmp/klippy_uds
+    klippy_uds_address: /home/klippy/printer_data/comms/klippy.sock
 
     [file_manager]
     enable_object_processing: True
@@ -183,7 +183,7 @@ data:
   klipper.ini: |
     [program:klipper]
     user=root
-    command=run_in_venv /home/klippy/klippy-env python /home/klippy/klipper/klippy/klippy.py -a /tmp/klippy_uds -l /var/log/klipper/klipper.log /home/klippy/printer_data/config/printer.cfg
+    command=run_in_venv /home/klippy/klippy-env python /home/klippy/klipper/klippy/klippy.py -a /home/klippy/printer_data/comms/klippy.sock -l /home/klippy/printer_data/logs/klippy.log /home/klippy/printer_data/config/printer.cfg
     environment=USER=root,HOME=/home/klippy
     stdout_logfile=/dev/fd/1
     stdout_logfile_maxbytes = 0
@@ -196,7 +196,7 @@ data:
   moonraker.ini: |
     [program:moonraker]
     user=root
-    command=run_in_venv /home/klippy/moonraker-env python /home/klippy/moonraker/moonraker/moonraker.py -l /var/log/klipper/moonraker.log -c /home/klippy/printer_data/config/moonraker.conf
+    command=run_in_venv /home/klippy/moonraker-env python /home/klippy/moonraker/moonraker/moonraker.py -l /home/klippy/printer_data/logs/moonraker.log -c /home/klippy/printer_data/config/moonraker.conf
     environment=USER=root,HOME=/home/klippy
     stdout_logfile=/dev/fd/1
     stdout_logfile_maxbytes = 0
