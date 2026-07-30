@@ -20,8 +20,6 @@ spec:
     spec:
       nodeSelector:
         feature.node.kubernetes.io/usb-biqu-b1: "true"
-      securityContext:
-        supplementalGroups: [20, 5, 14]
       volumes:
         - name: klipper-pvc
           persistentVolumeClaim:
@@ -32,54 +30,16 @@ spec:
         - name: ttyacm0
           hostPath:
             path: /dev/ttyACM0
-      initContainers:
-        - name: init-permissions
-          # renovate: datasource=docker depname=busybox versioning=semver
-          image: busybox:1.36
-          securityContext:
-            runAsUser: 0
-          resources:
-            requests:
-              cpu: 50m
-              memory: 32Mi
-            limits:
-              cpu: 200m
-              memory: 64Mi
-          command:
-            - /bin/sh
-            - -c
-            - |
-              mkdir -p /home/klippy/printer_data/comms /home/klippy/printer_data/config /home/klippy/printer_data/gcodes /home/klippy/printer_data/logs /home/klippy/printer_data/firmware /home/klippy/.config
-              chmod -R 777 /home/klippy/printer_data /home/klippy/.config
-              chmod 666 /dev/ttyACM0 || true
-              echo "z_calibration" > /home/klippy/printer_data/moonraker.asvc
-          volumeMounts:
-            - mountPath: /home/klippy/printer_data
-              name: klipper-pvc
-            - mountPath: /dev/ttyACM0
-              name: ttyacm0
       containers:
         - name: klipper
-          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
-          image: dimalo/klipper-moonraker:latest
+          # renovate: datasource=docker depname=mkuf/klipper versioning=semver
+          image: mkuf/klipper:latest
           securityContext:
             privileged: true
-            runAsUser: 0
-          command:
-            - /bin/sh
-            - -c
-            - |
-              chmod 666 /dev/ttyACM0 || true
-              apt-get update && apt-get install -y gcc make python3-dev libffi-dev || true
-              if [ -d /home/klippy/klipper ]; then
-                git config --global --add safe.directory /home/klippy/klipper
-                (cd /home/klippy/klipper && git pull origin master || true)
-              fi
-              exec /home/klippy/klippy-env/bin/python /home/klippy/klipper/klippy/klippy.py -a /home/klippy/printer_data/comms/klippy.sock -l /home/klippy/printer_data/logs/klippy.log /home/klippy/printer_data/config/printer.cfg
           resources:
             requests:
-              cpu: 200m
-              memory: 256Mi
+              cpu: 100m
+              memory: 128Mi
             limits:
               cpu: 1000m
               memory: 512Mi

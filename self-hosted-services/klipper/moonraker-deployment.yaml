@@ -27,24 +27,8 @@ spec:
             name: klipper-config
       containers:
         - name: moonraker
-          # renovate: datasource=docker depname=dimalo/klipper-moonraker versioning=semver
-          image: dimalo/klipper-moonraker:latest
-          securityContext:
-            runAsUser: 0
-          env:
-            - name: HOME
-              value: /home/klippy
-            - name: USER
-              value: root
-          command:
-            - /bin/sh
-            - -c
-            - |
-              if [ -d /home/klippy/moonraker ]; then
-                git config --global --add safe.directory /home/klippy/moonraker
-                (cd /home/klippy/moonraker && git pull origin master && /home/klippy/moonraker-env/bin/pip install -r scripts/moonraker-requirements.txt || true)
-              fi
-              exec /home/klippy/moonraker-env/bin/python /home/klippy/moonraker/moonraker/moonraker.py -l /home/klippy/printer_data/logs/moonraker.log -c /home/klippy/printer_data/config/moonraker.conf
+          # renovate: datasource=docker depname=mkuf/moonraker versioning=semver
+          image: mkuf/moonraker:latest
           ports:
             - containerPort: 7125
               name: http
