@@ -29,9 +29,6 @@ spec:
         - name: moonraker
           # renovate: datasource=docker depname=mkuf/moonraker versioning=semver
           image: mkuf/moonraker:latest
-          env:
-            - name: HOME
-              value: /home/klippy
           ports:
             - containerPort: 7125
               name: http
@@ -43,8 +40,8 @@ spec:
               cpu: 500m
               memory: 256Mi
           volumeMounts:
-            - mountPath: /home/klippy/printer_data
+            - mountPath: /opt/printer_data
               name: klipper-pvc
-            - mountPath: /home/klippy/printer_data/config/moonraker.conf
+            - mountPath: /opt/printer_data/config/moonraker.conf
               name: klipper-config
               subPath: moonraker.conf
