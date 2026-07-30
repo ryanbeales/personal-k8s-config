@@ -46,10 +46,10 @@ spec:
               chown -R 1000:1000 /opt/printer_data || true #
               chmod -R 777 /opt/printer_data || true #
               if [ ! -f /opt/printer_data/config/printer.cfg ]; then #
-                cp -L /tmp/config/klipper.cfg /opt/printer_data/config/printer.cfg #
+                cat /tmp/config/klipper.cfg > /opt/printer_data/config/printer.cfg #
               fi #
               if [ ! -f /opt/printer_data/config/moonraker.conf ]; then #
-                cp -L /tmp/config/moonraker.conf /opt/printer_data/config/moonraker.conf #
+                cat /tmp/config/moonraker.conf > /opt/printer_data/config/moonraker.conf #
               fi #
               chown -R 1000:1000 /opt/printer_data || true #
               chmod -R 777 /opt/printer_data || true #
