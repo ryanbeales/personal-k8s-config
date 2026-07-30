@@ -39,6 +39,12 @@ spec:
           env:
             - name: HOME
               value: /home/klippy
+          args:
+            - /home/klippy/printer_data/config/printer.cfg
+            - -a
+            - /home/klippy/printer_data/comms/klippy.sock
+            - -l
+            - /home/klippy/printer_data/logs/klippy.log
           resources:
             requests:
               cpu: 100m
