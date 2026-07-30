@@ -4,10 +4,10 @@ metadata:
   name: moonraker-service
   namespace: klipper
 spec:
-  selector:
-    app.kubernetes.io/name: moonraker
-    app.kubernetes.io/component: api
   ports:
-    - name: http
-      port: 7125
+    - port: 7125
       targetPort: 7125
+      name: http
+  selector:
+    app.kubernetes.io/name: klipper
+    app.kubernetes.io/component: core
