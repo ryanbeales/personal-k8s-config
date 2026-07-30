@@ -74,7 +74,7 @@ data:
     filament_diameter: 1.750
     heater_pin: P2.7
     sensor_type: EPCOS 100K B57560G104F
-    sensor_pin: P0.23
+    sensor_pin: P0.24
     min_temp: -100
     max_temp: 275
     control: pid
