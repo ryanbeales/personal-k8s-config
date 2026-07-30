@@ -44,7 +44,7 @@ data:
     homing_speed: 50
 
     [tmc2208 stepper_y]
-    uart_pin: P1.09
+    uart_pin: P1.9
     run_current: 0.650
     stealthchop_threshold: 999999
 
@@ -60,7 +60,7 @@ data:
     homing_speed: 10
 
     [tmc2208 stepper_z]
-    uart_pin: P1.08
+    uart_pin: P1.8
     run_current: 0.650
     stealthchop_threshold: 999999
 
@@ -83,7 +83,7 @@ data:
     pid_Kd: 91.6859
 
     [tmc2208 extruder]
-    uart_pin: P1.04
+    uart_pin: P1.4
     run_current: 0.650
     stealthchop_threshold: 999999
 
