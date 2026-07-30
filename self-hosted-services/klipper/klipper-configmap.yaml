@@ -7,7 +7,7 @@ data:
   klipper.cfg: |
     # Klipper Configuration for BIQU B1 with BTT SKR 1.4
     [mcu]
-    serial: /dev/ttyACM0
+    serial: /dev/host/serial/by-id/usb-Klipper_lpc1768_01D00008E5A448AFEBA3375DC42000F5-if00
 
     [printer]
     kinematics: cartesian
