@@ -27,10 +27,10 @@ spec:
         - name: klipper-config
           configMap:
             name: klipper-config
-        - name: ttyacm0
+        - name: host-dev
           hostPath:
-            path: /dev/serial/by-id/usb-Klipper_lpc1768_01D00008E5A448AFEBA3375DC42000F5-if00
-            type: CharDevice
+            path: /dev
+            type: Directory
         - name: socket-dir
           emptyDir: {}
       initContainers:
@@ -76,8 +76,8 @@ spec:
               subPath: comms
             - mountPath: /opt/printer_data/run
               name: socket-dir
-            - mountPath: /dev/ttyACM0
-              name: ttyacm0
+            - mountPath: /dev/host
+              name: host-dev
         - name: moonraker
           # renovate: datasource=docker depname=mkuf/moonraker versioning=semver
           image: mkuf/moonraker:latest
