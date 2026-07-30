@@ -75,7 +75,7 @@ data:
     heater_pin: P2.7
     sensor_type: EPCOS 100K B57560G104F
     sensor_pin: P0.23
-    min_temp: 0
+    min_temp: -100
     max_temp: 275
     control: pid
     pid_Kp: 49.7482
@@ -91,7 +91,7 @@ data:
     heater_pin: P2.5
     sensor_type: EPCOS 100K B57560G104F
     sensor_pin: P0.25
-    min_temp: 0
+    min_temp: -100
     max_temp: 120
     control: pid
     pid_Kp: 129.4192
