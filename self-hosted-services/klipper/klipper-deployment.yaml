@@ -36,6 +36,9 @@ spec:
           image: mkuf/klipper:latest
           securityContext:
             privileged: true
+          env:
+            - name: HOME
+              value: /home/klippy
           resources:
             requests:
               cpu: 100m

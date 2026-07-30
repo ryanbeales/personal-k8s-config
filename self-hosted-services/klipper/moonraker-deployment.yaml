@@ -29,6 +29,9 @@ spec:
         - name: moonraker
           # renovate: datasource=docker depname=mkuf/moonraker versioning=semver
           image: mkuf/moonraker:latest
+          env:
+            - name: HOME
+              value: /home/klippy
           ports:
             - containerPort: 7125
               name: http
