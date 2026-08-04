@@ -9,8 +9,6 @@ resources:
   - ./frigate-media-nfs-pvc.yaml
   - httproute.yaml
   - service-monitor.yaml
-patches:
-  - path: patch-cuda-graphs.yaml
 configMapGenerator:
   - name: frigate
     namespace: frigate
