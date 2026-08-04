@@ -13,7 +13,7 @@ spec:
           image: ghcr.io/blakeblackshear/frigate:0.17.2-tensorrt
           command: ["/bin/sh", "-c"]
           args:
-            - "cp /opt/frigate/frigate/detectors/detection_runners.py /work/runners.py && sed -i 's/\"enable_cuda_graph\": True/\"enable_cuda_graph\": False/g' /work/runners.py"
+            - "cp /opt/frigate/frigate/detectors/detection_runners.py /work/runners.py && sed -i 's/CudaGraphRunner.is_model_supported/False and CudaGraphRunner.is_model_supported/g' /work/runners.py"
           volumeMounts:
             - name: patch-work
               mountPath: /work
