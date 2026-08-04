@@ -13,7 +13,7 @@ spec:
           image: ghcr.io/blakeblackshear/frigate:0.17.2-tensorrt
           command: ["/bin/sh", "-c"]
           args:
-            - "cp /opt/frigate/frigate/detectors/detection_runners.py /work/runners.py && sed -i 's/CudaGraphRunner.is_model_supported/False and CudaGraphRunner.is_model_supported/g' /work/runners.py"
+            - "cp /opt/frigate/frigate/detectors/detection_runners.py /work/runners.py && sed -i 's/CudaGraphRunner.is_model_supported/False and CudaGraphRunner.is_model_supported/g' /work/runners.py && cp /opt/frigate/frigate/__main__.py /work/__main__.py && sed -i 's/\"forkserver\"/\"spawn\"/g' /work/__main__.py"
           volumeMounts:
             - name: patch-work
               mountPath: /work
@@ -23,3 +23,6 @@ spec:
             - name: patch-work
               mountPath: /opt/frigate/frigate/detectors/detection_runners.py
               subPath: runners.py
+            - name: patch-work
+              mountPath: /opt/frigate/frigate/__main__.py
+              subPath: __main__.py
