@@ -76,11 +76,17 @@ data:
     sensor_type: EPCOS 100K B57560G104F
     sensor_pin: P0.24
     min_temp: -100
-    max_temp: 275
+    max_temp: 285
     control: pid
     pid_Kp: 49.7482
     pid_Ki: 6.7483
     pid_Kd: 91.6859
+
+    [verify_heater extruder]
+    max_error: 200
+    check_gain_time: 30
+    hysteresis: 10
+    heating_gain: 2
 
     [tmc2208 extruder]
     uart_pin: P1.4
@@ -120,7 +126,7 @@ data:
     horizontal_move_z: 5
     mesh_min: 24, 10
     mesh_max: 210, 190
-    probe_count: 5, 5
+    probe_count: 7, 7
     algorithm: bicubic
 
     [display]
@@ -139,6 +145,8 @@ data:
     on_error_gcode: CANCEL_PRINT
 
     [pause_resume]
+
+    [exclude_object]
 
     [display_status]
 
