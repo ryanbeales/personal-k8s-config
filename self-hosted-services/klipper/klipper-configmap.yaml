@@ -123,7 +123,7 @@ data:
 
     [bed_mesh]
     speed: 120
-    horizontal_move_z: 5
+    horizontal_move_z: 10
     mesh_min: 24, 10
     mesh_max: 210, 190
     probe_count: 7, 7
