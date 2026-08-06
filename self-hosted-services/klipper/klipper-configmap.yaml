@@ -70,7 +70,7 @@ data:
     enable_pin: !P2.12
     microsteps: 16
     rotation_distance: 32.163
-    nozzle_diameter: 0.400
+    nozzle_diameter: 0.600
     filament_diameter: 1.750
     heater_pin: P2.7
     sensor_type: EPCOS 100K B57560G104F
