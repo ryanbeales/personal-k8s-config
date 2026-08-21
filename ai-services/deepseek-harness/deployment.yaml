@@ -23,7 +23,7 @@ spec:
             - "sh"
             - "-c"
           args:
-            - "npx -y @deepseek-ai/dsh web --host 0.0.0.0 --no-open --port 3080"
+            - "cd /tmp && npx -y @deepseek-ai/dsh web --host 0.0.0.0 --no-open --port 3080"
           env:
             - name: HOST
               value: "0.0.0.0"
