@@ -18,7 +18,7 @@ spec:
       containers:
         - name: deepseek-harness
           # renovate: datasource=docker depname=node versioning=loose
-          image: node:24-alpine
+          image: node:24-bookworm-slim
           command:
             - "sh"
             - "-c"
