@@ -18,7 +18,7 @@ spec:
       containers:
         - name: deepseek-harness
           # renovate: datasource=docker depname=node versioning=loose
-          image: node:22-alpine
+          image: node:24-alpine
           command:
             - "sh"
             - "-c"
@@ -43,6 +43,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /root
+            - name: npm-cache
+              mountPath: /root/.npm
           startupProbe:
             httpGet:
               path: /
@@ -64,3 +66,5 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: deepseek-harness-nfs-pvc
+        - name: npm-cache
+          emptyDir: {}
