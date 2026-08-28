@@ -12,7 +12,7 @@ data:
     [printer]
     kinematics: cartesian
     max_velocity: 300
-    max_accel: 2500
+    max_accel: 4000
     max_z_velocity: 10
     max_z_accel: 100
 
@@ -23,13 +23,14 @@ data:
     microsteps: 16
     rotation_distance: 40
     endstop_pin: ^!P1.29
-    position_endstop: 0
+    position_min: -10
+    position_endstop: -10
     position_max: 235
     homing_speed: 50
 
     [tmc2208 stepper_x]
     uart_pin: P1.10
-    run_current: 0.650
+    run_current: 0.800
     stealthchop_threshold: 999999
 
     [stepper_y]
@@ -39,13 +40,14 @@ data:
     microsteps: 16
     rotation_distance: 40
     endstop_pin: ^!P1.28
-    position_endstop: 0
-    position_max: 240
+    position_min: -6
+    position_endstop: -6
+    position_max: 230
     homing_speed: 50
 
     [tmc2208 stepper_y]
     uart_pin: P1.9
-    run_current: 0.650
+    run_current: 0.800
     stealthchop_threshold: 999999
 
     [stepper_z]
@@ -69,18 +71,18 @@ data:
     dir_pin: !P0.11
     enable_pin: !P2.12
     microsteps: 16
-    rotation_distance: 32.163
+    rotation_distance: 3.433
     nozzle_diameter: 0.400
     filament_diameter: 1.750
     heater_pin: P2.7
-    sensor_type: EPCOS 100K B57560G104F
+    sensor_type: Generic 3950
     sensor_pin: P0.24
     min_temp: -100
     max_temp: 285
-    control: pid
-    pid_Kp: 49.7482
-    pid_Ki: 6.7483
-    pid_Kd: 91.6859
+    #control: pid
+    #pid_Kp: 49.7482
+    #pid_Ki: 6.7483
+    #pid_Kd: 91.6859
 
     [verify_heater extruder]
     max_error: 200
@@ -99,43 +101,64 @@ data:
     sensor_pin: P0.25
     min_temp: -100
     max_temp: 120
-    control: pid
-    pid_Kp: 129.4192
-    pid_Ki: 20.7735
-    pid_Kd: 537.5211
+    #control: pid
+    #pid_Kp: 129.4192
+    #pid_Ki: 20.7735
+    #pid_Kd: 537.5211
 
     [fan]
     pin: P2.3
 
+    [filament_switch_sensor runout_sensor]
+    switch_pin: P1.26
+    pause_on_runout: True
+    runout_gcode:
+        M117 Filament Runout Detected!
+        PAUSE
+    insert_gcode:
+        M117 Filament Inserted
+
     [bltouch]
     sensor_pin: ^P0.10
     control_pin: P2.0
-    x_offset: 24
-    y_offset: -47
-    z_offset: 1.5
+    x_offset: -41
+    y_offset: -31
+    #z_offset: 1.5
     samples: 2
 
     [safe_z_home]
-    home_xy_position: 93.5, 164.5
+    home_xy_position: 158.5, 151
     speed: 50
     z_hop: 10
     z_hop_speed: 5
 
     [bed_mesh]
     speed: 120
-    horizontal_move_z: 5
-    mesh_min: 24, 10
-    mesh_max: 210, 190
-    probe_count: 7, 7
+    horizontal_move_z: 10
+    mesh_min: 15, 15       # Probes much closer to the front-left edge
+    mesh_max: 185, 185     # Pulled back slightly from your absolute max to prevent motor grinding
+    probe_count: 5, 5      # 5x5 (25 points) is plenty for this bed size and much faster than 7x7
     algorithm: bicubic
+    fade_start: 1
+    fade_end: 10
+
+    [input_shaper]
 
     [display]
     lcd_type: st7920
     cs_pin: P1.19
-    sclk_pin: P1.21
-    sid_pin: P1.23
+    sclk_pin: P1.20
+    sid_pin: P1.18
     encoder_pins: ^P3.25, ^P3.26
     click_pin: ^!P0.28
+
+    [neopixel biqu_led]
+    pin: P1.24
+    chain_count: 2
+    color_order: GRB
+    initial_RED: 1.0
+    initial_GREEN: 1.0
+    initial_BLUE: 1.0
 
     [output_pin beeper]
     pin: P1.30
@@ -179,6 +202,61 @@ data:
       G90
       G1 Z{z_park} F600
       G1 X{x_park} Y{y_park} F6000
+
+    [screws_tilt_adjust]
+    # The coordinates below represent the NOZZLE position.
+    # Klipper automatically applies your BLTouch offset (X24, Y-47)
+    # to position the probe tip over the bed screws.
+    screw1: 6, 77
+    screw1_name: front left screw
+    screw2: 176, 77
+    screw2_name: front right screw
+    screw3: 176, 237
+    screw3_name: rear right screw
+    screw4: 6, 237
+    screw4_name: rear left screw
+    horizontal_move_z: 10
+    speed: 150
+    screw_thread: CW-M4
+
+    #*# <---------------------- SAVE_CONFIG ---------------------->
+    #*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+    #*#
+    #*# [bltouch]
+    #*# z_offset = 3.771
+    #*#
+    #*# [extruder]
+    #*# control = pid
+    #*# pid_kp = 17.131
+    #*# pid_ki = 0.517
+    #*# pid_kd = 141.969
+    #*#
+    #*# [heater_bed]
+    #*# control = pid
+    #*# pid_kp = 66.768
+    #*# pid_ki = 0.927
+    #*# pid_kd = 1201.816
+    #*#
+    #*# [bed_mesh default]
+    #*# version = 1
+    #*# points =
+    #*# 	0.032500, -0.037500, -0.071250, -0.007500, -0.058750, 0.070000, -0.001250
+    #*# 	0.037500, 0.011250, 0.000000, 0.047500, -0.003750, 0.082500, -0.017500
+    #*# 	0.073750, 0.045000, 0.046250, 0.076250, 0.050000, 0.128750, 0.047500
+    #*# 	0.140000, 0.058750, 0.063750, 0.067500, 0.028750, 0.110000, 0.042500
+    #*# 	0.130000, 0.078750, 0.187500, 0.053750, 0.031250, 0.120000, 0.043750
+    #*# 	0.170000, 0.082500, 0.103750, 0.068750, 0.033750, 0.117500, 0.040000
+    #*# 	0.188750, 0.113750, 0.076250, 0.076250, 0.016250, 0.061250, 0.028750
+    #*# x_count = 7
+    #*# y_count = 7
+    #*# mesh_x_pps = 2
+    #*# mesh_y_pps = 2
+    #*# algo = bicubic
+    #*# tension = 0.2
+    #*# min_x = 24.0
+    #*# max_x = 210.0
+    #*# min_y = 10.0
+    #*# max_y = 190.0
 
   moonraker.conf: |
     [server]
