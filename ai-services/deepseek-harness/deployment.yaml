@@ -50,19 +50,19 @@ spec:
           startupProbe:
             httpGet:
               path: /
-              port: 3081
+              port: 3080
             # 120 * 10 seconds = 20 minutes
             failureThreshold: 120
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
-              port: 3081
+              port: 3080
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /
-              port: 3081
+              port: 3080
             periodSeconds: 5
       volumes:
         - name: data
