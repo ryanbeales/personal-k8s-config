@@ -17,9 +17,28 @@ spec:
     spec:
       containers:
         - name: proxy
-          image: alpine:latest
+          image: nginx:alpine
           command: ["sh", "-c"]
-          args: ["apk add socat && socat TCP-LISTEN:3080,fork,reuseaddr TCP:127.0.0.1:3081"]
+          args:
+            - |
+              cat << 'EOF' > /etc/nginx/nginx.conf
+              events {}
+              http {
+                  server {
+                      listen 3080;
+                      location / {
+                          proxy_pass http://127.0.0.1:3081;
+                          proxy_set_header Host 127.0.0.1:3081;
+                          proxy_set_header Origin "http://127.0.0.1:3081";
+                          proxy_set_header sec-fetch-site "";
+                          proxy_http_version 1.1;
+                          proxy_set_header Upgrade $http_upgrade;
+                          proxy_set_header Connection "upgrade";
+                      }
+                  }
+              }
+              EOF
+              nginx -g 'daemon off;'
           ports:
             - name: http
               containerPort: 3080
