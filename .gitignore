@@ -1,3 +1,19 @@
 # Don't save helm charts.
 **/charts
 *.ps1
+
+# Binaries and executables
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Logs and debug files
+*.log
+*logs.txt
+
+# Python virtual environments
+.venv/
+test_env/
+env/
+venv/
