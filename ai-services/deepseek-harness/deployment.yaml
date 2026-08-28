@@ -30,7 +30,7 @@ spec:
             - "sh"
             - "-c"
           args:
-            - "npm install -g @deepseek-ai/dsh && dsh web --no-open --port 3081"
+            - "npm install -g @deepseek-ai/dsh && dsh web --no-open --port 3081 --trusted-host deepseek-harness.crobceratops.ryanbeales.com"
           env:
             - name: GITHUB_TOKEN
               valueFrom:
