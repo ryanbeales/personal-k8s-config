@@ -16,6 +16,13 @@ spec:
         app.kubernetes.io/name: deepseek-harness
     spec:
       containers:
+        - name: proxy
+          image: alpine:latest
+          command: ["sh", "-c"]
+          args: ["apk add socat && socat TCP-LISTEN:3080,fork,reuseaddr TCP:127.0.0.1:3081"]
+          ports:
+            - name: http
+              containerPort: 3080
         - name: deepseek-harness
           # renovate: datasource=docker depname=node versioning=loose
           image: node:24-bookworm-slim
@@ -23,10 +30,8 @@ spec:
             - "sh"
             - "-c"
           args:
-            - "npm install -g @deepseek-ai/dsh && dsh web --host 0.0.0.0 --no-open --port 3080"
+            - "npm install -g @deepseek-ai/dsh && dsh web --no-open --port 3081"
           env:
-            - name: HOST
-              value: "0.0.0.0"
             - name: GITHUB_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -37,9 +42,6 @@ spec:
               value: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
             - name: OPENAI_API_KEY
               value: sk-dummy
-          ports:
-            - name: http
-              containerPort: 3080
           volumeMounts:
             - name: data
               mountPath: /root
@@ -48,19 +50,19 @@ spec:
           startupProbe:
             httpGet:
               path: /
-              port: 3080
+              port: 3081
             # 120 * 10 seconds = 20 minutes
             failureThreshold: 120
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
-              port: 3080
+              port: 3081
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /
-              port: 3080
+              port: 3081
             periodSeconds: 5
       volumes:
         - name: data
