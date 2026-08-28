@@ -375,7 +375,7 @@ spec:
       resource "opnsense_kea_dhcpv4_reservation" "croblodocus" {
         subnet_id   = opnsense_kea_dhcpv4_subnet.lan.id
         ip_address  = "10.0.0.126"
-        mac_address = "50:e0:85:85:c1:18"
+        mac_address = "c0:ea:c3:60:46:c6"
         description = "Migrated croblodocus"
       }
 
