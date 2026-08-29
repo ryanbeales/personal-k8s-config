@@ -23,10 +23,10 @@ spec:
           image: nousresearch/hermes-agent:v2026.8.27
           resources:
             limits:
-              memory: 256Mi
+              memory: 512Mi
             requests:
               cpu: 50m
-              memory: 128Mi
+              memory: 256Mi
           securityContext:
             runAsUser: 10000
           command:
@@ -47,9 +47,14 @@ spec:
               /opt/hermes/.venv/bin/hermes config set model.base_url http://litellm.litellm.svc.cluster.local:4000/v1
               /opt/hermes/.venv/bin/hermes config set model.default agent
               /opt/hermes/.venv/bin/hermes config set model.context_length 131072
+
+              echo "Syncing hermes-agent source for webui..."
+              cp -a /opt/hermes/. /opt/hermes-src/
           volumeMounts:
             - name: storage
               mountPath: /opt/data
+            - name: hermes-agent-src
+              mountPath: /opt/hermes-src
       containers:
         - name: hermes
           # renovate: datasource=docker depname=nousresearch/hermes-agent versioning=loose
@@ -184,10 +189,10 @@ spec:
           image: ghcr.io/nesquena/hermes-webui:latest
           resources:
             limits:
-              memory: 512Mi
+              memory: 1Gi
             requests:
               cpu: 50m
-              memory: 128Mi
+              memory: 256Mi
           env:
             - name: HERMES_WEBUI_HOST
               value: "0.0.0.0"
@@ -226,6 +231,8 @@ spec:
               subPath: .hermes
             - name: storage
               mountPath: /workspace
+            - name: hermes-agent-src
+              mountPath: /opt/hermes
       volumes:
         - name: storage
           persistentVolumeClaim:
@@ -233,3 +240,5 @@ spec:
         - name: maddy-ca
           secret:
             secretName: maddy-ca-tls
+        - name: hermes-agent-src
+          emptyDir: {}
