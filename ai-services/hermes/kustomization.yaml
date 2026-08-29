@@ -8,4 +8,5 @@ resources:
 - hermes-nfs-pvc.yaml
 - httproute.yaml
 - httproute-webui.yaml
+- backend-traffic-policy.yaml
 - certificate.yaml
