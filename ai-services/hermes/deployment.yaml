@@ -49,7 +49,13 @@ spec:
               /opt/hermes/.venv/bin/hermes config set model.context_length 131072
 
               echo "Syncing hermes-agent source for webui..."
-              cp -a /opt/hermes/. /opt/hermes-src/
+              mkdir -p /opt/hermes-src
+              for item in /opt/hermes/* /opt/hermes/.[!.]*; do
+                name=$(basename "$item")
+                if [ "$name" != ".playwright" ] && [ "$name" != "node_modules" ] && [ "$name" != ".venv" ] && [ -e "$item" ]; then
+                  cp -r "$item" /opt/hermes-src/ || true
+                fi
+              done
           volumeMounts:
             - name: storage
               mountPath: /opt/data
