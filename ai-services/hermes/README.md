@@ -56,3 +56,11 @@ hermes mcp add searxng --command npx --args mcp-searxng --env SEARXNG_URL=http:/
 ```
 
 The agent uses the [Aphrodite platform](https://github.com/NousResearch/Aphrodite) to power its tool integrations.
+
+---
+
+## Web Interfaces
+
+* **Hermes Dashboard (Built-in)**: Accessible at `https://hermes.crobceratops.ryanbeales.com` or `https://hermes.crobasaurusrex.ryanbeales.com` (Port 9119, HTTP Basic Auth using `hermes-dashboard-secret`).
+* **Hermes WebUI ([nesquena/hermes-webui](https://github.com/nesquena/hermes-webui))**: Accessible at `https://hermes-webui.crobceratops.ryanbeales.com` or `https://hermes-webui.crobasaurusrex.ryanbeales.com` (Port 8787, Password auth using the `password` key from `hermes-dashboard-secret`).
+

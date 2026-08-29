@@ -171,6 +171,38 @@ spec:
             - name: maddy-ca
               mountPath: /etc/ssl/certs/maddy
               readOnly: true
+        - name: hermes-webui
+          # renovate: datasource=docker depname=ghcr.io/nesquena/hermes-webui versioning=loose
+          image: ghcr.io/nesquena/hermes-webui:latest
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          env:
+            - name: HERMES_WEBUI_HOST
+              value: "0.0.0.0"
+            - name: HERMES_WEBUI_PORT
+              value: "8787"
+            - name: WANTED_UID
+              value: "10000"
+            - name: WANTED_GID
+              value: "10000"
+            - name: HERMES_WEBUI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-dashboard-secret
+                  key: password
+          ports:
+            - name: webui
+              containerPort: 8787
+          volumeMounts:
+            - name: storage
+              mountPath: /home/hermeswebui/.hermes
+              subPath: .hermes
+            - name: storage
+              mountPath: /workspace
       volumes:
         - name: storage
           persistentVolumeClaim:

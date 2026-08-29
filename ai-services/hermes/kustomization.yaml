@@ -7,4 +7,5 @@ resources:
 - service.yaml
 - hermes-nfs-pvc.yaml
 - httproute.yaml
+- httproute-webui.yaml
 - certificate.yaml
