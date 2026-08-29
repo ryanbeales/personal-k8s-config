@@ -28,15 +28,7 @@ kubectl create secret generic hermes-github-secret -n hermes --from-literal=GITH
 ```
 *(The `deployment.yaml` references this secret and exposes it to the agent as the `GITHUB_TOKEN` environment variable).*
 
-### 2. Create Kubernetes Secret (Gemini)
-To enable the Gemini integrations/models, deploy your Gemini API key as a secret in the `hermes` namespace:
-
-```bash
-kubectl create secret generic hermes-gemini-secret -n hermes --from-literal=GEMINI_API_KEY=AIzaSy...
-```
-*(The `deployment.yaml` references this secret and exposes it to the agent as the `GEMINI_API_KEY` environment variable).*
-
-### 3. Create Kubernetes Secret (Dashboard Auth)
+### 2. Create Kubernetes Secret (Dashboard Auth)
 To secure the Hermes Dashboard, you must provide a basic auth username and password. We recommend generating a strong password using `openssl`:
 
 ```bash
@@ -46,7 +38,7 @@ kubectl create secret generic hermes-dashboard-secret -n hermes \
 ```
 *(The `deployment.yaml` references this secret and exposes it to the agent).*
 
-### 4. Create Kubernetes Secret (API Server Key)
+### 3. Create Kubernetes Secret (API Server Key)
 To secure communication between the Hermes Agent API server and the Hermes WebUI sidecar, configure a shared API server key:
 
 ```bash
@@ -55,7 +47,7 @@ kubectl create secret generic hermes-api-secret -n hermes \
 ```
 *(The `deployment.yaml` references this secret for both `API_SERVER_KEY` and `HERMES_WEBUI_GATEWAY_API_KEY`).*
 
-### 5. Adding SearXNG MCP Support
+### 4. Adding SearXNG MCP Support
 If you want to enable SearXNG search capabilities, add the MCP server to your Hermes configuration. 
 
 Run the following command from a terminal with `hermes` access (e.g., within the cluster):
