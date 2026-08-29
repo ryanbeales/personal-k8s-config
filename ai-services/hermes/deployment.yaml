@@ -95,6 +95,16 @@ spec:
                 chmod 600 /opt/data/.config/gh/hosts.yml || echo "ERROR: chmod failed"
               fi
 
+              # Ensure /opt/data/.env reflects API_SERVER_KEY from secret
+              if [ -n "$API_SERVER_KEY" ]; then
+                if grep -q "API_SERVER_KEY=" /opt/data/.env 2>/dev/null; then
+                  sed -i "s/^API_SERVER_KEY=.*/API_SERVER_KEY=$API_SERVER_KEY/" /opt/data/.env
+                else
+                  echo "API_SERVER_KEY=$API_SERVER_KEY" >> /opt/data/.env
+                fi
+                chown hermes:hermes /opt/data/.env 2>/dev/null || true
+              fi
+
               echo "Starting s6-overlay init..."
               exec /init sleep infinity
           tty: true
@@ -120,7 +130,10 @@ spec:
             - name: API_SERVER_HOST
               value: "0.0.0.0"
             - name: API_SERVER_KEY
-              value: "hermes-local-key"
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-api-secret
+                  key: API_SERVER_KEY
             - name: API_SERVER_CORS_ORIGINS
               value: "*"
             - name: EMAIL_ADDRESS
@@ -203,7 +216,10 @@ spec:
             - name: HERMES_WEBUI_GATEWAY_BASE_URL
               value: "http://localhost:8642"
             - name: HERMES_WEBUI_GATEWAY_API_KEY
-              value: "hermes-local-key"
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-api-secret
+                  key: API_SERVER_KEY
             - name: HERMES_WEBUI_GATEWAY_USE_RUNS_API
               value: "true"
           ports:
