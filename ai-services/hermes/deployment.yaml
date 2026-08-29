@@ -198,6 +198,14 @@ spec:
                 secretKeyRef:
                   name: hermes-dashboard-secret
                   key: password
+            - name: HERMES_WEBUI_CHAT_BACKEND
+              value: "gateway"
+            - name: HERMES_WEBUI_GATEWAY_BASE_URL
+              value: "http://localhost:8642"
+            - name: HERMES_WEBUI_GATEWAY_API_KEY
+              value: "hermes-local-key"
+            - name: HERMES_WEBUI_GATEWAY_USE_RUNS_API
+              value: "true"
           ports:
             - name: webui
               containerPort: 8787
