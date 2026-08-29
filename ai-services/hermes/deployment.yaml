@@ -185,6 +185,10 @@ spec:
               value: "0.0.0.0"
             - name: HERMES_WEBUI_PORT
               value: "8787"
+            - name: HERMES_WEBUI_STATE_DIR
+              value: "/home/hermeswebui/.hermes/webui"
+            - name: HERMES_WEBUI_DEFAULT_WORKSPACE
+              value: "/workspace"
             - name: WANTED_UID
               value: "10000"
             - name: WANTED_GID
