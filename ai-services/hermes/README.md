@@ -46,7 +46,16 @@ kubectl create secret generic hermes-dashboard-secret -n hermes \
 ```
 *(The `deployment.yaml` references this secret and exposes it to the agent).*
 
-### 4. Adding SearXNG MCP Support
+### 4. Create Kubernetes Secret (API Server Key)
+To secure communication between the Hermes Agent API server and the Hermes WebUI sidecar, configure a shared API server key:
+
+```bash
+kubectl create secret generic hermes-api-secret -n hermes \
+  --from-literal=API_SERVER_KEY=$(openssl rand -hex 32)
+```
+*(The `deployment.yaml` references this secret for both `API_SERVER_KEY` and `HERMES_WEBUI_GATEWAY_API_KEY`).*
+
+### 5. Adding SearXNG MCP Support
 If you want to enable SearXNG search capabilities, add the MCP server to your Hermes configuration. 
 
 Run the following command from a terminal with `hermes` access (e.g., within the cluster):
