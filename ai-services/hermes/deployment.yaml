@@ -197,6 +197,10 @@ spec:
               value: "/home/hermeswebui/.hermes/webui"
             - name: HERMES_WEBUI_DEFAULT_WORKSPACE
               value: "/workspace"
+            - name: HERMES_WEBUI_DEFAULT_MODEL
+              value: "agent"
+            - name: HERMES_MODEL
+              value: "agent"
             - name: WANTED_UID
               value: "10000"
             - name: WANTED_GID
