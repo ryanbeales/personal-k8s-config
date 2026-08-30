@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: llama-qwen3.8-27b
+  name: llama-qwen3-8-27b
   namespace: llama
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: llama-qwen3.8-27b
+      app.kubernetes.io/name: llama-qwen3-8-27b
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: llama-qwen3.8-27b
+        app.kubernetes.io/name: llama-qwen3-8-27b
     spec:
       runtimeClassName: nvidia
       nodeName: crobputer
