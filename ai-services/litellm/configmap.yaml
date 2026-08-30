@@ -7,10 +7,10 @@ data:
   config.yaml: |
     model_list:
       # Explicit individual models
-      - model_name: gemma-4-26B
+      - model_name: qwen3.8-27B
         litellm_params:
-          model: openai/gemma-4-26B_q4_0-it.gguf
-          api_base: http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
+          model: openai/Qwen3.8-27B-UD-Q4_K_M.gguf
+          api_base: http://llama-qwen3.8-27b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
       - model_name: gemma-4-12B
@@ -43,11 +43,11 @@ data:
 
       # Routing Groups (Aliases)
       
-      # "agent" group: Strict fallback chain (26B -> 12B -> E4B)
+      # "agent" group: Strict fallback chain (Qwen3.8-27B -> 12B -> E4B)
       - model_name: agent
         litellm_params:
-          model: openai/gemma-4-26B_q4_0-it.gguf
-          api_base: http://llama-gemma4-26b.llama.svc.cluster.local:8000/v1
+          model: openai/Qwen3.8-27B-UD-Q4_K_M.gguf
+          api_base: http://llama-qwen3.8-27b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "vision" group: Latency-based routing between E4B and 12B

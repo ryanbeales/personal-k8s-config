@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: llama-gemma4-26b-nfs-pvc
+  name: llama-qwen3.8-27b-nfs-pvc
   namespace: llama
 spec:
   accessModes:
