@@ -51,6 +51,9 @@ spec:
               /opt/hermes/.venv/bin/hermes config set agent.intent_ack_continuation true
               /opt/hermes/.venv/bin/hermes config set agent.execution_guidance true
 
+              # Clean up legacy nested .hermes config if present
+              rm -f /opt/data/.hermes/config.yaml
+
               echo "Syncing hermes-agent source for webui..."
               mkdir -p /opt/hermes-src
               for item in /opt/hermes/* /opt/hermes/.[!.]*; do
@@ -203,6 +206,10 @@ spec:
               cpu: 50m
               memory: 256Mi
           env:
+            - name: HERMES_HOME
+              value: "/home/hermeswebui/.hermes"
+            - name: HOME
+              value: "/home/hermeswebui"
             - name: HERMES_WEBUI_HOST
               value: "0.0.0.0"
             - name: HERMES_WEBUI_PORT
@@ -237,7 +244,6 @@ spec:
           volumeMounts:
             - name: storage
               mountPath: /home/hermeswebui/.hermes
-              subPath: .hermes
             - name: storage
               mountPath: /workspace
             - name: hermes-agent-src
