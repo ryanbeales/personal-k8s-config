@@ -47,6 +47,9 @@ spec:
               /opt/hermes/.venv/bin/hermes config set model.base_url http://litellm.litellm.svc.cluster.local:4000/v1
               /opt/hermes/.venv/bin/hermes config set model.default agent
               /opt/hermes/.venv/bin/hermes config set model.context_length 131072
+              /opt/hermes/.venv/bin/hermes config set agent.tool_use_enforcement true
+              /opt/hermes/.venv/bin/hermes config set agent.intent_ack_continuation true
+              /opt/hermes/.venv/bin/hermes config set agent.execution_guidance true
 
               echo "Syncing hermes-agent source for webui..."
               mkdir -p /opt/hermes-src
