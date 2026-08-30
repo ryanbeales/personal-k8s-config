@@ -4,7 +4,7 @@ Runs the [Nous Research Hermes Agent](https://github.com/NousResearch/Hermes-Age
 
 ## Architecture & Capabilities
 
-* **Model Backend:** Connects to `llama-qwen3.8-27b` (`Qwen3.8-27B-UD-Q4_K_M.gguf`) with a context window size of **131,072 (128k) tokens**.
+* **Model Backend:** Connects to `llama-qwen3-8-27b` (`Qwen3.8-27B-UD-Q4_K_M.gguf`) with a context window size of **131,072 (128k) tokens**.
 * **Kubernetes Control (`kubectl`)**: The container automatically downloads and installs `kubectl` (`v1.35.0`) on startup. It is mounted into the shared persistent volume directory (`/opt/data/.local/bin/kubectl`) and exists on the default shell `PATH`.
 * **RBAC Permissions**: Hermes is bound to a custom ServiceAccount (`hermes`) and a ClusterRole (`hermes-cluster-reader`) that grants:
   - Read-only access (`get`, `list`, `watch`) to cluster-wide and namespaced resources (pods, configmaps, namespaces, deployments, ingress, gateways, ArgoCD applications, etc.) across **all namespaces**.
