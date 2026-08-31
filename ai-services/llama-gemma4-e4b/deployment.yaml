@@ -65,7 +65,6 @@ spec:
                 --mmproj /models/gemma-4-E4B-it-mmproj.gguf \
                 -c 131072 \
                 -np 2 \
-                --ctx-shift \
                 -ctk q4_0 \
                 -ctv q4_0 \
                 --flash-attn on \
