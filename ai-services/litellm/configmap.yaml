@@ -18,8 +18,20 @@ data:
           model: openai/gemma-4-12b-it-qat-q4_0.gguf
           api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-          max_parallel_requests: 2
+          max_parallel_requests: 1
+      - model_name: gemma-4-12b
+        litellm_params:
+          model: openai/gemma-4-12b-it-qat-q4_0.gguf
+          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 1
       - model_name: gemma-4-E4B
+        litellm_params:
+          model: openai/gemma-4-E4B_q4_0-it.gguf
+          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 2
+      - model_name: gemma-4-e4b
         litellm_params:
           model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
