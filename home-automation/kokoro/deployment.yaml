@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kokoro
+  namespace: kokoro
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kokoro
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kokoro
+    spec:
+      runtimeClassName: nvidia
+      # Schedule kokoro on RTX 5060 Ti
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-GeForce-RTX-5060-Ti
+      containers:
+        - name: kokoro
+          # renovate: datasource=docker depname=ghcr.io/remsky/kokoro-fastapi-gpu versioning=loose
+          image: ghcr.io/remsky/kokoro-fastapi-gpu:latest-cu128
+          env:
+            - name: TZ
+              value: America/Vancouver
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+            requests:
+              nvidia.com/gpu: "1"
+          ports:
+            - name: http
+              containerPort: 8880
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8880
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8880
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8880
+            periodSeconds: 5

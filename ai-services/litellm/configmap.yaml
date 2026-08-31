@@ -47,6 +47,11 @@ data:
           model: openai/tts-1
           api_base: http://omnivoice.omnivoice.svc.cluster.local:8880/v1
           api_key: "sk-no-key"
+      - model_name: kokoro
+        litellm_params:
+          model: openai/tts-1
+          api_base: http://kokoro.kokoro.svc.cluster.local:8880/v1
+          api_key: "sk-no-key"
 
       # Routing Groups (Aliases)
       
@@ -95,7 +100,12 @@ data:
           api_base: http://faster-whisper.faster-whisper.svc.cluster.local:10300/v1
           api_key: "sk-no-key"
 
-      # "tts" group
+      # "tts" group (routes to kokoro with fallback to omnivoice)
+      - model_name: tts
+        litellm_params:
+          model: openai/tts-1
+          api_base: http://kokoro.kokoro.svc.cluster.local:8880/v1
+          api_key: "sk-no-key"
       - model_name: tts
         litellm_params:
           model: openai/tts-1
