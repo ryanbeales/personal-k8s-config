@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: llama-gemma4-e4b
     spec:
       runtimeClassName: nvidia
-      # Pin to the node with the RTX 5060 Ti (16GB VRAM)
+      # Pin to the node with the RTX 3060 (12GB VRAM)
       nodeSelector:
         nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060
       initContainers:
@@ -63,7 +63,7 @@ spec:
               /app/llama-server \
                 -m /models/gemma-4-E4B_q4_0-it.gguf \
                 --mmproj /models/gemma-4-E4B-it-mmproj.gguf \
-                -c 32768 \
+                -c 131072 \
                 -np 2 \
                 -ctk q4_0 \
                 -ctv q4_0 \
