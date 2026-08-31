@@ -1,3 +1,0 @@
-argocd:
-  name: llama-qwen-coder-7b
-  namespace: qwen-coder

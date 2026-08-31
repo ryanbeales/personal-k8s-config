@@ -24,12 +24,7 @@ data:
           model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-          max_parallel_requests: 1
-      - model_name: qwen-coder-7B
-        litellm_params:
-          model: openai/qwen2.5-coder-7b-instruct-q4_k_m.gguf
-          api_base: http://llama-qwen-coder-7b.qwen-coder.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
+          max_parallel_requests: 2
       - model_name: faster-whisper
         litellm_params:
           model: openai/whisper-1
@@ -77,8 +72,8 @@ data:
       # "code" group
       - model_name: code
         litellm_params:
-          model: openai/qwen2.5-coder-7b-instruct-q4_k_m.gguf
-          api_base: http://llama-qwen-coder-7b.qwen-coder.svc.cluster.local:8000/v1
+          model: openai/Qwen3.8-27B-UD-Q4_K_M.gguf
+          api_base: http://llama-qwen3-8-27b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "stt" group
