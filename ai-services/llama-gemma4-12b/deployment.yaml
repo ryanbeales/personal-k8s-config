@@ -63,8 +63,9 @@ spec:
               /app/llama-server \
                 -m /models/gemma-4-12b-it-qat-q4_0.gguf \
                 --mmproj /models/mmproj-gemma-4-12b-it-qat-q4_0.gguf \
-                -c 32768 \
-                -np 2 \
+                -c 131072 \
+                -np 1 \
+                --ctx-shift \
                 -ctk q4_0 \
                 -ctv q4_0 \
                 --flash-attn on \
