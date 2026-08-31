@@ -100,22 +100,23 @@ data:
           api_base: http://faster-whisper.faster-whisper.svc.cluster.local:10300/v1
           api_key: "sk-no-key"
 
-      # "tts" group (routes to kokoro with fallback to omnivoice)
+      # "tts" group
       - model_name: tts
         litellm_params:
           model: openai/tts-1
           api_base: http://kokoro.kokoro.svc.cluster.local:8880/v1
           api_key: "sk-no-key"
-      - model_name: tts
+      - model_name: tts-1
         litellm_params:
           model: openai/tts-1
-          api_base: http://omnivoice.omnivoice.svc.cluster.local:8880/v1
+          api_base: http://kokoro.kokoro.svc.cluster.local:8880/v1
           api_key: "sk-no-key"
 
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
         - {"agent": ["gemma-4-12B", "gemma-4-E4B"]}
+        - {"tts": ["omnivoice"]}
 
     litellm_settings:
       callbacks:
