@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: memos-pvc
+  name: memos-data-pvc
   namespace: memos
   labels:
     app.kubernetes.io/name: memos

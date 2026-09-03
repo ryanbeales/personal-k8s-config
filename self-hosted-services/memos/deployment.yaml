@@ -10,6 +10,7 @@ spec:
   revisionHistoryLimit: 1
   strategy:
     type: Recreate
+    rollingUpdate: null
   selector:
     matchLabels:
       app.kubernetes.io/name: memos
@@ -62,4 +63,4 @@ spec:
       volumes:
         - name: memos-storage
           persistentVolumeClaim:
-            claimName: memos-pvc
+            claimName: memos-data-pvc
