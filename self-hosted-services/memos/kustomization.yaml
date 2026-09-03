@@ -1,6 +1,6 @@
 resources:
   - namespace.yaml
-  - memos-pvc.yaml
+  - memos-data-pvc.yaml
   - deployment.yaml
   - service.yaml
   - httproute.yaml
