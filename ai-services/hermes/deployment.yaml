@@ -43,6 +43,22 @@ spec:
                 curl -sSL -o /opt/data/.local/bin/kubectl "https://dl.k8s.io/release/v1.35.0/bin/linux/amd64/kubectl"
                 chmod +x /opt/data/.local/bin/kubectl
               fi
+
+              # Install optional python deps (numpy) into a persistent volume
+              # target. /opt/hermes/.venv is the ephemeral image layer and is
+              # root-owned (unwritable by uid 10000), so pip can't write into
+              # it and the install wouldn't survive image bumps / Recreate.
+              # Installing to /opt/data/py-extra (the NFS PVC, writable by
+              # hermes) and exposing it via PYTHONPATH (set on the main
+              # container) makes the dep importable by the venv python and
+              # persistent across pod recreates. Idempotent: skipped if present.
+              if [ ! -d /opt/data/py-extra/numpy ]; then
+                echo "Installing numpy to /opt/data/py-extra..."
+                /usr/local/bin/uv pip install --python /opt/hermes/.venv/bin/python --target /opt/data/py-extra numpy
+              else
+                echo "numpy already present in /opt/data/py-extra, skipping."
+              fi
+
               /opt/hermes/.venv/bin/hermes config set model.provider custom
               /opt/hermes/.venv/bin/hermes config set model.base_url http://litellm.litellm.svc.cluster.local:4000/v1
               /opt/hermes/.venv/bin/hermes config set model.default agent
@@ -128,6 +144,11 @@ spec:
           tty: true
           stdin: true
           env:
+            # Make optional python deps installed by the init container into
+            # /opt/data/py-extra (NFS PVC) importable by the venv python.
+            # Container env reaches the s6-supervised hermes processes.
+            - name: PYTHONPATH
+              value: "/opt/data/py-extra"
             - name: HERMES_DASHBOARD
               value: "1"
             - name: HERMES_DASHBOARD_TUI
