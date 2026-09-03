@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memos-pvc
+  namespace: memos
+  labels:
+    app.kubernetes.io/name: memos
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: local-storage-zfs
+  volumeName: memos-pv
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,7 @@
+resources:
+  - namespace.yaml
+  - memos-pv.yaml
+  - memos-pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - httproute.yaml
