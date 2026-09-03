@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memos
+  namespace: memos
+  labels:
+    app.kubernetes.io/name: memos
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: memos
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: memos
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: crobasaurusrex
+      securityContext:
+        fsGroup: 10001
+      containers:
+        - name: memos
+          # renovate: datasource=docker depname=neosmemo/memos versioning=semver
+          image: neosmemo/memos:0.30.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MEMOS_INSTANCE_URL
+              value: "https://memos.crobasaurusrex.ryanbeales.com"
+            - name: MEMOS_PORT
+              value: "5230"
+          ports:
+            - name: http
+              containerPort: 5230
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5230
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5230
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
+          volumeMounts:
+            - name: memos-storage
+              mountPath: /var/opt/memos
+      volumes:
+        - name: memos-storage
+          persistentVolumeClaim:
+            claimName: memos-pvc
