@@ -52,6 +52,22 @@ data:
           model: openai/tts-1
           api_base: http://kokoro.kokoro.svc.cluster.local:8880/v1
           api_key: "sk-no-key"
+      - model_name: gemini-3.7-flash
+        litellm_params:
+          model: gemini/gemini-3.7-flash
+          api_key: "os.environ/GEMINI_API_KEY"
+      - model_name: gemini-3.7
+        litellm_params:
+          model: gemini/gemini-3.7-flash
+          api_key: "os.environ/GEMINI_API_KEY"
+      - model_name: gemini-3.8-flash
+        litellm_params:
+          model: gemini/gemini-3.8-flash
+          api_key: "os.environ/GEMINI_API_KEY"
+      - model_name: gemini-3.8
+        litellm_params:
+          model: gemini/gemini-3.8-flash
+          api_key: "os.environ/GEMINI_API_KEY"
 
       # Routing Groups (Aliases)
       

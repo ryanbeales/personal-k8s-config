@@ -25,6 +25,12 @@ spec:
           ports:
             - name: http
               containerPort: 4000
+          env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-secret
+                  key: GEMINI_API_KEY
           volumeMounts:
             - name: config
               mountPath: /app/config.yaml
