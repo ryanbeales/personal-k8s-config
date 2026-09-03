@@ -8,8 +8,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: local-storage-zfs
-  volumeName: memos-pv
+  storageClassName: crobasaurusrex-nfs
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Gi
