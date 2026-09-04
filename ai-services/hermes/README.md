@@ -48,7 +48,16 @@ kubectl create secret generic hermes-api-secret -n hermes \
 ```
 *(The `deployment.yaml` references this secret for both `API_SERVER_KEY` and `HERMES_WEBUI_GATEWAY_API_KEY`).*
 
-### 4. Adding SearXNG MCP Support
+### 4. Create Kubernetes Secret (Google Workspace Credentials)
+To allow Hermes to access Google Workspace (Tasks, Calendar, Drive, etc.), create a secret containing your OAuth client JSON:
+
+```bash
+kubectl create secret generic hermes-google-secret -n hermes \
+  --from-file=credentials.json=./credentials.json
+```
+*(The `deployment.yaml` mounts this secret and copies it to `/opt/data/credentials.json` for persistent agent access).*
+
+### 5. Adding SearXNG MCP Support
 If you want to enable SearXNG search capabilities, add the MCP server to your Hermes configuration. 
 
 Run the following command from a terminal with `hermes` access (e.g., within the cluster):
