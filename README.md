@@ -95,13 +95,16 @@ graph TD
     M["crobasaurusrex<br/>(Master Node)"]
     W1["crobceratops<br/>(Worker Node)"]
     W2["croblodocus<br/>(Worker Node)"]
+    W3["crobputer<br/>(Worker Node - WSL2)"]
 
     M --- Storage[("20TB Storage<br/>(Mirrored Spinning Disk)")]
-    M --- G1["Nvidia Geforce 1060 6GB"]
+    M --- G1["Nvidia GeForce RTX 3060 12GB"]
     W1 --- G2["Nvidia GeForce RTX 5060 Ti 16GB"]
-    W2 --- G3["Nvidia GeForce 1050Ti 4GB"]
+    W2 --- G3["Nvidia GeForce GTX 1050Ti 4GB"]
+    W3 --- G4["Nvidia GeForce RTX 4090 24GB"]
     M --- W1
     M --- W2
+    M --- W3
 ```
 
 I won't explain the naming convention except that I also acknowledge that it's strange, but I'm stuck with it now (do you know how many dinosaurs end in the same set of letters??).
@@ -110,13 +113,14 @@ I won't explain the naming convention except that I also acknowledge that it's s
 
 | Hostname | Role | CPU | RAM | Storage | GPU |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **crobasaurusrex** | Master | AMD Ryzen 7 3700X (8C/16T) | 32GB | 20TB Mirrored (NFS) | Nvidia GTX 1060 6GB |
-| **crobceratops** | Worker | AMD Ryzen 5 5600X (6C/12T) | 32GB | 1TB Local | Nvidia RTX 5060 Ti 16GB |
-| **croblodocus** | Worker | Intel Core i9-8950HK (6C/12T) | 32GB | 2TB Local | Nvidia GTX 1050Ti 4GB |
+| **crobasaurusrex** | Master | AMD Ryzen 9 3900XT (12C/24T) | 32GB | 20TB Mirrored (NFS) | Nvidia GeForce RTX 3060 12GB |
+| **crobceratops** | Worker | AMD Ryzen 5 5600X (6C/12T) | 32GB | 1TB Local | Nvidia GeForce RTX 5060 Ti 16GB |
+| **croblodocus** | Worker | Intel Core i9-8950HK (6C/12T) | 32GB | 2TB Local | Nvidia GeForce GTX 1050Ti 4GB |
+| **crobputer** | Worker | AMD Ryzen 7 5800XT (8C/16T) | 32GB (24GB WSL2) | 1TB Local | Nvidia GeForce RTX 4090 24GB |
 
 ### Other hardware
 
-In the past i've also included my main desktop as a worker node, it's running windows but I have k3s running in WSL2 (instructions are in [BOOTSTRAP.md](./BOOTSTRAP.md)). I've also had a Raspberry Pi 3 running as a k3s worker node, but I took it out as I have more than enough capacity with these nodes.
+My main desktop (`crobputer`) is joined as a worker node running Windows with k3s in WSL2 (instructions in [BOOTSTRAP.md](./BOOTSTRAP.md)), making its RTX 4090 available for running larger AI workloads when not gaming. In the past I've also had a Raspberry Pi 3 running as a k3s worker node, but I took it out as I have more than enough capacity with these nodes.
 
 ## Building the cluster
 

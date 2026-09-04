@@ -25,7 +25,7 @@ apt install nvidia-headless-580-open nvidia-container-toolkit nvidia-cuda-toolki
 ```
 
 > [!WARNING]
-> **Pascal-generation GPUs (GTX 1050 and 1060)** on nodes like `croblodocus` and `crobasaurusrex` **do not support** the NVIDIA open kernel modules. They must continue to use the proprietary, non-open drivers:
+> **Pascal-generation GPUs (GTX 1050)** on nodes like `croblodocus` **do not support** the NVIDIA open kernel modules. They must continue to use the proprietary, non-open drivers:
 ```bash
 apt install nvidia-headless-580-server nvidia-container-toolkit nvidia-cuda-toolkit nvidia-utils-580-server libnvidia-decode-580-server
 ```
