@@ -139,6 +139,14 @@ spec:
                 chown hermes:hermes /opt/data/.env 2>/dev/null || true
               fi
 
+              # Copy Google Workspace credentials to persistent storage if mounted
+              if [ -f /etc/hermes/google/credentials.json ]; then
+                echo "Copying Google credentials to /opt/data/credentials.json..."
+                cp /etc/hermes/google/credentials.json /opt/data/credentials.json
+                chown hermes:hermes /opt/data/credentials.json
+                chmod 600 /opt/data/credentials.json
+              fi
+
               echo "Starting s6-overlay init..."
               exec /init sleep infinity
           tty: true
@@ -207,6 +215,10 @@ spec:
                 secretKeyRef:
                   name: hermes-github-secret
                   key: GITHUB_TOKEN
+            - name: GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE
+              value: "/opt/data/credentials.json"
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/opt/data/credentials.json"
           ports:
             - name: api
               containerPort: 8642
@@ -217,6 +229,9 @@ spec:
               mountPath: /opt/data
             - name: maddy-ca
               mountPath: /etc/ssl/certs/maddy
+              readOnly: true
+            - name: google-credentials
+              mountPath: /etc/hermes/google
               readOnly: true
         - name: hermes-webui
           # renovate: datasource=docker depname=ghcr.io/nesquena/hermes-webui versioning=loose
@@ -279,5 +294,8 @@ spec:
         - name: maddy-ca
           secret:
             secretName: maddy-ca-tls
+        - name: google-credentials
+          secret:
+            secretName: hermes-google-secret
         - name: hermes-agent-src
           emptyDir: {}
