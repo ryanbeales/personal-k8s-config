@@ -147,6 +147,16 @@ spec:
                 chmod 600 /opt/data/credentials.json
               fi
 
+              # Ensure /opt/data/.env reflects GOOGLE_MAPS_API_KEY from secret
+              if [ -n "$GOOGLE_MAPS_API_KEY" ]; then
+                if grep -q "GOOGLE_MAPS_API_KEY=" /opt/data/.env 2>/dev/null; then
+                  sed -i "s/^GOOGLE_MAPS_API_KEY=.*/GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY/" /opt/data/.env
+                else
+                  echo "GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY" >> /opt/data/.env
+                fi
+                chown hermes:hermes /opt/data/.env 2>/dev/null || true
+              fi
+
               echo "Starting s6-overlay init..."
               exec /init sleep infinity
           tty: true
@@ -219,6 +229,11 @@ spec:
               value: "/opt/data/credentials.json"
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/opt/data/credentials.json"
+            - name: GOOGLE_MAPS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-google-maps-secret
+                  key: GOOGLE_MAPS_API_KEY
           ports:
             - name: api
               containerPort: 8642
