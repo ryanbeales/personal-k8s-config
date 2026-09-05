@@ -57,7 +57,16 @@ kubectl create secret generic hermes-google-secret -n hermes \
 ```
 *(The `deployment.yaml` mounts this secret and copies it to `/opt/data/credentials.json` for persistent agent access).*
 
-### 5. Adding SearXNG MCP Support
+### 5. Create Kubernetes Secret (Google Maps API Key)
+To allow Hermes to access Google Maps Platform APIs (Places, Routes, Geocoding), create a secret containing your Maps API key:
+
+```bash
+kubectl create secret generic hermes-google-maps-secret -n hermes \
+  --from-literal=GOOGLE_MAPS_API_KEY=AIzaSy...
+```
+*(The `deployment.yaml` injects this as the `GOOGLE_MAPS_API_KEY` environment variable and writes it into `/opt/data/.env`).*
+
+### 6. Adding SearXNG MCP Support
 If you want to enable SearXNG search capabilities, add the MCP server to your Hermes configuration. 
 
 Run the following command from a terminal with `hermes` access (e.g., within the cluster):
