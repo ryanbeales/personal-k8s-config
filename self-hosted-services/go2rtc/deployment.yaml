@@ -1,4 +1,4 @@
-﻿apiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: go2rtc
@@ -32,9 +32,6 @@ spec:
         - name: go2rtc
           # renovate: datasource=docker depname=alexxit/go2rtc versioning=semver
           image: alexxit/go2rtc:1.9.8
-          args:
-            - "-c"
-            - "/config/go2rtc.yaml"
           securityContext:
             privileged: true
           ports:
