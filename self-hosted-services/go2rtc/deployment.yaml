@@ -40,7 +40,13 @@ spec:
             - containerPort: 8554
               name: rtsp
             - containerPort: 8555
-              name: webrtc
+              hostPort: 8555
+              name: webrtc-tcp
+              protocol: TCP
+            - containerPort: 8555
+              hostPort: 8555
+              name: webrtc-udp
+              protocol: UDP
           resources:
             requests:
               cpu: 100m

@@ -11,6 +11,10 @@ data:
       listen: ":8554"
     webrtc:
       listen: ":8555"
+      candidates:
+        - 10.0.0.139:8555
+        - stun:8555
     streams:
       printer:
-        - "ffmpeg:device?video=/dev/host/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._Webcam_Webcam-video-index0&input_format=mjpeg&video_size=1920x1080&framerate=30#video=h264"
+        - "ffmpeg:device?video=/dev/host/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._Webcam_Webcam-video-index0&input_format=mjpeg&video_size=1920x1080&framerate=30#video=copy"
+        - "ffmpeg:printer#video=h264"
