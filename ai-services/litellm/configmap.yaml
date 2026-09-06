@@ -131,7 +131,15 @@ data:
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
-        - {"agent": ["gemma-4-12B", "gemma-4-E4B"]}
+        - {"agent": ["gemma-4-12B", "gemma-4-E4B", "gemini-3.8-flash"]}
+        - {"qwen3.8-27B": ["gemma-4-12B", "gemma-4-E4B", "gemini-3.8-flash"]}
+        - {"gemma-4-12B": ["gemma-4-E4B", "gemini-3.8-flash"]}
+        - {"gemma-4-12b": ["gemma-4-e4b", "gemini-3.8-flash"]}
+        - {"gemma-4-E4B": ["gemini-3.8-flash"]}
+        - {"gemma-4-e4b": ["gemini-3.8-flash"]}
+        - {"vision": ["gemini-3.8-flash"]}
+        - {"assistant": ["gemini-3.8-flash"]}
+        - {"code": ["gemini-3.8-flash"]}
         - {"tts": ["omnivoice"]}
 
     litellm_settings:
