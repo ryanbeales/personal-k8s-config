@@ -31,7 +31,7 @@ spec:
       containers:
         - name: go2rtc
           # renovate: datasource=docker depname=alexxit/go2rtc versioning=semver
-          image: alexxit/go2rtc:1.9.8
+          image: alexxit/go2rtc:1.9.14
           securityContext:
             privileged: true
           ports:
