@@ -12,4 +12,5 @@ resources:
   - firmware-cronjob.yaml
   - firmware-deployment.yaml
   - firmware-service.yaml
+  - moonraker-obico-deployment.yaml
   - httproute.yaml

@@ -1,0 +1,56 @@
+﻿obico:
+  secretKey:  iFJMw1OqQQCIWN8pj5tgqfhyeeqUO8TgdDvQZLX2Ex28HbHn
+  siteUsesHttps: true
+  csrfTrustedOrigins:
+    - https://obico.crobceratops.ryanbeales.com
+    - https://obico.crobasaurusrex.ryanbeales.com
+  accountAllowSignUp: true
+
+web:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+tasks:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+
+mlApi:
+  gpu: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+
+redis:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+persistence:
+  data:
+    enabled: true
+    storageClassName: crobasaurusrex-nfs
+    accessMode: ReadWriteMany
+    size: 2Gi
+  media:
+    enabled: true
+    storageClassName: crobasaurusrex-nfs
+    accessMode: ReadWriteMany
+    size: 10Gi

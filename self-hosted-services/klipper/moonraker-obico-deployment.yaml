@@ -1,0 +1,76 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moonraker-obico
+  namespace: klipper
+  labels:
+    app.kubernetes.io/name: moonraker-obico
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: moonraker-obico
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: moonraker-obico
+    spec:
+      volumes:
+        - name: klipper-pvc
+          persistentVolumeClaim:
+            claimName: klipper-pvc
+        - name: klipper-config
+          configMap:
+            name: klipper-config
+      initContainers:
+        - name: init-obico-config
+          # renovate: datasource=docker depname=busybox versioning=semver
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - |
+              if [ ! -f /opt/printer_data/config/moonraker-obico.cfg ]; then
+                echo  Initializing moonraker-obico.cfg from configmap
+                cp /tmp/config/moonraker-obico.cfg /opt/printer_data/config/moonraker-obico.cfg
+                chmod 666 /opt/printer_data/config/moonraker-obico.cfg
+              else
+                echo moonraker-obico.cfg already exists
+              fi
+          volumeMounts:
+            - name: klipper-pvc
+              mountPath: /opt/printer_data
+            - name: klipper-config
+              mountPath: /tmp/config
+      containers:
+        - name: moonraker-obico
+          # renovate: datasource=docker depname=ghcr.io/thespaghettidetective/moonraker-obico versioning=docker
+          image: ghcr.io/thespaghettidetective/moonraker-obico:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              while true; do
+                if grep -E ^auth_token\s*=\s*[0-9a-zA-Z]+ /opt/printer_data/config/moonraker-obico.cfg >/dev/null 2>&1; then
+                  echo Found auth_token starting moonraker-obico daemon...
+                  exec /opt/venv/bin/python -m moonraker_obico.app -c /opt/printer_data/config/moonraker-obico.cfg
+                else
+                  echo moonraker-obico is not linked yet.
+                  echo To link your printer with Obico run:
+                  echo kubectl exec -it -n klipper deploy/moonraker-obico -- /opt/venv/bin/python -m moonraker_obico.link -c /opt/printer_data/config/moonraker-obico.cfg
+                  sleep 30
+                fi
+              done
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: klipper-pvc
+              mountPath: /opt/printer_data
