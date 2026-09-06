@@ -1,10 +1,11 @@
-﻿obico:
+obico:
   secretKey:  iFJMw1OqQQCIWN8pj5tgqfhyeeqUO8TgdDvQZLX2Ex28HbHn
   siteUsesHttps: true
   csrfTrustedOrigins:
     - https://obico.crobceratops.ryanbeales.com
     - https://obico.crobasaurusrex.ryanbeales.com
-  accountAllowSignUp: true
+  extraEnv:
+    ACCOUNT_ALLOW_SIGN_UP: "True"
 
 web:
   command:
