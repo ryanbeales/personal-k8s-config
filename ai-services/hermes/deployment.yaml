@@ -16,7 +16,6 @@ spec:
       labels:
         app.kubernetes.io/name: hermes
     spec:
-      shareProcessNamespace: true
       serviceAccountName: hermes
       initContainers:
         - name: configure-hermes
