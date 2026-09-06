@@ -334,3 +334,21 @@ data:
     CONFIG_LPC_SELECT_LPC1768=y
     CONFIG_LPC_OFFSET_28000=y
     CONFIG_INITIAL_PINS=""
+
+  moonraker-obico.cfg: |
+    [server]
+    url = http://obico-web.obico.svc.cluster.local:3334
+
+    [moonraker]
+    host = moonraker-service.klipper.svc.cluster.local
+    port = 7125
+
+    [webcam]
+    disable_video_streaming = False
+    snapshot_url = http://go2rtc-service.go2rtc.svc.cluster.local:1984/api/frame.jpeg?src=printer
+    stream_url = http://go2rtc-service.go2rtc.svc.cluster.local:1984/api/stream.mjpeg?src=printer
+
+    [logging]
+    path = /opt/printer_data/logs/moonraker-obico.log
+    level = INFO
+
