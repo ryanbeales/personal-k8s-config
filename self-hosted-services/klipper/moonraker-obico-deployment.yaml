@@ -33,16 +33,17 @@ spec:
             - /bin/sh
             - -c
             - |
-              if [ ! -f /opt/printer_data/config/moonraker-obico.cfg ]; then
-                echo  Initializing moonraker-obico.cfg from configmap
+              if [ ! -f /opt/printer_data/config/moonraker-obico.cfg ] || ! grep -q  \[server\] /opt/printer_data/config/moonraker-obico.cfg; then
+                echo Initializing moonraker-obico.cfg from configmap
                 cp /tmp/config/moonraker-obico.cfg /opt/printer_data/config/moonraker-obico.cfg
                 chmod 666 /opt/printer_data/config/moonraker-obico.cfg
               else
-                echo moonraker-obico.cfg already exists
+                echo moonraker-obico.cfg already configured
               fi
           volumeMounts:
             - name: klipper-pvc
-              mountPath: /opt/printer_data
+              mountPath: /opt/printer_data/config
+              subPath: config
             - name: klipper-config
               mountPath: /tmp/config
       containers:
@@ -73,4 +74,8 @@ spec:
               memory: 256Mi
           volumeMounts:
             - name: klipper-pvc
-              mountPath: /opt/printer_data
+              mountPath: /opt/printer_data/config
+              subPath: config
+            - name: klipper-pvc
+              mountPath: /opt/printer_data/logs
+              subPath: logs
