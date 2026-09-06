@@ -1,4 +1,4 @@
-﻿apiVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: moonraker-obico
@@ -55,8 +55,8 @@ spec:
             - -c
             - |
               while true; do
-                if grep -E ^auth_token\s*=\s*[0-9a-zA-Z]+ /opt/printer_data/config/moonraker-obico.cfg >/dev/null 2>&1; then
-                  echo Found auth_token starting moonraker-obico daemon...
+                if grep -q "auth_token = " /opt/printer_data/config/moonraker-obico.cfg 2>/dev/null; then
+                  echo "Found auth_token, starting moonraker-obico daemon..."
                   exec /opt/venv/bin/python -m moonraker_obico.app -c /opt/printer_data/config/moonraker-obico.cfg
                 else
                   echo moonraker-obico is not linked yet.
