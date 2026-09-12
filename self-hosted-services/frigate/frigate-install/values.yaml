@@ -33,6 +33,15 @@ probes:
   startup:
     enabled: true
 
+extraVolumes:
+  - name: watchdog-patch
+    configMap:
+      name: frigate-watchdog-patch
+extraVolumeMounts:
+  - name: watchdog-patch
+    mountPath: /opt/frigate/frigate/watchdog.py
+    subPath: watchdog.py
+
 proxy:
   default_role: admin
 

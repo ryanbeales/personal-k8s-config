@@ -22,3 +22,42 @@ configMapGenerator:
     options:
       labels:
         grafana_dashboard: "1"
+  - name: frigate-watchdog-patch
+    files:
+      - watchdog.py=watchdog.py
+    options:
+      disableNameSuffixHash: true
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: frigate
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/livenessProbe
+        value:
+          exec:
+            command:
+              - python3
+              - -c
+              - |
+                import urllib.request, json, sys
+                try:
+                    stats = json.loads(urllib.request.urlopen('http://127.0.0.1:5000/api/stats', timeout=5).read())
+                    for cam_name, cam in stats.get('cameras', {}).items():
+                        c_fps = cam.get('camera_fps', 0)
+                        p_fps = cam.get('process_fps', 0)
+                        s_fps = cam.get('skipped_fps', 0)
+                        if c_fps > 2.0 and p_fps < 1.0 and s_fps > (c_fps * 0.8):
+                            print(f"Camera {cam_name} detect stream stalled: cam_fps={c_fps}, proc_fps={p_fps}, skip_fps={s_fps}", file=sys.stderr)
+                            sys.exit(1)
+                    sys.exit(0)
+                except Exception as e:
+                    print(f"Healthcheck error: {e}", file=sys.stderr)
+                    sys.exit(1)
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+
