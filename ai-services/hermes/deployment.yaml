@@ -249,8 +249,8 @@ spec:
               mountPath: /etc/hermes/google
               readOnly: true
         - name: hermes-webui
-          # renovate: datasource=docker depname=ghcr.io/nesquena/hermes-webui versioning=loose
-          image: ghcr.io/nesquena/hermes-webui:latest
+          # renovate: datasource=docker depname=ghcr.io/nesquena/hermes-webui versioning=docker
+          image: ghcr.io/nesquena/hermes-webui:latest@sha256:f824e3c3a3a984c995efc8bfa5400eb967ee6a2f6d6643ca7ac1a00203873c31
           resources:
             limits:
               memory: 1Gi
