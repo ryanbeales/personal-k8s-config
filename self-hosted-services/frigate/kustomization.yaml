@@ -25,6 +25,7 @@ configMapGenerator:
   - name: frigate-watchdog-patch
     files:
       - watchdog.py=watchdog.py
+      - detection_runners.py=detection_runners.py
     options:
       disableNameSuffixHash: true
 patches:

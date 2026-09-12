@@ -3,6 +3,7 @@ env:
   TZ: America/Vancouver
   OMP_WAIT_POLICY: PASSIVE
   OPENAI_BASE_URL: http://litellm.litellm.svc.cluster.local:4000/v1
+  ENABLE_CUDA_GRAPH: "false"
 
 envFromSecrets:
   - reocam-password
@@ -41,6 +42,9 @@ extraVolumeMounts:
   - name: watchdog-patch
     mountPath: /opt/frigate/frigate/watchdog.py
     subPath: watchdog.py
+  - name: watchdog-patch
+    mountPath: /opt/frigate/frigate/detectors/detection_runners.py
+    subPath: detection_runners.py
 
 proxy:
   default_role: admin
