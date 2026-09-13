@@ -1,8 +1,0 @@
-resources:
-- namespace.yaml
-- wg-easy-pv.yaml
-- wg-easy-pvc.yaml
-- deployment.yaml
-- service-wg.yaml
-- service-http.yaml
-- httproute.yaml
