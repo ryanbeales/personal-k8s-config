@@ -12,12 +12,20 @@ This directory contains the Kubernetes/Crossplane configuration for managing the
 
 Before this configuration can synchronize successfully, you must create a Kubernetes Secret containing the API credentials for your OPNsense firewall.
 
-### Creating the API Credentials Secret
+### Creating the API & WireGuard Credentials Secret
 
-Generate an API Key and Secret in your OPNsense GUI (`System > Access > Users > [Your User] > API keys`), then run the following command to store them in your cluster:
+Generate an API Key and Secret in your OPNsense GUI (`System > Access > Users > [Your User] > API keys`), then run the following command to store them along with your WireGuard server private key in your cluster:
 
 ```powershell
-kubectl create secret generic opnsense-creds -n crossplane-system --from-literal=api-key="YOUR_API_KEY" --from-literal=api-secret="YOUR_API_SECRET"
+kubectl create secret generic opnsense-creds -n crossplane-system `
+  --from-literal=api-key="YOUR_API_KEY" `
+  --from-literal=api-secret="YOUR_API_SECRET" `
+  --from-literal=wg-private-key="YOUR_WG_PRIVATE_KEY"
+```
+
+If updating an existing secret with the WireGuard private key:
+```powershell
+kubectl patch secret opnsense-creds -n crossplane-system --type='json' -p='[{"op":"add","path":"/data/wg-private-key","value":"Nkdnd3ZDMXBUTmVRKzM1dC9BczlsN0ZPUkJ1WWY5SXhCRHZHZDRiZW5Hdz0="}]'
 ```
 
 ## Adding DHCP Reservations

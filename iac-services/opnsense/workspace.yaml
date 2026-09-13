@@ -20,6 +20,11 @@ spec:
         sensitive = true
       }
 
+      variable "opnsense_wg_private_key" {
+        type      = string
+        sensitive = true
+      }
+
       terraform {
         required_providers {
           opnsense = {
@@ -50,35 +55,55 @@ spec:
         dns_servers = ["10.0.0.1"]
       }
 
-      # WAN Port Forwarding for WireGuard
-      resource "opnsense_firewall_nat_port_forward" "wg_easy" {
-        enabled     = true
-        sequence    = 100
-        interface   = ["wan"]
-        ip_protocol = "inet"
-        protocol    = "udp"
-        
-        source = {
-          net = "any"
-        }
-        
-        destination = {
-          net  = "wanip"
-          port = "31313"
-        }
-        
-        target = {
-          ip   = "10.0.0.59"
-          port = "32580"
-        }
-        
-        description = "WAN WireGuard UDP 31313 to k3s NodePort 32580"
+      # WireGuard Global Settings (Singleton)
+      import {
+        to = opnsense_wireguard_settings.settings
+        id = "wireguard_settings"
       }
 
-      # WAN Firewall Rule to allow WireGuard traffic (associated with NAT)
-      resource "opnsense_firewall_filter" "wg_easy" {
+      resource "opnsense_wireguard_settings" "settings" {
+        enabled = true
+      }
+
+      # WireGuard Clients
+      resource "opnsense_wireguard_client" "crobphone" {
+        name           = "crobphone"
+        enabled        = true
+        public_key     = "1S9e3uqXiH54BqyzENC4aphIPLYjW76tWIVx2iQSoi4="
+        psk            = "W5TNNOVf5K+G2V8J68In+eb2F2mwIK8yegJ+CKdeDYc="
+        tunnel_address = ["10.8.0.2/32"]
+        keep_alive     = 25
+      }
+
+      resource "opnsense_wireguard_client" "merphone" {
+        name           = "Merphone"
+        enabled        = true
+        public_key     = "pQOXdDcHuFz10Ls6kKqNaPKxcLmz3wwvQCH23KmwnUI="
+        psk            = "bidjAjjPHJ6Zsx7v3c0Y0a21B+t//+7ggbS68pk6Xj4="
+        tunnel_address = ["10.8.0.3/32"]
+        keep_alive     = 25
+      }
+
+      # WireGuard Server (Instance wg0)
+      resource "opnsense_wireguard_server" "wg0" {
+        name           = "wg0"
+        enabled        = true
+        port           = 31313
+        mtu            = 1420
+        tunnel_address = ["10.8.0.1/24"]
+        dns            = ["10.0.0.1"]
+        private_key    = var.opnsense_wg_private_key
+        public_key     = "Bwg8BXGQLOy1ANX7BhZsiAR2Nh/HJLJBWd/iJ/LVQnA="
+        peers = [
+          opnsense_wireguard_client.crobphone.id,
+          opnsense_wireguard_client.merphone.id,
+        ]
+      }
+
+      # WAN Firewall Rule to allow WireGuard traffic directly to OPNsense
+      resource "opnsense_firewall_filter" "wg" {
         enabled     = true
-        description = "Allow inbound WireGuard UDP traffic (NodePort)"
+        description = "Allow inbound WireGuard UDP traffic to OPNsense"
         
         interface = {
           interface = ["wan"]
@@ -95,8 +120,8 @@ spec:
           }
           
           destination = {
-            net  = "10.0.0.59"
-            port = "32580"
+            net  = "wanip"
+            port = "31313"
           }
         }
       }
@@ -727,6 +752,11 @@ spec:
           namespace: crossplane-system
           name: opnsense-creds
           key: api-secret
+      - name: TF_VAR_opnsense_wg_private_key
+        secretKeyRef:
+          namespace: crossplane-system
+          name: opnsense-creds
+          key: wg-private-key
 
   writeConnectionSecretToRef:
     namespace: crossplane-system
