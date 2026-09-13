@@ -127,10 +127,14 @@ review:
       - person walking in between the pillars
       - cats in the planter box
 genai:
-  provider: openai
-  base_url: http://litellm.litellm.svc.cluster.local:4000/v1
-  api_key: sk-no-key
-  model: vision
+  openai:
+    provider: openai
+    base_url: http://litellm.litellm.svc.cluster.local:4000/v1
+    api_key: sk-no-key
+    model: vision
+    roles:
+      - descriptions
+      - chat
 objects:
   track:
     - person

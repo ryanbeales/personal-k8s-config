@@ -26,7 +26,7 @@ class FrigateWatchdog(threading.Thread):
                 detection_start = detector.detection_start.value  # type: ignore[attr-defined]
                 # issue https://github.com/python/typeshed/issues/8799
                 # from mypy 0.981 onwards
-                if detection_start > 0.0 and now - detection_start > 60:
+                if detection_start > 0.0 and now - detection_start > 90:
                     logger.info(
                         "Detection appears to be stuck. Exiting Frigate..."
                     )
