@@ -25,6 +25,16 @@ spec:
         sensitive = true
       }
 
+      variable "opnsense_wg_psk_crobphone" {
+        type      = string
+        sensitive = true
+      }
+
+      variable "opnsense_wg_psk_merphone" {
+        type      = string
+        sensitive = true
+      }
+
       terraform {
         required_providers {
           opnsense = {
@@ -70,7 +80,7 @@ spec:
         name           = "crobphone"
         enabled        = true
         public_key     = "1S9e3uqXiH54BqyzENC4aphIPLYjW76tWIVx2iQSoi4="
-        psk            = "W5TNNOVf5K+G2V8J68In+eb2F2mwIK8yegJ+CKdeDYc="
+        psk            = var.opnsense_wg_psk_crobphone
         tunnel_address = ["10.8.0.2/32"]
         keep_alive     = 25
       }
@@ -79,7 +89,7 @@ spec:
         name           = "Merphone"
         enabled        = true
         public_key     = "pQOXdDcHuFz10Ls6kKqNaPKxcLmz3wwvQCH23KmwnUI="
-        psk            = "bidjAjjPHJ6Zsx7v3c0Y0a21B+t//+7ggbS68pk6Xj4="
+        psk            = var.opnsense_wg_psk_merphone
         tunnel_address = ["10.8.0.3/32"]
         keep_alive     = 25
       }
@@ -93,7 +103,7 @@ spec:
         tunnel_address = ["10.8.0.1/24"]
         dns            = ["10.0.0.1"]
         private_key    = var.opnsense_wg_private_key
-        public_key     = "Bwg8BXGQLOy1ANX7BhZsiAR2Nh/HJLJBWd/iJ/LVQnA="
+        public_key     = "QFimw3Bs1gi9rIeMIIiMRhV8EAwJW6BTj8j3m7FNkGk="
         peers = [
           opnsense_wireguard_client.crobphone.id,
           opnsense_wireguard_client.merphone.id,
@@ -802,6 +812,16 @@ spec:
           namespace: crossplane-system
           name: opnsense-creds
           key: wg-private-key
+      - name: TF_VAR_opnsense_wg_psk_crobphone
+        secretKeyRef:
+          namespace: crossplane-system
+          name: opnsense-creds
+          key: wg-psk-crobphone
+      - name: TF_VAR_opnsense_wg_psk_merphone
+        secretKeyRef:
+          namespace: crossplane-system
+          name: opnsense-creds
+          key: wg-psk-merphone
 
   writeConnectionSecretToRef:
     namespace: crossplane-system

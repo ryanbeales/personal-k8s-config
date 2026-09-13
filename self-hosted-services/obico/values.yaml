@@ -1,5 +1,5 @@
 obico:
-  secretKey:  iFJMw1OqQQCIWN8pj5tgqfhyeeqUO8TgdDvQZLX2Ex28HbHn
+  existingSecret: obico-secret
   siteUsesHttps: true
   csrfTrustedOrigins:
     - https://obico.crobceratops.ryanbeales.com
