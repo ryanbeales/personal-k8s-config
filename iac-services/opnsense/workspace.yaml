@@ -103,7 +103,7 @@ spec:
         tunnel_address = ["10.8.0.1/24"]
         dns            = ["10.0.0.1"]
         private_key    = var.opnsense_wg_private_key
-        public_key     = "QFimw3Bs1gi9rIeMIIiMRhV8EAwJW6BTj8j3m7FNkGk="
+        public_key     = "s2zZm2MElLD1Np83lGbeb8JF0W/p/0cF39kWtQfS8kc="
         peers = [
           opnsense_wireguard_client.crobphone.id,
           opnsense_wireguard_client.merphone.id,
