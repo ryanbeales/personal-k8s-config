@@ -36,20 +36,33 @@ spec:
                 - |
                   set -e
                   echo "Updating packages and installing Klipper compilation tools..."
-                  apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git make gcc cpp gcc-arm-none-eabi binutils-arm-none-eabi python3
-                  echo "Building Klipper firmware.bin for LPC1768 BTT SKR 1.4..."
+                  apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git make gcc g++ cpp gcc-arm-none-eabi binutils-arm-none-eabi python3
                   mkdir -p /tmp/klipper_build
                   git clone --depth 1 https://github.com/Klipper3d/klipper.git /tmp/klipper_build
                   cd /tmp/klipper_build
+                  mkdir -p /home/klippy/printer_data/firmware
+
+                  echo "Building Klipper firmware.bin for LPC1768 BTT SKR 1.4..."
+                  make clean
                   cp /home/klippy/printer_data/config/klipper.config .config
                   make olddefconfig
                   make -j$(nproc)
-                  mkdir -p /home/klippy/printer_data/firmware
                   cp out/klipper.bin /home/klippy/printer_data/firmware/firmware.bin
                   echo "Firmware successfully generated at /home/klippy/printer_data/firmware/firmware.bin"
+
+                  echo "Building Klipper firmware for BTT ADXL345 V2.0 (RP2040)..."
+                  make clean
+                  cp /home/klippy/printer_data/config/adxl345.config .config
+                  make olddefconfig
+                  make -j$(nproc)
+                  cp out/klipper.uf2 /home/klippy/printer_data/firmware/klipper-adxl345.uf2
+                  echo "Firmware successfully generated at /home/klippy/printer_data/firmware/klipper-adxl345.uf2"
               volumeMounts:
                 - mountPath: /home/klippy/printer_data
                   name: klipper-pvc
                 - mountPath: /home/klippy/printer_data/config/klipper.config
                   name: klipper-config
                   subPath: klipper.config
+                - mountPath: /home/klippy/printer_data/config/adxl345.config
+                  name: klipper-config
+                  subPath: adxl345.config
