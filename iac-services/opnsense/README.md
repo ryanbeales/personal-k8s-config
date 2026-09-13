@@ -14,18 +14,24 @@ Before this configuration can synchronize successfully, you must create a Kubern
 
 ### Creating the API & WireGuard Credentials Secret
 
-Generate an API Key and Secret in your OPNsense GUI (`System > Access > Users > [Your User] > API keys`), then run the following command to store them along with your WireGuard server private key in your cluster:
+Generate an API Key and Secret in your OPNsense GUI (`System > Access > Users > [Your User] > API keys`), then run the following command to store them along with your WireGuard server private key and client pre-shared keys (PSKs) in your cluster:
 
 ```powershell
 kubectl create secret generic opnsense-creds -n crossplane-system `
   --from-literal=api-key="YOUR_API_KEY" `
   --from-literal=api-secret="YOUR_API_SECRET" `
-  --from-literal=wg-private-key="YOUR_WG_PRIVATE_KEY"
+  --from-literal=wg-private-key="YOUR_WG_SERVER_PRIVATE_KEY" `
+  --from-literal=wg-psk-crobphone="YOUR_CROBPHONE_PSK" `
+  --from-literal=wg-psk-merphone="YOUR_MERPHONE_PSK"
 ```
 
-If updating an existing secret with the WireGuard private key:
+If updating an existing secret with rotated WireGuard credentials:
 ```powershell
-kubectl patch secret opnsense-creds -n crossplane-system --type='json' -p='[{"op":"add","path":"/data/wg-private-key","value":"Nkdnd3ZDMXBUTmVRKzM1dC9BczlsN0ZPUkJ1WWY5SXhCRHZHZDRiZW5Hdz0="}]'
+kubectl patch secret opnsense-creds -n crossplane-system --type='json' -p='[
+  {"op":"replace","path":"/data/wg-private-key","value":"<BASE64_ENCODED_WG_PRIVATE_KEY>"},
+  {"op":"add","path":"/data/wg-psk-crobphone","value":"<BASE64_ENCODED_CROBPHONE_PSK>"},
+  {"op":"add","path":"/data/wg-psk-merphone","value":"<BASE64_ENCODED_MERPHONE_PSK>"}
+]'
 ```
 
 ## Adding DHCP Reservations
