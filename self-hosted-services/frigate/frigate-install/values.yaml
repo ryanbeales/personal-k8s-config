@@ -45,6 +45,9 @@ extraVolumeMounts:
   - name: watchdog-patch
     mountPath: /opt/frigate/frigate/detectors/detection_runners.py
     subPath: detection_runners.py
+  - name: watchdog-patch
+    mountPath: /opt/frigate/frigate/object_detection/base.py
+    subPath: base.py
 
 proxy:
   default_role: admin

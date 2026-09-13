@@ -26,6 +26,7 @@ configMapGenerator:
     files:
       - watchdog.py=watchdog.py
       - detection_runners.py=detection_runners.py
+      - base.py=base.py
     options:
       disableNameSuffixHash: true
 patches:
