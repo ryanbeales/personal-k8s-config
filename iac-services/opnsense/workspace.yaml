@@ -126,6 +126,51 @@ spec:
         }
       }
 
+      # WireGuard Inbound Rule: Allow WireGuard clients to reach LAN and Internet
+      resource "opnsense_firewall_filter" "wg_inbound" {
+        enabled     = true
+        description = "Allow WireGuard clients to access all networks"
+        
+        interface = {
+          interface = ["wireguard"]
+        }
+        
+        filter = {
+          action      = "pass"
+          direction   = "in"
+          ip_protocol = "inet"
+          protocol    = "any"
+          
+          source = {
+            net = "10.8.0.0/24"
+          }
+          
+          destination = {
+            net = "any"
+          }
+        }
+      }
+
+      # WireGuard Outbound NAT Rule: Allow WireGuard clients to reach the Internet via WAN
+      resource "opnsense_firewall_nat" "wg_outbound" {
+        enabled     = true
+        description = "Outbound NAT for WireGuard clients"
+        interface   = "wan"
+        protocol    = "any"
+        
+        source = {
+          net = "10.8.0.0/24"
+        }
+        
+        destination = {
+          net = "any"
+        }
+        
+        target = {
+          ip = "wanip"
+        }
+      }
+
       import {
         to = opnsense_kea_dhcpv4_reservation.res_00-e1-00-00-17-b2
         id = "30c6080a-6f81-44b4-956d-85ceb46beb61"
