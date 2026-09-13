@@ -335,6 +335,13 @@ data:
     CONFIG_LPC_OFFSET_28000=y
     CONFIG_INITIAL_PINS=""
 
+  adxl345.config: |
+    CONFIG_LOW_LEVEL_OPTIONS=y
+    CONFIG_MACH_RP2040=y
+    CONFIG_RPXXXX_FLASH_START_0100=y
+    CONFIG_RP2040_FLASH_GENERIC_03=y
+    CONFIG_RPXXXX_USB=y
+
   moonraker-obico.cfg: |
     [server]
     url = http://obico-web.obico.svc.cluster.local:3334
