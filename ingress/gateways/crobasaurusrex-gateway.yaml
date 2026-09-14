@@ -13,7 +13,7 @@ spec:
       kind: EnvoyProxy
       name: envoy-proxy-config-crobasaurusrex
   listeners:
-    - name: https
+    - name: https-crobasaurusrex
       protocol: HTTPS
       port: 443
       hostname: "*.crobasaurusrex.ryanbeales.com"
@@ -25,4 +25,17 @@ spec:
         certificateRefs:
           - group: ''
             name: crobasaurusrex-ryanbeales-com-tls
+            kind: Secret
+    - name: https-crobceratops
+      protocol: HTTPS
+      port: 443
+      hostname: "*.crobceratops.ryanbeales.com"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ''
+            name: crobceratops-ryanbeales-com-tls
             kind: Secret
