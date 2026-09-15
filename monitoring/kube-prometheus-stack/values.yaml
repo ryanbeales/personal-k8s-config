@@ -7,6 +7,10 @@ defaultRules:
     kubeScheduler: false
     kubeControllerManager: false
     kubeProxy: false
+    kubeApiserverAvailability: false
+    kubeApiserverBurnrate: false
+    kubeApiserverHistogram: false
+    kubeApiserverSlos: false
 
 alertmanager:
   config:
@@ -60,6 +64,12 @@ alertmanager:
         receiver: 'null'
       - match:
           alertname: NodeDiskIOSaturation
+        receiver: 'null'
+      - match:
+          alertname: NodeSystemSaturation
+        receiver: 'null'
+      - match:
+          alertname: KubeletInstanceUnreachable
         receiver: 'null'
       - match:
           node: crobputer
@@ -159,6 +169,8 @@ prometheus:
   # Prometheus configuration to pass to prometheus-operator
   prometheusSpec:
     replicas: 1
+    scrapeInterval: 60s
+    evaluationInterval: 60s
 
     # Relax probe timeouts — NFS storage causes TSDB compaction stalls
     # that prevent the HTTP server from responding within default 3s.
@@ -221,6 +233,14 @@ prometheus:
 
 thanosRuler:
   enabled: false
+
+kubeApiServer:
+  enabled: true
+  serviceMonitor:
+    metricRelabelings:
+      - action: drop
+        regex: (apiserver|etcd)_(request|watch|response).*(bucket|sizes)
+        sourceLabels: [__name__]
 
 kubeEtcd:
   enabled: false
