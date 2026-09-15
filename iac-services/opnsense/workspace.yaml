@@ -89,7 +89,10 @@ spec:
         enabled        = true
         public_key     = "1S9e3uqXiH54BqyzENC4aphIPLYjW76tWIVx2iQSoi4="
         psk            = var.opnsense_wg_psk_crobphone
-        tunnel_address = ["10.8.0.2/32"]
+        tunnel_address = [
+          "10.8.0.2/32",
+          "fd00:dead:beef:8::2/128",
+        ]
         keep_alive     = 25
       }
 
@@ -98,7 +101,10 @@ spec:
         enabled        = true
         public_key     = "pQOXdDcHuFz10Ls6kKqNaPKxcLmz3wwvQCH23KmwnUI="
         psk            = var.opnsense_wg_psk_merphone
-        tunnel_address = ["10.8.0.3/32"]
+        tunnel_address = [
+          "10.8.0.3/32",
+          "fd00:dead:beef:8::3/128",
+        ]
         keep_alive     = 25
       }
 
@@ -108,8 +114,14 @@ spec:
         enabled        = true
         port           = 31313
         mtu            = 1420
-        tunnel_address = ["10.8.0.1/24"]
-        dns            = ["10.0.0.1"]
+        tunnel_address = [
+          "10.8.0.1/24",
+          "fd00:dead:beef:8::1/64",
+        ]
+        dns = [
+          "10.0.0.1",
+          "fd00:dead:beef:1::1",
+        ]
         private_key    = var.opnsense_wg_private_key
         public_key     = "s2zZm2MElLD1Np83lGbeb8JF0W/p/0cF39kWtQfS8kc="
         peers = [
@@ -130,7 +142,7 @@ spec:
         filter = {
           action      = "pass"
           direction   = "in"
-          ip_protocol = "inet"
+          ip_protocol = "inet46"
           protocol    = "UDP"
           
           source = {
@@ -144,7 +156,7 @@ spec:
         }
       }
 
-      # WireGuard Inbound Rule: Allow WireGuard clients to reach LAN and Internet
+      # WireGuard Inbound Rule: Allow WireGuard IPv4 clients to reach LAN and Internet
       resource "opnsense_firewall_filter" "wg_inbound" {
         enabled     = true
         description = "Allow WireGuard clients to access all networks"
@@ -161,6 +173,31 @@ spec:
           
           source = {
             net = "10.8.0.0/24"
+          }
+          
+          destination = {
+            net = "any"
+          }
+        }
+      }
+
+      # WireGuard Inbound Rule: Allow WireGuard IPv6 clients to reach LAN and Internet
+      resource "opnsense_firewall_filter" "wg_inbound_v6" {
+        enabled     = true
+        description = "Allow WireGuard IPv6 clients to access all networks"
+        
+        interface = {
+          interface = ["wireguard"]
+        }
+        
+        filter = {
+          action      = "pass"
+          direction   = "in"
+          ip_protocol = "inet6"
+          protocol    = "any"
+          
+          source = {
+            net = "fd00:dead:beef:8::/64"
           }
           
           destination = {
