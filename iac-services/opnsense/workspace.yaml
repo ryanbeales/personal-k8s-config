@@ -65,6 +65,14 @@ spec:
         dns_servers = ["10.0.0.1"]
       }
 
+      # LAN ULA Gateway Virtual IP (IP Alias)
+      resource "opnsense_interfaces_vip" "lan_ula" {
+        mode        = "ipalias"
+        interface   = "lan"
+        network     = "fd00:dead:beef:1::1/64"
+        description = "LAN ULA Gateway"
+      }
+
       # WireGuard Global Settings (Singleton)
       import {
         to = opnsense_wireguard_settings.settings
