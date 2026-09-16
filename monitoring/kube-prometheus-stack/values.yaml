@@ -20,63 +20,31 @@ alertmanager:
       smtp_from: 'alertmanager@ryanbeales.com'
       smtp_require_tls: false
     route:
-      group_by: ['job']
+      group_by: ['alertname', 'namespace']
       group_wait: 30s
-      group_interval: 5m
+      group_interval: 30m
       repeat_interval: 24h
-      receiver: 'email-notifications'
+      receiver: 'null'
       routes:
       - match:
-          alertname: Watchdog
-        receiver: 'null'
-      - match:
-          alertname: CPUThrottlingHigh
-        receiver: 'null'
-      - match:
-          alertname: NodeMemoryHighUtilization
-        receiver: 'null'
-      - match:
-          alertname: InfoInhibitor
-        receiver: 'null'
-      - match_re:
-          alertname: NodeMemoryMajorPagesFaults
-          instance: ^10\.0\.0\.59:.*$
-        receiver: 'null'
-      - match:
-          namespace: octoprint
-        receiver: 'null'
-      - match:
-          namespace: llama
-        receiver: 'null'
-      - match:
-          alertname: KubeDaemonSetRolloutStuck
-        receiver: 'null'
-      - match:
-          alertname: KubeDaemonSetMisScheduled
-        receiver: 'null'
-      - match_re:
-          alertname: KubePodNotReady
-          pod: ^(csi-nfs-node-.*|node-tuning-.*|promtail-.*|nfd-worker-.*)$
-        receiver: 'null'
-      - match:
-          alertname: TargetDown
-          job: kubelet
-        receiver: 'null'
-      - match:
-          alertname: NodeDiskIOSaturation
-        receiver: 'null'
-      - match:
-          alertname: NodeSystemSaturation
-        receiver: 'null'
-      - match:
-          alertname: KubeletInstanceUnreachable
-        receiver: 'null'
-      - match:
-          node: crobputer
-        receiver: 'null'
-      - match_re:
-          instance: ^10\.0\.0\.191:.*$
-        receiver: 'null'
+          severity: critical
+        receiver: 'email-notifications'
+        routes:
+        - match:
+            namespace: octoprint
+          receiver: 'null'
+        - match:
+            namespace: llama
+          receiver: 'null'
+        - match:
+            node: crobputer
+          receiver: 'null'
+        - match_re:
+            instance: ^10\.0\.0\.191:.*$
+          receiver: 'null'
+        - match_re:
+            pod: ^(csi-nfs-node-.*|node-tuning-.*|promtail-.*|nfd-worker-.*|nvidia-device-plugin-daemonset-.*)$
+          receiver: 'null'
     receivers:
     - name: 'null'
     - name: 'email-notifications'
