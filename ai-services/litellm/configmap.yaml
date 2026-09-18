@@ -79,7 +79,8 @@ data:
           api_base: http://llama-bonsai-2-27b-2bit.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           extra_body:
-            enable_thinking: false
+            chat_template_kwargs:
+              enable_thinking: false
 
       # "assistant" group: Home Assistant voice assistant (5060 Ti 2-bit instance, thinking disabled)
       - model_name: assistant
@@ -88,7 +89,8 @@ data:
           api_base: http://llama-bonsai-2-27b-2bit.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           extra_body:
-            enable_thinking: false
+            chat_template_kwargs:
+              enable_thinking: false
 
       # "code" group: Coding & developer tasks (4090 1-bit instance)
       - model_name: code
