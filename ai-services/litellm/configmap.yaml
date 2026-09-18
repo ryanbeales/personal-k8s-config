@@ -36,11 +36,6 @@ data:
           model: openai/whisper-1
           api_base: http://faster-whisper.faster-whisper.svc.cluster.local:10300/v1
           api_key: "sk-no-key"
-      - model_name: omnivoice
-        litellm_params:
-          model: openai/tts-1
-          api_base: http://omnivoice.omnivoice.svc.cluster.local:8880/v1
-          api_key: "sk-no-key"
       - model_name: kokoro
         litellm_params:
           model: openai/tts-1
@@ -125,7 +120,6 @@ data:
         - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"code": ["gemini-3.8-flash"]}
-        - {"tts": ["omnivoice"]}
 
     litellm_settings:
       callbacks:

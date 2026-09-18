@@ -31,7 +31,7 @@ kubectl delete secret hermes-gemini-secret -n hermes
 ## Available Models
 
 - **Gemini**: `gemini-3.7-flash` (alias `gemini-3.7`), `gemini-3.8-flash` (alias `gemini-3.8`)
-- **Local LLMs**: `qwen3.8-27B`, `gemma-4-12B`, `gemma-4-E4B`
+- **Local LLMs**: `llama-bonsai-2-27b-1bit`, `llama-bonsai-2-27b-2bit`, `assistant-e3b`, `gemma-4-E4B`
 - **Speech-to-Text**: `faster-whisper`
-- **Text-to-Speech**: `omnivoice`, `kokoro`
+- **Text-to-Speech**: `kokoro`
 - **Routing Groups**: `agent`, `vision`, `assistant`, `code`, `stt`, `tts`

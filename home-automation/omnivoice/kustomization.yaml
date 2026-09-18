@@ -1,6 +1,0 @@
-resources:
-- namespace.yaml
-- deployment.yaml
-- service.yaml
-- omnivoice-nfs-pvc.yaml
-- httproute.yaml
