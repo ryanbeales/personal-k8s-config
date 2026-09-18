@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: llama-gemma4-12b-nfs-pvc
+  name: llama-bonsai-2-27b-2bit-nfs-pvc
   namespace: llama
 spec:
   accessModes:
@@ -9,4 +9,4 @@ spec:
   storageClassName: crobasaurusrex-nfs
   resources:
     requests:
-      storage: 32Gi
+      storage: 256Gi

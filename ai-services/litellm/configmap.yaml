@@ -7,33 +7,25 @@ data:
   config.yaml: |
     model_list:
       # Explicit individual models
-      - model_name: qwen3.8-27B
+      - model_name: llama-bonsai-2-27b-1bit
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-Q4_K_M.gguf
-          api_base: http://llama-qwen3-8-27b.llama.svc.cluster.local:8000/v1
+          model: openai/llama-bonsai-2-27b-1bit
+          api_base: http://llama-bonsai-2-27b-1bit.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 1
-          extra_body:
-            thinking: "low"
-      - model_name: gemma-4-12B
+      - model_name: llama-bonsai-2-27b-2bit
         litellm_params:
-          model: openai/gemma-4-12b-it-qat-q4_0.gguf
-          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+          model: openai/llama-bonsai-2-27b-2bit
+          api_base: http://llama-bonsai-2-27b-2bit.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 1
-      - model_name: gemma-4-12b
-        litellm_params:
-          model: openai/gemma-4-12b-it-qat-q4_0.gguf
-          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
-          max_parallel_requests: 1
-      - model_name: gemma-4-E4B
+      - model_name: assistant-e3b
         litellm_params:
           model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
-      - model_name: gemma-4-e4b
+      - model_name: gemma-4-E4B
         litellm_params:
           model: openai/gemma-4-E4B_q4_0-it.gguf
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
@@ -73,47 +65,37 @@ data:
 
       # Routing Groups (Aliases)
       
-      # "agent" group: Strict fallback chain (Qwen3.8-27B -> 12B -> E4B)
+      # "agent" group: Hermes & general agents (4090 1-bit instance, thinking enabled)
       - model_name: agent
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-Q4_K_M.gguf
-          api_base: http://llama-qwen3-8-27b.llama.svc.cluster.local:8000/v1
+          model: openai/llama-bonsai-2-27b-1bit
+          api_base: http://llama-bonsai-2-27b-1bit.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+
+      # "vision" group: Frigate camera descriptions (5060 Ti 2-bit instance, thinking disabled)
+      - model_name: vision
+        litellm_params:
+          model: openai/llama-bonsai-2-27b-2bit
+          api_base: http://llama-bonsai-2-27b-2bit.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           extra_body:
-            thinking: "low"
+            enable_thinking: false
 
-      # "vision" group: Latency-based routing between E4B and 12B
-      - model_name: vision
-        litellm_params:
-          model: openai/gemma-4-E4B_q4_0-it.gguf
-          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
-      - model_name: vision
-        litellm_params:
-          model: openai/gemma-4-12b-it-qat-q4_0.gguf
-          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
-
-      # "assistant" group: Latency-based routing between 12B and E4B
+      # "assistant" group: Home Assistant voice assistant (5060 Ti 2-bit instance, thinking disabled)
       - model_name: assistant
         litellm_params:
-          model: openai/gemma-4-12b-it-qat-q4_0.gguf
-          api_base: http://llama-gemma4-12b.llama.svc.cluster.local:8000/v1
+          model: openai/llama-bonsai-2-27b-2bit
+          api_base: http://llama-bonsai-2-27b-2bit.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-      - model_name: assistant
-        litellm_params:
-          model: openai/gemma-4-E4B_q4_0-it.gguf
-          api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
+          extra_body:
+            enable_thinking: false
 
-      # "code" group
+      # "code" group: Coding & developer tasks (4090 1-bit instance)
       - model_name: code
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-Q4_K_M.gguf
-          api_base: http://llama-qwen3-8-27b.llama.svc.cluster.local:8000/v1
+          model: openai/llama-bonsai-2-27b-1bit
+          api_base: http://llama-bonsai-2-27b-1bit.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-          extra_body:
-            thinking: "low"
 
       # "stt" group
       - model_name: stt
@@ -137,12 +119,9 @@ data:
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
-        - {"agent": ["gemma-4-12B", "gemma-4-E4B"]}
-        - {"qwen3.8-27B": ["gemma-4-12B", "gemma-4-E4B"]}
-        - {"gemma-4-12B": ["gemma-4-E4B"]}
-        - {"gemma-4-12b": ["gemma-4-e4b"]}
-        - {"vision": ["gemini-3.8-flash"]}
-        - {"assistant": ["gemini-3.8-flash"]}
+        - {"agent": ["llama-bonsai-2-27b-2bit", "gemini-3.8-flash"]}
+        - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
+        - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"code": ["gemini-3.8-flash"]}
         - {"tts": ["omnivoice"]}
 
