@@ -24,22 +24,34 @@ spec:
           effect: NoSchedule
       initContainers:
         - name: download-model
-          image: curlimages/curl:latest
+          image: ghcr.io/ggml-org/llama.cpp:server-cuda
           securityContext:
             runAsUser: 0
           command:
-            - sh
+            - /bin/sh
             - -c
             - |
-              if [ ! -f /models/Qwen3.8-27B-UD-Q4_K_M.gguf ]; then
-                echo "Downloading unsloth/Qwen3.8-27B-GGUF (UD-Q4_K_M)..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" -o /models/Qwen3.8-27B-UD-Q4_K_M.gguf "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/main/Qwen3.8-27B-UD-Q4_K_M.gguf"
+              if [ ! -f /models/Ternary-Bonsai-2-27B-PTQ1_0.gguf ]; then
+                echo "Downloading prism-ml/Ternary-Bonsai-2-27B-gguf (PTQ1_0)..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" -o /models/Ternary-Bonsai-2-27B-PTQ1_0.gguf "https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf/resolve/main/Ternary-Bonsai-2-27B-PTQ1_0.gguf"
               else
-                echo "Model already downloaded."
+                echo "Model Ternary-Bonsai-2-27B-PTQ1_0.gguf already downloaded."
               fi
-              if [ ! -f /models/mmproj-F16.gguf ]; then
-                echo "Downloading vision projector mmproj-F16.gguf..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" -o /models/mmproj-F16.gguf "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/main/mmproj-F16.gguf"
+              if [ ! -f /models/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf ]; then
+                echo "Downloading vision projector Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" -o /models/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf "https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf/resolve/main/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf"
+              else
+                echo "Vision projector already downloaded."
+              fi
+              if [ ! -f /models/prism-b10685/llama-server ]; then
+                echo "Downloading PrismML llama.cpp release (prism-b10685)..."
+                mkdir -p /models/prism-b10685
+                curl -L -o /tmp/llama-prism.tar.gz "https://github.com/PrismML-Eng/llama.cpp/releases/download/prism-b10685-7dffb15/llama-prism-b10685-7dffb15-bin-linux-cuda-12.8-x64.tar.gz"
+                tar -xzf /tmp/llama-prism.tar.gz -C /models/prism-b10685 --strip-components=1
+                rm -f /tmp/llama-prism.tar.gz
+                chmod +x /models/prism-b10685/llama-server
+              else
+                echo "PrismML llama.cpp binaries already downloaded."
               fi
           env:
             - name: HUGGING_FACE_HUB_TOKEN
@@ -58,15 +70,18 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              /app/llama-server \
-                -m /models/Qwen3.8-27B-UD-Q4_K_M.gguf \
-                --mmproj /models/mmproj-F16.gguf \
-                -c 65536 \
+              /models/prism-b10685/llama-server \
+                -m /models/Ternary-Bonsai-2-27B-PTQ1_0.gguf \
+                --mmproj /models/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf \
+                -c 131072 \
                 -np 1 \
                 -ctk q4_0 \
                 -ctv q4_0 \
                 --flash-attn on \
-                -ngl -1 \
+                -ngl 99 \
+                --alias Ternary-Bonsai-2-27B-PTQ1_0.gguf \
+                --alias Qwen3.8-27B-UD-Q4_K_M.gguf \
+                --alias qwen3.8-27b \
                 --host 0.0.0.0 \
                 --port 8000
           resources:
