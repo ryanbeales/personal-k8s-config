@@ -75,6 +75,9 @@ spec:
                 -ctv q4_0 \
                 --flash-attn on \
                 -ngl 99 \
+                --reasoning off \
+                --chat-template-kwargs '{"enable_thinking":false}' \
+                -n 1024 \
                 --alias llama-bonsai-2-27b-2bit \
                 --host 0.0.0.0 \
                 --port 8000
