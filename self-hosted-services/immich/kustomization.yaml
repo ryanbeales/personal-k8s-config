@@ -27,4 +27,4 @@ resources:
 images:
   - name: docker.io/valkey/valkey
     newName: docker.io/valkey/valkey
-    newTag: "9.1-alpine"
+    newTag: "9.2-alpine"
