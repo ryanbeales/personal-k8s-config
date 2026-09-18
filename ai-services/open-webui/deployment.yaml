@@ -44,12 +44,6 @@ spec:
               value: "qdrant"
             - name: QDRANT_URI
               value: "http://qdrant.qdrant.svc.cluster.local:6333"
-            - name: RAG_EMBEDDING_ENGINE
-              value: "openai"
-            - name: RAG_OPENAI_API_BASE_URL
-              value: "http://llama-nomic-embed-text.embeddings.svc.cluster.local:8000/v1"
-            - name: RAG_EMBEDDING_MODEL
-              value: "nomic-embed-text-v1.5.Q4_K_M.gguf"
             - name: ENABLE_WEB_SEARCH
               value: "true"
             - name: WEBUI_URL
