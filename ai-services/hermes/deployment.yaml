@@ -250,7 +250,7 @@ spec:
               readOnly: true
         - name: hermes-webui
           # renovate: datasource=docker depname=ghcr.io/nesquena/hermes-webui versioning=docker
-          image: ghcr.io/nesquena/hermes-webui:latest@sha256:f941e21c4978918304764fcad4b247b3a18da8b393200292479ad4db0ce4991d
+          image: ghcr.io/nesquena/hermes-webui:latest@sha256:a7949079ee28458b37dc1f4c0b802886e6ab0fd42aafd45319d987c35746e449
           resources:
             limits:
               memory: 1Gi
