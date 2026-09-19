@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: llama
 
 resources:
-  - namespace.yaml
   - pvc.yaml
   - deployment.yaml
   - service.yaml
