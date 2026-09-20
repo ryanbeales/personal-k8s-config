@@ -24,7 +24,7 @@ spec:
       containers:
         - name: memos
           # renovate: datasource=docker depname=neosmemo/memos versioning=semver
-          image: neosmemo/memos:0.30.0
+          image: neosmemo/memos:0.31.0
           imagePullPolicy: IfNotPresent
           env:
             - name: MEMOS_INSTANCE_URL
