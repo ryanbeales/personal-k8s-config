@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: decision-proxy
+  namespace: decision-proxy
+  labels:
+    app.kubernetes.io/name: decision-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: decision-proxy
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: decision-proxy
+    spec:
+      containers:
+        - name: decision-proxy
+          # renovate: datasource=docker depname=ghcr.io/ryanbeales/decision-proxy versioning=semver
+          image: ghcr.io/ryanbeales/decision-proxy:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: UPSTREAM_ENDPOINT
+              value: "http://llama-bonsai-2-27b-2bit.llama.svc.cluster.local:8000/v1"
+            - name: UPSTREAM_MODEL
+              value: "llama-bonsai-2-27b-2bit"
+            - name: UPSTREAM_API_KEY
+              value: "sk-no-key"
+            - name: DEFAULT_ENABLE_THINKING
+              value: "false"
+            - name: DEFAULT_MAX_THINKING_TOKENS
+              value: "128"
+            - name: REQUEST_TIMEOUT_SECONDS
+              value: "60.0"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
