@@ -18,7 +18,7 @@ spec:
       containers:
         - name: decision-proxy
           # renovate: datasource=docker depname=ghcr.io/ryanbeales/decision-proxy versioning=semver
-          image: ghcr.io/ryanbeales/decision-proxy:1.0.0
+          image: ghcr.io/ryanbeales/decision-proxy:1.1.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
