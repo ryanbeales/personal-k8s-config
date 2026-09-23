@@ -57,6 +57,22 @@ data:
         litellm_params:
           model: gemini/gemini-3.8-flash
           api_key: "os.environ/GEMINI_API_KEY"
+      - model_name: gpt-6-luna
+        litellm_params:
+          model: openai/gpt-6-luna
+          api_key: "os.environ/OPENAI_API_KEY"
+      - model_name: luna
+        litellm_params:
+          model: openai/gpt-6-luna
+          api_key: "os.environ/OPENAI_API_KEY"
+      - model_name: gpt-6-sol
+        litellm_params:
+          model: openai/gpt-6-sol
+          api_key: "os.environ/OPENAI_API_KEY"
+      - model_name: sol
+        litellm_params:
+          model: openai/gpt-6-sol
+          api_key: "os.environ/OPENAI_API_KEY"
 
       # Routing Groups (Aliases)
       
