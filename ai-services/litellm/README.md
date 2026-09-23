@@ -28,8 +28,23 @@ kubectl create secret generic gemini-secret -n litellm --from-literal=GEMINI_API
 kubectl delete secret hermes-gemini-secret -n hermes
 ```
 
+### 2. OpenAI Secret
+LiteLLM connects to OpenAI (e.g. GPT-6 Luna and GPT-6 Sol) using the `OPENAI_API_KEY` environment variable mounted from the `openai-secret` Kubernetes Secret in the `litellm` namespace.
+
+To create the secret in PowerShell:
+```powershell
+kubectl create secret generic openai-secret -n litellm --from-literal=OPENAI_API_KEY="<YOUR_OPENAI_API_KEY>"
+```
+
+Or in Bash:
+```bash
+kubectl create secret generic openai-secret -n litellm \
+  --from-literal=OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+```
+
 ## Available Models
 
+- **OpenAI**: `gpt-6-luna` (alias `luna` - cheapest, $0.10/M in, $0.50/M out), `gpt-6-sol` (alias `sol`)
 - **Gemini**: `gemini-3.7-flash` (alias `gemini-3.7`), `gemini-3.8-flash` (alias `gemini-3.8`)
 - **Local LLMs**: `llama-bonsai-2-27b-1bit`, `llama-bonsai-2-27b-2bit`, `assistant-e3b`, `gemma-4-E4B`
 - **Speech-to-Text**: `faster-whisper`
