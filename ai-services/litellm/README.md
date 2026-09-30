@@ -49,4 +49,4 @@ kubectl create secret generic openai-secret -n litellm \
 - **Local LLMs**: `llama-gemma4-26b-a4b`, `llama-gemma4-26b-iq2`, `assistant-e3b`, `gemma-4-E4B`
 - **Speech-to-Text**: `faster-whisper`
 - **Text-to-Speech**: `kokoro`
-- **Routing Groups**: `agent`, `vision`, `assistant`, `code`, `stt`, `tts`
+- **Routing Groups**: `agent`, `agent-gemma`, `vision`, `assistant`, `code`, `stt`, `tts`

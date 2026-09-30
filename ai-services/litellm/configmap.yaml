@@ -88,6 +88,11 @@ data:
           model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+      - model_name: agent-gemma
+        litellm_params:
+          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
 
       # "vision" group: Frigate camera descriptions (5060 Ti Gemma 4 26B MoE instance, vision enabled)
       - model_name: vision
@@ -133,6 +138,7 @@ data:
       routing_strategy: "latency-based-routing"
       fallbacks:
         - {"agent": ["assistant-e3b", "gemini-3.8-flash"]}
+        - {"agent-gemma": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"code": ["llama-gemma4-26b-iq2", "gemini-3.8-flash"]}
