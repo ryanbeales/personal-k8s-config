@@ -89,18 +89,18 @@ data:
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
-      # "vision" group: Frigate camera descriptions (4090 Gemma 4 26B MoE instance, vision enabled)
+      # "vision" group: Frigate camera descriptions (5060 Ti Gemma 4 26B MoE instance, vision enabled)
       - model_name: vision
         litellm_params:
-          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          model: openai/gemma-4-26B-A4B-it-UD-IQ2_M.gguf
+          api_base: http://llama-gemma4-26b-iq2.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
-      # "assistant" group: Home Assistant voice assistant (4090 Gemma 4 26B MoE instance)
+      # "assistant" group: Home Assistant voice assistant (5060 Ti Gemma 4 26B MoE instance)
       - model_name: assistant
         litellm_params:
-          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          model: openai/gemma-4-26B-A4B-it-UD-IQ2_M.gguf
+          api_base: http://llama-gemma4-26b-iq2.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "code" group: Coding & developer tasks (4090 Gemma 4 26B MoE instance)
@@ -132,9 +132,9 @@ data:
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
-        - {"agent": ["llama-gemma4-26b-iq2", "gemini-3.8-flash"]}
+        - {"agent": ["llama-gemma4-26b-iq2", "assistant-e3b", "gemini-3.8-flash"]}
         - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
-        - {"assistant": ["llama-gemma4-26b-iq2", "assistant-e3b", "gemini-3.8-flash"]}
+        - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"code": ["llama-gemma4-26b-iq2", "gemini-3.8-flash"]}
 
     litellm_settings:
