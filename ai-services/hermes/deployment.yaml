@@ -29,6 +29,9 @@ spec:
               memory: 256Mi
           securityContext:
             runAsUser: 10000
+          env:
+            - name: HERMES_HOME
+              value: "/opt/data"
           command:
             - sh
             - -c
@@ -66,9 +69,6 @@ spec:
               /opt/hermes/.venv/bin/hermes config set agent.tool_use_enforcement true
               /opt/hermes/.venv/bin/hermes config set agent.intent_ack_continuation true
               /opt/hermes/.venv/bin/hermes config set agent.execution_guidance true
-
-              # Clean up legacy nested .hermes config if present
-              rm -f /opt/data/.hermes/config.yaml
 
               echo "Syncing hermes-agent source for webui..."
               mkdir -p /opt/hermes-src
@@ -162,6 +162,8 @@ spec:
           tty: true
           stdin: true
           env:
+            - name: HERMES_HOME
+              value: "/opt/data"
             # Make optional python deps installed by the init container into
             # /opt/data/py-extra (NFS PVC) importable by the venv python.
             # Container env reaches the s6-supervised hermes processes.
