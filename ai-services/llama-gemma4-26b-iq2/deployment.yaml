@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: llama-bonsai-2-27b-2bit
+  name: llama-gemma4-26b-iq2
   namespace: llama
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: llama-bonsai-2-27b-2bit
+      app.kubernetes.io/name: llama-gemma4-26b-iq2
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: llama-bonsai-2-27b-2bit
+        app.kubernetes.io/name: llama-gemma4-26b-iq2
     spec:
       runtimeClassName: nvidia
       nodeSelector:
@@ -27,27 +27,21 @@ spec:
             - /bin/sh
             - -c
             - |
-              if [ ! -f /models/Ternary-Bonsai-2-27B-PQ2_0.gguf ]; then
-                echo "Downloading prism-ml/Ternary-Bonsai-2-27B-gguf (PQ2_0)..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" -o /models/Ternary-Bonsai-2-27B-PQ2_0.gguf "https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf/resolve/main/Ternary-Bonsai-2-27B-PQ2_0.gguf"
+              if [ ! -f /models/gemma-4-26B-A4B-it-UD-IQ2_M.gguf ]; then
+                echo "Downloading unsloth/gemma-4-26B-A4B-it-GGUF (IQ2_M)..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/gemma-4-26B-A4B-it-UD-IQ2_M.gguf \
+                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-IQ2_M.gguf"
               else
-                echo "Model Ternary-Bonsai-2-27B-PQ2_0.gguf already downloaded."
+                echo "Model gemma-4-26B-A4B-it-UD-IQ2_M.gguf already downloaded."
               fi
-              if [ ! -f /models/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf ]; then
-                echo "Downloading vision projector Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" -o /models/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf "https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf/resolve/main/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf"
+              if [ ! -f /models/mtp-gemma-4-26B-A4B-it.gguf ]; then
+                echo "Downloading MTP drafter mtp-gemma-4-26B-A4B-it.gguf..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/mtp-gemma-4-26B-A4B-it.gguf \
+                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/mtp-gemma-4-26B-A4B-it.gguf"
               else
-                echo "Vision projector already downloaded."
-              fi
-              if [ ! -f /models/prism-b10685/llama-server ]; then
-                echo "Downloading PrismML llama.cpp release (prism-b10685)..."
-                mkdir -p /models/prism-b10685
-                curl -L -o /tmp/llama-prism.tar.gz "https://github.com/PrismML-Eng/llama.cpp/releases/download/prism-b10685-7dffb15/llama-prism-b10685-7dffb15-bin-linux-cuda-12.8-x64.tar.gz"
-                tar -xzf /tmp/llama-prism.tar.gz -C /models/prism-b10685 --strip-components=1
-                rm -f /tmp/llama-prism.tar.gz
-                chmod +x /models/prism-b10685/llama-server
-              else
-                echo "PrismML llama.cpp binaries already downloaded."
+                echo "MTP drafter already downloaded."
               fi
           env:
             - name: HUGGING_FACE_HUB_TOKEN
@@ -66,19 +60,19 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              /models/prism-b10685/llama-server \
-                -m /models/Ternary-Bonsai-2-27B-PQ2_0.gguf \
-                --mmproj /models/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf \
-                -c 131072 \
+              /app/llama-server \
+                -m /models/gemma-4-26B-A4B-it-UD-IQ2_M.gguf \
+                --model-draft /models/mtp-gemma-4-26B-A4B-it.gguf \
+                --spec-type draft-mtp \
+                --spec-draft-n-max 3 \
+                -c 16384 \
                 -np 1 \
                 -ctk q4_0 \
                 -ctv q4_0 \
                 --flash-attn on \
                 -ngl 99 \
-                --reasoning off \
-                --chat-template-kwargs '{"enable_thinking":false}' \
-                -n 1024 \
-                --alias llama-bonsai-2-27b-2bit \
+                -n 4096 \
+                --alias llama-gemma4-26b-iq2 \
                 --host 0.0.0.0 \
                 --port 8000
           resources:
@@ -113,7 +107,7 @@ spec:
       volumes:
         - name: cache-volume
           persistentVolumeClaim:
-            claimName: llama-bonsai-2-27b-2bit-nfs-pvc
+            claimName: llama-gemma4-26b-iq2-nfs-pvc
         - name: shm
           emptyDir:
             medium: Memory

@@ -46,7 +46,7 @@ kubectl create secret generic openai-secret -n litellm \
 
 - **OpenAI**: `gpt-6-luna` (alias `luna` - cheapest, $0.10/M in, $0.50/M out), `gpt-6-sol` (alias `sol`)
 - **Gemini**: `gemini-3.7-flash` (alias `gemini-3.7`), `gemini-3.8-flash` (alias `gemini-3.8`)
-- **Local LLMs**: `llama-gemma4-26b-a4b`, `llama-bonsai-2-27b-2bit`, `assistant-e3b`, `gemma-4-E4B`
+- **Local LLMs**: `llama-gemma4-26b-a4b`, `llama-gemma4-26b-iq2`, `assistant-e3b`, `gemma-4-E4B`
 - **Speech-to-Text**: `faster-whisper`
 - **Text-to-Speech**: `kokoro`
 - **Routing Groups**: `agent`, `vision`, `assistant`, `code`, `stt`, `tts`
