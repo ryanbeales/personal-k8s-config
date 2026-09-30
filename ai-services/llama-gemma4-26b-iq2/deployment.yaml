@@ -74,7 +74,7 @@ spec:
                 --model-draft /models/mtp-gemma-4-26B-A4B-it.gguf \
                 --spec-type draft-mtp \
                 --spec-draft-n-max 3 \
-                -c 16384 \
+                -c 32768 \
                 -np 1 \
                 -ctk q4_0 \
                 -ctv q4_0 \

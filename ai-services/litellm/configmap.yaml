@@ -132,7 +132,7 @@ data:
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
-        - {"agent": ["llama-gemma4-26b-iq2", "assistant-e3b", "gemini-3.8-flash"]}
+        - {"agent": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"code": ["llama-gemma4-26b-iq2", "gemini-3.8-flash"]}
