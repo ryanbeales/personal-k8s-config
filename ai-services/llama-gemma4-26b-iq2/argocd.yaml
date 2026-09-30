@@ -1,2 +1,3 @@
 argocd:
   name: llama-gemma4-26b-iq2
+  namespace: llama
