@@ -43,6 +43,14 @@ spec:
                   -o /models/gemma-4-E4B-it-mmproj.gguf \
                   "https://huggingface.co/google/gemma-4-E4B-it-qat-q4_0-gguf/resolve/main/gemma-4-E4B-it-mmproj.gguf"
               fi
+              if [ ! -f /models/mtp-gemma-4-E4B-it.gguf ]; then
+                echo "Downloading MTP drafter mtp-gemma-4-E4B-it.gguf..."
+                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/mtp-gemma-4-E4B-it.gguf \
+                  "https://huggingface.co/unsloth/gemma-4-E4B-it-qat-GGUF/resolve/main/mtp-gemma-4-E4B-it.gguf"
+              else
+                echo "MTP drafter mtp-gemma-4-E4B-it.gguf already downloaded."
+              fi
           env:
             - name: HUGGING_FACE_HUB_TOKEN
               valueFrom:
@@ -63,6 +71,9 @@ spec:
               /app/llama-server \
                 -m /models/gemma-4-E4B_q4_0-it.gguf \
                 --mmproj /models/gemma-4-E4B-it-mmproj.gguf \
+                --model-draft /models/mtp-gemma-4-E4B-it.gguf \
+                --spec-type draft-mtp \
+                --spec-draft-n-max 3 \
                 -c 131072 \
                 -ctk q4_0 \
                 -ctv q4_0 \
