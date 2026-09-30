@@ -7,12 +7,18 @@ data:
   config.yaml: |
     model_list:
       # Explicit individual models
-      - model_name: llama-bonsai-2-27b-1bit
+      - model_name: llama-gemma4-26b-a4b
         litellm_params:
-          model: openai/llama-bonsai-2-27b-1bit
-          api_base: http://llama-bonsai-2-27b-1bit.llama.svc.cluster.local:8000/v1
+          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-          max_parallel_requests: 1
+          max_parallel_requests: 2
+      - model_name: gemma-4-26B-A4B
+        litellm_params:
+          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 2
       - model_name: llama-bonsai-2-27b-2bit
         litellm_params:
           model: openai/llama-bonsai-2-27b-2bit
@@ -76,11 +82,11 @@ data:
 
       # Routing Groups (Aliases)
       
-      # "agent" group: Hermes & general agents (4090 1-bit instance, thinking enabled)
+      # "agent" group: Hermes & general agents (4090 Gemma 4 26B MoE instance)
       - model_name: agent
         litellm_params:
-          model: openai/llama-bonsai-2-27b-1bit
-          api_base: http://llama-bonsai-2-27b-1bit.llama.svc.cluster.local:8000/v1
+          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "vision" group: Frigate camera descriptions (5060 Ti 2-bit instance, thinking disabled)
@@ -93,21 +99,18 @@ data:
             chat_template_kwargs:
               enable_thinking: false
 
-      # "assistant" group: Home Assistant voice assistant (5060 Ti 2-bit instance, thinking disabled)
+      # "assistant" group: Home Assistant voice assistant (4090 Gemma 4 26B MoE instance)
       - model_name: assistant
         litellm_params:
-          model: openai/llama-bonsai-2-27b-2bit
-          api_base: http://llama-bonsai-2-27b-2bit.llama.svc.cluster.local:8000/v1
+          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
-          extra_body:
-            chat_template_kwargs:
-              enable_thinking: false
 
-      # "code" group: Coding & developer tasks (4090 1-bit instance)
+      # "code" group: Coding & developer tasks (4090 Gemma 4 26B MoE instance)
       - model_name: code
         litellm_params:
-          model: openai/llama-bonsai-2-27b-1bit
-          api_base: http://llama-bonsai-2-27b-1bit.llama.svc.cluster.local:8000/v1
+          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "stt" group
@@ -134,7 +137,7 @@ data:
       fallbacks:
         - {"agent": ["llama-bonsai-2-27b-2bit", "gemini-3.8-flash"]}
         - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
-        - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
+        - {"assistant": ["llama-bonsai-2-27b-2bit", "assistant-e3b", "gemini-3.8-flash"]}
         - {"code": ["gemini-3.8-flash"]}
 
     litellm_settings:
