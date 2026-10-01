@@ -24,7 +24,7 @@ spec:
       containers:
         - name: conduit
           # renovate: datasource=docker depname=matrixconduit/matrix-conduit versioning=semver
-          image: matrixconduit/matrix-conduit:v0.10.14
+          image: matrixconduit/matrix-conduit:v0.10.15
           env:
             - name: CONDUIT_CONFIG
               value: ""
