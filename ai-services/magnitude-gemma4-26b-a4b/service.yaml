@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: llama-gemma4-26b-a4b
+  name: magnitude-gemma4-26b-a4b
   namespace: llama
 spec:
   ports:
