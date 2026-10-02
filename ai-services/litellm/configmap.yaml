@@ -85,12 +85,12 @@ data:
       # "agent" group: Hermes & general agents (4090 Gemma 4 26B MoE instance)
       - model_name: agent
         litellm_params:
-          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: agent-gemma
         litellm_params:
-          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
@@ -111,7 +111,7 @@ data:
       # "code" group: Coding & developer tasks (4090 Gemma 4 26B MoE instance)
       - model_name: code
         litellm_params:
-          model: openai/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
