@@ -48,40 +48,94 @@ spec:
                 chmod +x "$MAGNITUDE_DIR/bin/magnitude" || true
               fi
 
-              if [ ! -f /models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf ]; then
-                echo "Downloading unsloth/gemma-4-26B-A4B-it-GGUF (Q4_K_M)..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf \
-                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
+              if [ ! -f /models/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf ]; then
+                echo "Downloading unsloth/gemma-4-26B-A4B-it-qat-GGUF (Q4_K_XL)..."
+                curl -L -C - -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf \
+                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-qat-GGUF/resolve/main/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf"
               else
-                echo "Model gemma-4-26B-A4B-it-UD-Q4_K_M.gguf already downloaded."
+                echo "Model gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf already downloaded."
               fi
-              if [ ! -f /models/mtp-gemma-4-26B-A4B-it.gguf ]; then
-                echo "Downloading MTP drafter mtp-gemma-4-26B-A4B-it.gguf..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/mtp-gemma-4-26B-A4B-it.gguf \
-                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/mtp-gemma-4-26B-A4B-it.gguf"
+              if [ ! -f /models/mtp-gemma-4-26B-A4B-it-qat.gguf ]; then
+                echo "Downloading QAT MTP drafter mtp-gemma-4-26B-A4B-it-qat.gguf..."
+                curl -L -C - -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/mtp-gemma-4-26B-A4B-it-qat.gguf \
+                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-qat-GGUF/resolve/main/mtp-gemma-4-26B-A4B-it.gguf"
               else
                 echo "MTP drafter already downloaded."
               fi
-              if [ ! -f /models/gemma-4-26B-A4B-it-mmproj-F16.gguf ]; then
-                echo "Downloading vision projector mmproj-F16.gguf..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/gemma-4-26B-A4B-it-mmproj-F16.gguf \
-                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-qat-GGUF/resolve/main/mmproj-F16.gguf"
+              if [ ! -f /models/mmproj-BF16.gguf ]; then
+                echo "Downloading vision projector mmproj-BF16.gguf..."
+                curl -L -C - -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/mmproj-BF16.gguf \
+                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-qat-GGUF/resolve/main/mmproj-BF16.gguf"
               else
                 echo "Vision projector already downloaded."
               fi
 
-              for repo in "models--unsloth--gemma-4-26B-A4B-it-GGUF" "models--unsloth--gemma-4-26B-A4B-it-qat-GGUF"; do
-                HF_REPO="/models/hub/$repo"
-                mkdir -p "$HF_REPO/snapshots/main" "$HF_REPO/refs"
-                printf 'main' > "$HF_REPO/refs/main"
-                for f in gemma-4-26B-A4B-it-UD-Q4_K_M.gguf gemma-4-26B-A4B-it-mmproj-F16.gguf mtp-gemma-4-26B-A4B-it.gguf; do
-                  if [ -f "/models/$f" ] && [ ! -f "$HF_REPO/snapshots/main/$f" ]; then
-                    ln "/models/$f" "$HF_REPO/snapshots/main/$f" || cp "/models/$f" "$HF_REPO/snapshots/main/$f"
-                  fi
-                done
+              python3 -c '
+              import struct
+              def patch_ctx(path, target=65536):
+                  try:
+                      with open(path, "r+b") as f:
+                          if f.read(4) != b"GGUF": return
+                          f.seek(8)
+                          kv_count = struct.unpack("<Q", f.read(8))[1] if False else struct.unpack("<Q", f.read(8))[0]
+                          # re-read header correctly
+                          f.seek(0)
+                          f.read(4)
+                          ver = struct.unpack("<I", f.read(4))[0]
+                          tensors = struct.unpack("<Q", f.read(8))[0]
+                          kvs = struct.unpack("<Q", f.read(8))[0]
+                          for _ in range(kvs):
+                              klen = struct.unpack("<Q", f.read(8))[0]
+                              key = f.read(klen).decode("utf-8", errors="replace")
+                              vtype = struct.unpack("<I", f.read(4))[0]
+                              if "context_length" in key:
+                                  pos = f.tell()
+                                  val = struct.unpack("<I", f.read(4))[0]
+                                  if val > target:
+                                      f.seek(pos)
+                                      f.write(struct.pack("<I", target))
+                                      print(f"Patched {path}: {key} from {val} to {target}")
+                                  return
+                              if vtype in (0, 1, 7): f.seek(1, 1)
+                              elif vtype in (2, 3): f.seek(2, 1)
+                              elif vtype in (4, 5, 6): f.seek(4, 1)
+                              elif vtype in (10, 11, 12): f.seek(8, 1)
+                              elif vtype == 8:
+                                  slen = struct.unpack("<Q", f.read(8))[0]
+                                  f.seek(slen, 1)
+                              elif vtype == 9:
+                                  atype = struct.unpack("<I", f.read(4))[0]
+                                  alen = struct.unpack("<Q", f.read(8))[0]
+                                  if atype in (0, 1, 7): f.seek(alen, 1)
+                                  elif atype in (2, 3): f.seek(alen * 2, 1)
+                                  elif atype in (4, 5, 6): f.seek(alen * 4, 1)
+                                  elif atype in (10, 11, 12): f.seek(alen * 8, 1)
+                                  elif atype == 8:
+                                      for _ in range(alen):
+                                          slen = struct.unpack("<Q", f.read(8))[0]
+                                          f.seek(slen, 1)
+                  except Exception as e:
+                      print("Patch error:", path, e)
+              patch_ctx("/models/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf")
+              patch_ctx("/models/mtp-gemma-4-26B-A4B-it-qat.gguf")
+              '
+
+              HF_REPO="/models/hub/models--unsloth--gemma-4-26B-A4B-it-qat-GGUF"
+              mkdir -p "$HF_REPO/snapshots/main" "$HF_REPO/refs"
+              printf 'main' > "$HF_REPO/refs/main"
+              rm -f "$HF_REPO/snapshots/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf" \
+                    "$HF_REPO/snapshots/main/gemma-4-26B-A4B-it-mmproj-F16.gguf"
+              for pair in "gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf:gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" \
+                          "mmproj-BF16.gguf:mmproj-BF16.gguf" \
+                          "mtp-gemma-4-26B-A4B-it-qat.gguf:mtp-gemma-4-26B-A4B-it.gguf"; do
+                src="/models/${pair%%:*}"
+                dst="$HF_REPO/snapshots/main/${pair##*:}"
+                if [ -f "$src" ] && [ ! -f "$dst" ]; then
+                  ln "$src" "$dst" || cp "$src" "$dst"
+                fi
               done
               echo "Setup complete."
           env:
@@ -102,6 +156,13 @@ spec:
           args:
             - |
               export LD_LIBRARY_PATH=/models/magnitude/runtime:$LD_LIBRARY_PATH
+              # Preload instance in background once server is healthy
+              (
+                until curl -s http://127.0.0.1:8000/health > /dev/null; do sleep 1; done
+                curl -s -X POST http://127.0.0.1:8000/api/v1/instances \
+                  -H "Content-Type: application/json" \
+                  -d '{"modelId": "hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf"}' || true
+              ) &
               # Do not use exec: worker parent watchdog requires parent PID > 1
               /models/magnitude/bin/magnitude-inference serve \
                 --installation /models/magnitude/installation.json \
