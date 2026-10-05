@@ -9,13 +9,19 @@ data:
       # Explicit individual models
       - model_name: llama-gemma4-26b-a4b
         litellm_params:
-          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
+          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
       - model_name: gemma-4-26B-A4B
         litellm_params:
-          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
+          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
+          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 2
+      - model_name: qwen-3.8-27b
+        litellm_params:
+          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
@@ -82,15 +88,15 @@ data:
 
       # Routing Groups (Aliases)
       
-      # "agent" group: Hermes & general agents (4090 Gemma 4 26B MoE instance)
+      # "agent" group: Hermes & general agents (4090 Qwen 3.8 27B instance)
       - model_name: agent
         litellm_params:
-          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
+          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: agent-gemma
         litellm_params:
-          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
+          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
@@ -108,10 +114,10 @@ data:
           api_base: http://llama-gemma4-26b-iq2.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
-      # "code" group: Coding & developer tasks (4090 Gemma 4 26B MoE instance)
+      # "code" group: Coding & developer tasks (4090 Qwen 3.8 27B instance)
       - model_name: code
         litellm_params:
-          model: openai/hf:unsloth/gemma-4-26B-A4B-it-qat-GGUF/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf
+          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
           api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
