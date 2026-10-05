@@ -9,4 +9,4 @@ spec:
       port: 8000
       targetPort: 8000
   selector:
-    app.kubernetes.io/name: magnitude-gemma4-26b-a4b
+    app.kubernetes.io/name: llama-gemma4-26b-a4b

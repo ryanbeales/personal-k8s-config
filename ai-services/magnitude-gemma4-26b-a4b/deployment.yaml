@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: magnitude-gemma4-26b-a4b
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   template:

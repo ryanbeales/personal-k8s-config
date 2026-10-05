@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: llama-gemma4-26b-a4b
-  replicas: 0
+  replicas: 1
   strategy:
     type: Recreate
   template:
@@ -31,27 +31,27 @@ spec:
             - /bin/sh
             - -c
             - |
-              if [ ! -f /models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf ]; then
-                echo "Downloading unsloth/gemma-4-26B-A4B-it-GGUF (Q4_K_M)..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf \
-                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
+              if [ ! -f /models/Qwen3.8-27B-UD-IQ4_XS.gguf ]; then
+                echo "Downloading unsloth/Qwen3.8-27B-GGUF (UD-IQ4_XS)..."
+                curl -L -C - -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/Qwen3.8-27B-UD-IQ4_XS.gguf \
+                  "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/main/Qwen3.8-27B-UD-IQ4_XS.gguf"
               else
-                echo "Model gemma-4-26B-A4B-it-UD-Q4_K_M.gguf already downloaded."
+                echo "Model Qwen3.8-27B-UD-IQ4_XS.gguf already downloaded."
               fi
-              if [ ! -f /models/mtp-gemma-4-26B-A4B-it.gguf ]; then
-                echo "Downloading MTP drafter mtp-gemma-4-26B-A4B-it.gguf..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/mtp-gemma-4-26B-A4B-it.gguf \
-                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/mtp-gemma-4-26B-A4B-it.gguf"
+              if [ ! -f /models/mtp-Qwen3.8-27B-Q4_0.gguf ]; then
+                echo "Downloading MTP drafter mtp-Qwen3.8-27B-Q4_0.gguf..."
+                curl -L -C - -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/mtp-Qwen3.8-27B-Q4_0.gguf \
+                  "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/main/MTP/mtp-Qwen3.8-27B-Q4_0.gguf"
               else
-                echo "MTP drafter already downloaded."
+                echo "MTP drafter mtp-Qwen3.8-27B-Q4_0.gguf already downloaded."
               fi
-              if [ ! -f /models/gemma-4-26B-A4B-it-mmproj-F16.gguf ]; then
-                echo "Downloading vision projector mmproj-F16.gguf..."
-                curl -L -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
-                  -o /models/gemma-4-26B-A4B-it-mmproj-F16.gguf \
-                  "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-qat-GGUF/resolve/main/mmproj-F16.gguf"
+              if [ ! -f /models/qwen3.8-27b-mmproj-BF16.gguf ]; then
+                echo "Downloading vision projector mmproj-BF16.gguf..."
+                curl -L -C - -H "Authorization: Bearer $HUGGING_FACE_HUB_TOKEN" \
+                  -o /models/qwen3.8-27b-mmproj-BF16.gguf \
+                  "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/main/mmproj-BF16.gguf"
               else
                 echo "Vision projector already downloaded."
               fi
@@ -73,11 +73,11 @@ spec:
           args:
             - |
               /app/llama-server \
-                -m /models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf \
-                --mmproj /models/gemma-4-26B-A4B-it-mmproj-F16.gguf \
-                --model-draft /models/mtp-gemma-4-26B-A4B-it.gguf \
+                -m /models/Qwen3.8-27B-UD-IQ4_XS.gguf \
+                --mmproj /models/qwen3.8-27b-mmproj-BF16.gguf \
+                --model-draft /models/mtp-Qwen3.8-27B-Q4_0.gguf \
                 --spec-type draft-mtp \
-                --spec-draft-n-max 4 \
+                --spec-draft-n-max 3 \
                 -c 65536 \
                 -np 1 \
                 -ctk q4_0 \
@@ -85,9 +85,12 @@ spec:
                 --flash-attn on \
                 -ngl 99 \
                 -n 8192 \
-                --alias llama-gemma4-26b-a4b \
+                --alias Qwen3.8-27B-UD-IQ4_XS.gguf \
                 --host 0.0.0.0 \
                 --port 8000
+          env:
+            - name: GGML_CUDA_GRAPH_OPT
+              value: "1"
           resources:
             limits:
               nvidia.com/gpu: "1"
