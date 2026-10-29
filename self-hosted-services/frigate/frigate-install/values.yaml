@@ -57,6 +57,7 @@ nodeSelector:
 
 extraInitContainers:
   - name: generate-yolov9-model
+    # Pinned to match the Python version inside the Frigate image (ignored in .github/renovate.json5)
     image: python:3.14
     command: ["/bin/sh", "-c"]
     args:
