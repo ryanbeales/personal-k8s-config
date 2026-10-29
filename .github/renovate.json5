@@ -75,6 +75,16 @@
         "home-assistant/core"
       ],
       automerge: true
+    },
+    {
+      description: "Pin Frigate init container python version to match Frigate image",
+      matchFileNames: [
+        "self-hosted-services/frigate/frigate-install/values.yaml"
+      ],
+      matchDepNames: [
+        "python"
+      ],
+      enabled: false
     }
   ],
 
