@@ -50,6 +50,8 @@ spec:
               value: "postgres://postgres:windmill@windmill-postgres.windmill.svc.cluster.local:5432/windmill?sslmode=disable"
             - name: BASE_URL
               value: "https://windmill.crobasaurusrex.ryanbeales.com"
+            - name: ALLOW_PRIVATE_AI_BASE_URLS
+              value: "true"
             - name: JSON_FMT
               value: "true"
             - name: RUST_LOG
