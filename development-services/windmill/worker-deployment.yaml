@@ -56,10 +56,6 @@ spec:
               value: "true"
             - name: RUST_LOG
               value: "info"
-          ports:
-            - name: metrics
-              containerPort: 8001
-              protocol: TCP
           resources:
             requests:
               cpu: 100m
@@ -68,15 +64,21 @@ spec:
               cpu: 2000m
               memory: 2Gi
           livenessProbe:
-            tcpSocket:
-              port: 8001
+            exec:
+              command:
+                - sh
+                - -c
+                - test -d /proc/1
             initialDelaySeconds: 15
             periodSeconds: 20
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
-            tcpSocket:
-              port: 8001
+            exec:
+              command:
+                - sh
+                - -c
+                - test -d /proc/1
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 3
@@ -101,8 +103,6 @@ spec:
               value: "true"
             - name: SLEEP_QUEUE
               value: "200"
-            - name: METRICS_ADDR
-              value: "0.0.0.0:8002"
             - name: DATABASE_URL
               value: "postgres://postgres:windmill@windmill-postgres.windmill.svc.cluster.local:5432/windmill?sslmode=disable"
             - name: BASE_URL
@@ -118,6 +118,26 @@ spec:
             limits:
               cpu: 1000m
               memory: 1Gi
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - test -d /proc/1
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - test -d /proc/1
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
           volumeMounts:
             - name: storage
               mountPath: /tmp/windmill/logs
