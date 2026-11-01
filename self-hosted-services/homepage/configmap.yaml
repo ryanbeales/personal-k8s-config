@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+    gateway: true
+    ingress: false
+  settings.yaml: |
+    title: Crob Cluster
+    theme: dark
+    color: slate
+    headerStyle: clean
+    statusStyle: dot
+    layout:
+      AI & Automation:
+        style: row
+        columns: 4
+      Developer & Infrastructure:
+        style: row
+        columns: 4
+      Home Automation:
+        style: row
+        columns: 4
+      Media & Self-Hosted:
+        style: row
+        columns: 4
+      Monitoring & Cluster:
+        style: row
+        columns: 4
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - search:
+        provider: custom
+        url: https://searxng.crobasaurusrex.ryanbeales.com/search?q=
+        target: _blank
+    - datetime:
+        text_size: xl
+        format:
+          dateStyle: short
+          timeStyle: short
+  services.yaml: |
+    []
+  bookmarks.yaml: |
+    - GitHub:
+        - personal-k8s-config:
+            - abbr: K8S
+              href: https://github.com/ryanbeales/personal-k8s-config
+  docker.yaml: ""
+  proxmox.yaml: ""
+  custom.css: ""
+  custom.js: ""

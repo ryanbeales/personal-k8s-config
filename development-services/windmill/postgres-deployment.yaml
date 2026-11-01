@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: windmill-postgres
+  namespace: windmill
+  labels:
+    app.kubernetes.io/name: windmill-postgres
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: windmill-postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: windmill-postgres
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: postgres
+          # renovate: datasource=docker depname=postgres versioning=docker
+          image: postgres:16-alpine
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "windmill"
+            - name: POSTGRES_DB
+              value: "windmill"
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U postgres -d windmill
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U postgres -d windmill
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres-data
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: windmill-nfs-pvc

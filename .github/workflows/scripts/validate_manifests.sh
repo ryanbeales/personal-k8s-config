@@ -113,7 +113,7 @@ for dir in $KUSTOMIZE_ROOTS; do
       IMAGE_ERRORS=""
       for img in $IMAGES; do
         # Skip templates, variables, or empty lines
-        if [[ -z "$img" || "$img" =~ [\$\{\}] ]]; then
+        if [[ -z "$img" || "$img" == "string" || "$img" =~ [\$\{\}] ]]; then
           continue
         fi
         echo "Checking if image exists: $img"

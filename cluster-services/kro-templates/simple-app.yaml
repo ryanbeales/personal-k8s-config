@@ -55,6 +55,10 @@ spec:
         metadata:
           name: ${schema.metadata.name}
           namespace: ${schema.metadata.namespace}
+          annotations:
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/name: ${schema.metadata.name}
+            gethomepage.dev/group: "Developer & Infrastructure"
         spec:
           parentRefs:
             - group: gateway.networking.k8s.io

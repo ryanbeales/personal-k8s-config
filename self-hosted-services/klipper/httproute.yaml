@@ -2,6 +2,12 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: klipper-route
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Klipper (Mainsail)"
+    gethomepage.dev/group: "Media & Self-Hosted"
+    gethomepage.dev/icon: "mainsail.png"
+    gethomepage.dev/description: "3D printer Klipper & Moonraker interface"
   namespace: klipper
 spec:
   parentRefs:

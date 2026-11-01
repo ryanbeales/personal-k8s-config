@@ -59,6 +59,12 @@ alertmanager:
       hostnames:
         - alertmanager.crobasaurusrex.ryanbeales.com
         - alertmanager.crobceratops.ryanbeales.com
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Alertmanager"
+        gethomepage.dev/group: "Monitoring & Cluster"
+        gethomepage.dev/icon: "alertmanager.png"
+        gethomepage.dev/description: "Prometheus alert routing & notifications"
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
@@ -77,6 +83,12 @@ grafana:
       hostnames:
         - grafana.crobasaurusrex.ryanbeales.com
         - grafana.crobceratops.ryanbeales.com
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Grafana"
+        gethomepage.dev/group: "Monitoring & Cluster"
+        gethomepage.dev/icon: "grafana.png"
+        gethomepage.dev/description: "Metrics & Loki log dashboards"
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
@@ -124,6 +136,12 @@ prometheus:
       hostnames:
         - prometheus.crobasaurusrex.ryanbeales.com
         - prometheus.crobceratops.ryanbeales.com
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Prometheus"
+        gethomepage.dev/group: "Monitoring & Cluster"
+        gethomepage.dev/icon: "prometheus.png"
+        gethomepage.dev/description: "Cluster metrics & time-series monitoring"
       parentRefs:
         - group: gateway.networking.k8s.io
           kind: Gateway
