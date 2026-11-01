@@ -28,7 +28,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: "homepage.crobasaurusrex.ryanbeales.com,homepage.crobceratops.ryanbeales.com,localhost:3000,127.0.0.1:3000"
+              value: "*"
           ports:
             - name: http
               containerPort: 3000
@@ -44,6 +44,9 @@ spec:
             httpGet:
               path: /api/healthcheck
               port: 3000
+              httpHeaders:
+                - name: Host
+                  value: homepage.crobasaurusrex.ryanbeales.com
             initialDelaySeconds: 10
             periodSeconds: 20
             timeoutSeconds: 5
@@ -52,6 +55,9 @@ spec:
             httpGet:
               path: /api/healthcheck
               port: 3000
+              httpHeaders:
+                - name: Host
+                  value: homepage.crobasaurusrex.ryanbeales.com
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 3
