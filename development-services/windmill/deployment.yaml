@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: windmill
+  namespace: windmill
+  labels:
+    app.kubernetes.io/name: windmill
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: windmill
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: windmill
+    spec:
+      enableServiceLinks: false
+      initContainers:
+        - name: wait-for-postgres
+          # renovate: datasource=docker depname=postgres versioning=docker
+          image: postgres:16-alpine
+          command:
+            - sh
+            - -c
+            - |
+              until pg_isready -h windmill-postgres.windmill.svc.cluster.local -p 5432 -U postgres -d windmill; do
+                echo "Waiting for windmill-postgres..."
+                sleep 2
+              done
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+      containers:
+        - name: windmill-server
+          # renovate: datasource=docker depname=ghcr.io/windmill-labs/windmill versioning=semver
+          image: ghcr.io/windmill-labs/windmill:1.855.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MODE
+              value: "server"
+            - name: DATABASE_URL
+              value: "postgres://postgres:windmill@windmill-postgres.windmill.svc.cluster.local:5432/windmill?sslmode=disable"
+            - name: BASE_URL
+              value: "https://windmill.crobasaurusrex.ryanbeales.com"
+            - name: JSON_FMT
+              value: "true"
+            - name: RUST_LOG
+              value: "info"
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+            - name: metrics
+              containerPort: 8001
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          startupProbe:
+            httpGet:
+              path: /api/version
+              port: 8000
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 60
+          livenessProbe:
+            httpGet:
+              path: /api/version
+              port: 8000
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/version
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
+          volumeMounts:
+            - name: storage
+              mountPath: /tmp/windmill/logs
+              subPath: worker-logs
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: windmill-nfs-pvc

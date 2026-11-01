@@ -1,0 +1,53 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: windmill-route
+  namespace: windmill
+  labels:
+    app.kubernetes.io/name: windmill
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Windmill"
+    gethomepage.dev/group: "Developer & Infrastructure"
+    gethomepage.dev/icon: "windmill.png"
+    gethomepage.dev/description: "Code-first workflow engine, scripts, UIs & MCP server"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=windmill"
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobceratops-gateway
+      namespace: gateways
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: crobasaurusrex-gateway
+      namespace: gateways
+  hostnames:
+    - windmill.crobasaurusrex.ryanbeales.com
+    - windmill.crobceratops.ryanbeales.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /ws/
+        - path:
+            type: PathPrefix
+            value: /ws_debug/
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: windmill-extra
+          port: 3000
+          weight: 1
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      timeouts:
+        request: 300s
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: windmill
+          port: 8000
+          weight: 1

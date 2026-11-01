@@ -1,7 +1,13 @@
-﻿apiVersion: gateway.networking.k8s.io/v1
+apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: go2rtc-route
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "go2rtc"
+    gethomepage.dev/group: "Media & Self-Hosted"
+    gethomepage.dev/icon: "go2rtc.png"
+    gethomepage.dev/description: "Camera RTSP/WebRTC streaming relay"
   namespace: go2rtc
 spec:
   parentRefs:

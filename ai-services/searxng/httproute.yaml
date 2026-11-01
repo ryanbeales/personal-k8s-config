@@ -2,6 +2,12 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: searxng-route
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "SearXNG"
+    gethomepage.dev/group: "AI & Automation"
+    gethomepage.dev/icon: "searxng.png"
+    gethomepage.dev/description: "Privacy-respecting metasearch engine"
   namespace: searxng   
 spec:
   parentRefs:

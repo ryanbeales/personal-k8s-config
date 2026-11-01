@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: windmill-extra
+  namespace: windmill
+  labels:
+    app.kubernetes.io/name: windmill-extra
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: windmill-extra
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: windmill-extra
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: windmill-extra
+          # renovate: datasource=docker depname=ghcr.io/windmill-labs/windmill-extra versioning=semver
+          image: ghcr.io/windmill-labs/windmill-extra:1.855.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ENABLE_LSP
+              value: "true"
+            - name: ENABLE_GATEWAY
+              value: "true"
+            - name: ENABLE_DEBUGGER
+              value: "true"
+            - name: ENABLE_MULTIPLAYER
+              value: "false"
+            - name: ENABLE_NSJAIL
+              value: "false"
+            - name: DEBUGGER_PORT
+              value: "3003"
+            - name: REQUIRE_SIGNED_DEBUG_REQUESTS
+              value: "true"
+            - name: WINDMILL_BASE_URL
+              value: "http://windmill.windmill.svc.cluster.local:8000"
+          ports:
+            - name: gateway
+              containerPort: 3000
+              protocol: TCP
+            - name: lsp
+              containerPort: 3001
+              protocol: TCP
+            - name: debugger
+              containerPort: 3003
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
+          volumeMounts:
+            - name: storage
+              mountPath: /pyls/.cache
+              subPath: lsp-cache
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: windmill-nfs-pvc
