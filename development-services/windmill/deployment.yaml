@@ -21,7 +21,6 @@ spec:
       enableServiceLinks: false
       initContainers:
         - name: wait-for-postgres
-          # renovate: datasource=docker depname=postgres versioning=docker
           image: postgres:16-alpine
           command:
             - sh
