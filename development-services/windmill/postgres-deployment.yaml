@@ -21,7 +21,6 @@ spec:
       enableServiceLinks: false
       containers:
         - name: postgres
-          # renovate: datasource=docker depname=postgres versioning=docker
           image: postgres:16-alpine
           imagePullPolicy: IfNotPresent
           env:

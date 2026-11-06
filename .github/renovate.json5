@@ -17,7 +17,7 @@
       customType: "regex",
       description: "Annotated dependencies in deployment, Kustomization and values files",
       managerFilePatterns: [
-        "**/deployment.y?ml",
+        "**/*deployment.y?ml",
         "**/daemonset.y?ml",
         "**/cronjob.y?ml",
         "**/*-values.y?ml",
