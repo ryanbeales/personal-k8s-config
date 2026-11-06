@@ -141,6 +141,48 @@ for dir in $KUSTOMIZE_ROOTS; do
     fi
   fi
 
+  # MoeMemos Android Client Compatibility Check (only when updating memos)
+  if [[ "$dir" == "self-hosted-services/memos" ]]; then
+    echo "Checking MoeMemosAndroid client compatibility for Memos server..."
+    MEMOS_IMAGE_TAG=$(grep -E '^\s*image:\s*neosmemo/memos:' pr-manifest.yaml | head -n1 | awk -F: '{print $NF}' | tr -d '"' | tr -d "'" | tr -d '[:space:]')
+    MEMOS_VERSION="${MEMOS_IMAGE_TAG#v}"
+
+    AUTH_HEADER=()
+    if [ -n "${GITHUB_TOKEN:-}" ]; then
+      AUTH_HEADER=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
+    fi
+
+    MOEMEMOS_RELEASE_JSON=$(curl -sL "${AUTH_HEADER[@]}" https://api.github.com/repos/mudkipme/MoeMemosAndroid/releases/latest)
+    MOEMEMOS_TAG=$(echo "$MOEMEMOS_RELEASE_JSON" | jq -r '.tag_name // empty')
+
+    if [ -z "$MOEMEMOS_TAG" ]; then
+      echo "❌ **MoeMemos Android Compatibility Check Failed**" >> "$REPORT_FILE"
+      echo "Unable to fetch latest stable release from \`mudkipme/MoeMemosAndroid\`." >> "$REPORT_FILE"
+      echo "" >> "$REPORT_FILE"
+      HAS_ERRORS=true
+    else
+      VERSION_SUPPORT_KT=$(curl -sfL "https://raw.githubusercontent.com/mudkipme/MoeMemosAndroid/${MOEMEMOS_TAG}/app/src/main/java/me/mudkip/moememos/data/constant/MemosVersionSupport.kt" || true)
+      MAX_SUPPORTED_MEMOS=$(echo "$VERSION_SUPPORT_KT" | grep -E '_MAX_VERSION\s*=\s*SemVer\(' | sed -E 's/.*SemVer\(([0-9]+),\s*([0-9]+),\s*([0-9]+)\).*/\1.\2.\3/' | sort -V | tail -n1)
+
+      if [ -z "$MAX_SUPPORTED_MEMOS" ]; then
+        echo "❌ **MoeMemos Android Compatibility Check Failed**" >> "$REPORT_FILE"
+        echo "Unable to determine supported Memos version from \`mudkipme/MoeMemosAndroid\` release \`$MOEMEMOS_TAG\`." >> "$REPORT_FILE"
+        echo "" >> "$REPORT_FILE"
+        HAS_ERRORS=true
+      else
+        HIGHEST=$(printf '%s\n%s\n' "$MEMOS_VERSION" "$MAX_SUPPORTED_MEMOS" | sort -V | tail -n1)
+        if [ "$HIGHEST" != "$MAX_SUPPORTED_MEMOS" ]; then
+          echo "❌ **MoeMemos Android Compatibility Check Failed**" >> "$REPORT_FILE"
+          echo "Memos server version \`$MEMOS_VERSION\` is not yet supported by the latest stable [MoeMemosAndroid](https://github.com/mudkipme/MoeMemosAndroid/releases/tag/$MOEMEMOS_TAG) release (\`$MOEMEMOS_TAG\`, max supported server version: \`$MAX_SUPPORTED_MEMOS\`)." >> "$REPORT_FILE"
+          echo "" >> "$REPORT_FILE"
+          HAS_ERRORS=true
+        else
+          echo "✅ MoeMemosAndroid \`$MOEMEMOS_TAG\` supports Memos server \`$MEMOS_VERSION\` (max supported: \`$MAX_SUPPORTED_MEMOS\`)." >> "$REPORT_FILE"
+        fi
+      fi
+    fi
+  fi
+
 
   # Kube-linter (Best Practices - Warning only, logs only)
   echo "Running kube-linter (warnings only in logs)..."
@@ -194,4 +236,3 @@ if [ "$HAS_ERRORS" = true ]; then
   echo "Validation failed for one or more services."
   exit 1
 fi
-
