@@ -57,10 +57,12 @@ spec:
             - |
               /app/llama-server \
                 -m /models/LFM3-1.7B-Q8_0.gguf \
-                -c 65536 \
+                -c 32768 \
                 -np 1 \
                 --flash-attn on \
-                -ngl -1 \
+                -ngl 99 \
+                --fit off \
+                --reasoning off \
                 --alias LFM3-1.7B-Q8_0.gguf \
                 --host 0.0.0.0 \
                 --port 8000
