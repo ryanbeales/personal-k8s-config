@@ -22,7 +22,7 @@ spec:
       containers:
         - name: windmill-extra
           # renovate: datasource=docker depname=ghcr.io/windmill-labs/windmill-extra versioning=semver
-          image: ghcr.io/windmill-labs/windmill-extra:1.855.1
+          image: ghcr.io/windmill-labs/windmill-extra:1.864.1
           imagePullPolicy: IfNotPresent
           env:
             - name: ENABLE_LSP
