@@ -46,13 +46,13 @@ data:
       - model_name: llama-lfm3-1.7b
         litellm_params:
           model: openai/LFM3-1.7B-Q8_0.gguf
-          api_base: http://llama-lfm3-1.7b.llama.svc.cluster.local:8000/v1
+          api_base: http://llama-lfm3-1-7b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
       - model_name: lfm3-1.7b
         litellm_params:
           model: openai/LFM3-1.7B-Q8_0.gguf
-          api_base: http://llama-lfm3-1.7b.llama.svc.cluster.local:8000/v1
+          api_base: http://llama-lfm3-1-7b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
       - model_name: faster-whisper
@@ -123,7 +123,7 @@ data:
       - model_name: assistant
         litellm_params:
           model: openai/LFM3-1.7B-Q8_0.gguf
-          api_base: http://llama-lfm3-1.7b.llama.svc.cluster.local:8000/v1
+          api_base: http://llama-lfm3-1-7b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "code" group: Coding & developer tasks (4090 Qwen 3.8 27B instance)
