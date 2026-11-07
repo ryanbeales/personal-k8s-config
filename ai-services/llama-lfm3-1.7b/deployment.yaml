@@ -51,6 +51,7 @@ spec:
         - name: llama-cpp
           # renovate: datasource=docker depname=ghcr.io/ggml-org/llama.cpp versioning=loose
           image: ghcr.io/ggml-org/llama.cpp:server-cuda
+          imagePullPolicy: Always
           command: ["/bin/sh", "-c"]
           args:
             - |
