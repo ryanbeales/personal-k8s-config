@@ -43,6 +43,18 @@ data:
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
+      - model_name: llama-lfm3-1.7b
+        litellm_params:
+          model: openai/LFM3-1.7B-Q8_0.gguf
+          api_base: http://llama-lfm3-1.7b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 2
+      - model_name: lfm3-1.7b
+        litellm_params:
+          model: openai/LFM3-1.7B-Q8_0.gguf
+          api_base: http://llama-lfm3-1.7b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 2
       - model_name: faster-whisper
         litellm_params:
           model: openai/whisper-1
@@ -107,11 +119,11 @@ data:
           api_base: http://llama-gemma4-26b-iq2.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
-      # "assistant" group: Home Assistant voice assistant (5060 Ti Gemma 4 26B MoE instance)
+      # "assistant" group: Home Assistant voice assistant (3060 LFM3 1.7B instance)
       - model_name: assistant
         litellm_params:
-          model: openai/gemma-4-26B-A4B-it-UD-IQ2_M.gguf
-          api_base: http://llama-gemma4-26b-iq2.llama.svc.cluster.local:8000/v1
+          model: openai/LFM3-1.7B-Q8_0.gguf
+          api_base: http://llama-lfm3-1.7b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "code" group: Coding & developer tasks (4090 Qwen 3.8 27B instance)
@@ -146,7 +158,7 @@ data:
         - {"agent": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"agent-gemma": ["assistant-e3b", "gemini-3.8-flash"]}
         - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
-        - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
+        - {"assistant": ["llama-gemma4-26b-iq2", "assistant-e3b", "gemini-3.8-flash"]}
         - {"code": ["llama-gemma4-26b-iq2", "gemini-3.8-flash"]}
 
     litellm_settings:
