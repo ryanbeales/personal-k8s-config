@@ -21,6 +21,47 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+      initContainers:
+        # Automatically repair RocksDB WAL corruption after unclean NFS/node shutdowns
+        - name: repair-rocksdb
+          # renovate: datasource=docker depname=ubuntu versioning=ubuntu
+          image: ubuntu:24.04
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              if [ ! -f /srv/conduit/db/LOG ]; then
+                exit 0
+              fi
+              # Prune accumulated rotated RocksDB info logs from crashloops
+              find /srv/conduit/db -maxdepth 1 -name 'LOG.old.*' -delete
+              if ! grep -q "DB::Open() failed: Corruption:" /srv/conduit/db/LOG; then
+                exit 0
+              fi
+              echo "Detected RocksDB WAL corruption in /srv/conduit/db/LOG; backing up and running ldb repair..."
+              rm -rf /srv/conduit/db.bak.prev
+              if [ -d /srv/conduit/db.bak ]; then
+                mv /srv/conduit/db.bak /srv/conduit/db.bak.prev
+              fi
+              cp -a /srv/conduit/db /srv/conduit/db.bak
+              export DEBIAN_FRONTEND=noninteractive
+              apt-get update
+              apt-get install -y --no-install-recommends rocksdb-tools
+              ldb repair --db=/srv/conduit/db --verbose --ignore_unknown_options
+              mv /srv/conduit/db/LOG /srv/conduit/db/LOG.repaired
+              chown -R 1000:1000 /srv/conduit
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: storage
+              mountPath: /srv/conduit
       containers:
         - name: conduit
           # renovate: datasource=docker depname=matrixconduit/matrix-conduit versioning=semver
