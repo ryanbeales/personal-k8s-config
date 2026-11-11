@@ -35,8 +35,8 @@ find_kustomization_root() {
 # Identify all unique kustomization roots for changed files
 KUSTOMIZE_ROOTS=""
 for dir in $CHANGED_DIRS; do
-  # Skip hidden directories like .github, .github/workflows, etc.
-  if [[ "$dir" == .* ]]; then
+  # Skip hidden directories (.github, .agent, etc.) and archived manifests
+  if [[ "$dir" == .* || "$dir" == "archived" || "$dir" == archived/* ]]; then
     continue
   fi
 
@@ -53,12 +53,16 @@ if [ -z "$KUSTOMIZE_ROOTS" ]; then
   echo "No Kustomize roots found for changed files." >> "$REPORT_FILE"
 fi
 
+KUSTOMIZE_FLAGS=(--enable-alpha-plugins --enable-helm --load-restrictor LoadRestrictionsNone)
+KUBECONFORM_CACHE="/tmp/kubeconform-cache"
+mkdir -p "$KUBECONFORM_CACHE"
+
 for dir in $KUSTOMIZE_ROOTS; do
   echo "### Service: \`$dir\`" >> "$REPORT_FILE"
   echo "" >> "$REPORT_FILE"
 
   # Build PR manifest
-  if ! kustomize build "$dir" --enable-helm > pr-manifest.yaml 2> build-error.log; then
+  if ! kustomize build "$dir" "${KUSTOMIZE_FLAGS[@]}" > pr-manifest.yaml 2> build-error.log; then
     echo "❌ **Build Failed**" >> "$REPORT_FILE"
     echo '```' >> "$REPORT_FILE"
     cat build-error.log >> "$REPORT_FILE"
@@ -74,7 +78,11 @@ for dir in $KUSTOMIZE_ROOTS; do
 
   # Kubeconform (Schema Validation)
   echo "Checking schema with kubeconform..."
-  if ! kubeconform -summary -ignore-missing-schemas -kubernetes-version 1.35.0 pr-manifest.yaml > kc-output.log 2>&1; then
+  if ! kubeconform -summary -ignore-missing-schemas -kubernetes-version 1.35.0 \
+    -cache "$KUBECONFORM_CACHE" \
+    -schema-location default \
+    -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+    pr-manifest.yaml > kc-output.log 2>&1; then
     echo "❌ **Kubeconform Validation Failed**" >> "$REPORT_FILE"
     echo '```' >> "$REPORT_FILE"
     cat kc-output.log >> "$REPORT_FILE"
@@ -106,8 +114,8 @@ for dir in $KUSTOMIZE_ROOTS; do
   # Container Image Existence Check
   echo "Checking container image existence..."
   # Extract unique image tags (only if there are image references to prevent grep failure under pipefail)
-  if grep -E '^\s*image:' pr-manifest.yaml > /dev/null 2>&1; then
-    IMAGES=$(grep -E '^\s*image:' pr-manifest.yaml | awk '{print $2}' | tr -d '"' | tr -d "'" | sort -u)
+  if grep -E '^[[:space:]]*(-[[:space:]]*)?image:' pr-manifest.yaml > /dev/null 2>&1; then
+    IMAGES=$(grep -E '^[[:space:]]*(-[[:space:]]*)?image:' pr-manifest.yaml | sed -E 's/^[[:space:]]*(-[[:space:]]*)?image:[[:space:]]*//; s/[[:space:]]*(#.*)?$//' | tr -d '"' | tr -d "'" | sort -u)
 
     if [ -n "$IMAGES" ]; then
       IMAGE_ERRORS=""
@@ -198,7 +206,7 @@ for dir in $KUSTOMIZE_ROOTS; do
   git fetch origin main --quiet || true
   
   if git checkout origin/main -- "$dir" 2>/dev/null; then
-    if kustomize build "$dir" --enable-helm > base-manifest.yaml 2>/dev/null; then
+    if kustomize build "$dir" "${KUSTOMIZE_FLAGS[@]}" > base-manifest.yaml 2>/dev/null; then
       # Restore PR state immediately
       git checkout HEAD -- "$dir" 2>/dev/null
       

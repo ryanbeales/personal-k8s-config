@@ -1,0 +1,28 @@
+apiVersion: sqs.aws.upbound.io/v1beta1
+kind: QueuePolicy
+metadata:
+  name: ryanbeales-com-ses-forwarder-policy
+spec:
+  forProvider:
+    region: us-west-2
+    queueUrlRef:
+      name: ryanbeales-com-ses-forwarder
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "sqs:SendMessage",
+            "Resource": "*",
+            "Condition": {
+              "ArnEquals": {
+                "aws:SourceArn": "arn:aws:sns:us-west-2:645775182778:ryanbeales-com-ses-notifications"
+              }
+            }
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default

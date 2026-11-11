@@ -30,11 +30,11 @@ Highlights of what is running here.
 
 ## Renovatebot
 
-Renovatebot is used to keep dependancies up to date. It will create a PR for each update and will auto merge if the PR is approved. It makes a majority of the work keeping everything up to date very hands off. When I haven't allowed auto merge on dependancies Renovate will (most of the time) show the changelog for the app so I can scan through for any breaking changes (eg: frigate, home-assistant). Auto merge is enabled for renovate itself, ollama octoprint and argocd, things that are stable release to release with the features I make use of.
+Renovatebot is used to keep dependancies up to date. It will create a PR for each update and will auto merge if the PR is approved. It makes a majority of the work keeping everything up to date very hands off. When I haven't allowed auto merge on dependancies Renovate will (most of the time) show the changelog for the app so I can scan through for any breaking changes (eg: frigate, home-assistant). Auto merge is enabled for renovate itself, esphome, monitoring charts, envoy-gateway, home-assistant, and argocd, things that are stable release to release with the features I make use of.
 
 To make all this work there is:
-- Renovatebot cronjob in iac-services/renovatebot which runs daily within the cluster
-- Renovate config for this repo in .github/renovate.json5 for specifying how to update dependencies in locations not natively supported by renovate (such as Deployment manifests).
+- Renovatebot cronjob in [development-services/renovate](./development-services/renovate) which runs daily within the cluster
+- Renovate config for this repo in [.github/renovate.json5](./.github/renovate.json5) for specifying how to update dependencies in locations not natively supported by renovate (such as Deployment manifests).
 - A github actions workflow to run dyff and show changes between commits, which is configured as a required check for PRs.
 - Repository set to allow auto merge on PRs, and renovate configured to use platform commits and platform merge.
 
@@ -69,22 +69,22 @@ I'm running a mix of old Nvidia GPUs in the cluster. I did use the Nvidia GPU op
 
 ## Crossplane
 
-Crossplane is used to manage infrastructure (some DNS entries mostly), configured in [crossplane](./crossplane). I've tried alternatives (Pulumi, tofu-operator), but crossplane is working and I'm not super invested in trying to make it better. There is a _huge_ barrier of entry to get started with crossplane which does put me off the project, but don't fix what ain't broke.
+Crossplane is used to manage infrastructure (some DNS entries mostly), configured in [iac-services/crossplane](./iac-services/crossplane) and [iac-services/crossplane-providers](./iac-services/crossplane-providers). I've tried alternatives (Pulumi, tofu-operator), but crossplane is working and I'm not super invested in trying to make it better. There is a _huge_ barrier of entry to get started with crossplane which does put me off the project, but don't fix what ain't broke.
 
 ## Self-Hosted AI
 
 I've added several self-hosted AI services into the cluster to provide local LLM capabilities, both out of interest of running these and also to make use of idle hardware instead of sending money elsewhere. 
 
-- [Ollama](https://ollama.com/) provides the backend for running these models locally. I've attempted to use vllm too but Ollama "just works" on my small scale hardware.
-- [SearXNG](https://searxng.org/) provides a metasearch engine to power web search tools for AI agents.
-- [Open-WebUI](https://openwebui.com/) provides the interface for interacting with models.
-- [ChromaImageGen](https://github.com/ryanbeales/chromaimagegen/tree/main) is my own small creation to provide local image generation using HuggingFace pipelines.
+- [llama.cpp](https://github.com/ggml-org/llama.cpp) instances in [ai-services](./ai-services) provide the backend for running GGUF models locally across the cluster GPUs, fronted by [LiteLLM](https://www.litellm.ai/) ([ai-services/litellm](./ai-services/litellm)) for unified OpenAI-compatible routing and fallbacks (previously used Ollama and vLLM, now in [archived](./archived)).
+- [Hermes Agent](https://github.com/NousResearch/Hermes-Agent) ([ai-services/hermes](./ai-services/hermes)) runs autonomous agentic workflows inside the cluster.
+- [SearXNG](https://searxng.org/) ([ai-services/searxng](./ai-services/searxng)) provides a metasearch engine to power web search tools for AI agents.
+- [Open-WebUI](https://openwebui.com/) ([ai-services/open-webui](./ai-services/open-webui)) provides the interface for interacting with models.
 
-Home-assistant and Frigate are both configured to point to the Ollama instance in the cluster. Currently using the hf.co/google/gemma-4-12B-it-qat-q4_0-gguf model for Frigate snapshot descriptions. Home assistant makes use of the same model as the converstaion piece of the Voice Assistant, and it is pretty decent on the 5060 Ti 16GB.
+Home Assistant and Frigate are both configured to route through the LiteLLM instance in the cluster to the local Gemma 4 `llama.cpp` backends (`gemma-4-26B-A4B` on the 5060 Ti 16GB and `gemma-4-E4B` on the 3060 12GB) for Frigate snapshot descriptions and the Home Assistant Voice Assistant conversation agent.
 
 ## Antigravity
 
-I've been using the Antigravity IDE to manage this repo recently. There are some basic workflows in [.agent/workflows](.agent/workflows). This is a work in progress but right now it's functioning as an assistant that can complete a majority of the tasks in this repo I ask of it while I do something else.
+I've been using the Antigravity IDE to manage this repo recently. There are repository rules and skills in [.agent/AGENTS.md](./.agent/AGENTS.md) and [.agent/skills](./.agent/skills). This is a work in progress but right now it's functioning as an assistant that can complete a majority of the tasks in this repo I ask of it while I do something else.
 
 # Cluster Hardware
 

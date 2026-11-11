@@ -43,6 +43,18 @@ data:
           api_base: http://llama-gemma4-e4b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
+      - model_name: llama-lfm3-1.7b
+        litellm_params:
+          model: openai/LFM3-1.7B-Q8_0.gguf
+          api_base: http://llama-lfm3-1-7b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 2
+      - model_name: lfm3-1.7b
+        litellm_params:
+          model: openai/LFM3-1.7B-Q8_0.gguf
+          api_base: http://llama-lfm3-1-7b.llama.svc.cluster.local:8000/v1
+          api_key: "sk-no-key"
+          max_parallel_requests: 2
       - model_name: faster-whisper
         litellm_params:
           model: openai/whisper-1

@@ -1,0 +1,13 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: ryanbeales.com-ses-dkim-1
+  annotations:
+    crossplane.io/external-name: 4ctlbdhzrn57nou573spgyn4dqh27ufm._domainkey.ryanbeales.com
+spec:
+  forProvider:
+    type: CNAME
+    ttl: 300
+    resourceRecords:
+      - value: 4ctlbdhzrn57nou573spgyn4dqh27ufm.dkim.amazonses.com
+    zoneId: Z2AOZQ8V4DDJEY

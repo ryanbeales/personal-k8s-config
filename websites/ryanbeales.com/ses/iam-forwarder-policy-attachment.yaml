@@ -1,0 +1,13 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: UserPolicyAttachment
+metadata:
+  name: ryanbeales-email-forwarder-attachment
+  namespace: ryanbeales-com
+spec:
+  forProvider:
+    userRef:
+      name: ryanbeales-email-forwarder
+    policyArnRef:
+      name: ryanbeales-email-forwarder-policy
+  providerConfigRef:
+    name: upbound-aws-default

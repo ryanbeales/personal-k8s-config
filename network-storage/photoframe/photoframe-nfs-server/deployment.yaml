@@ -19,7 +19,8 @@ spec:
         kubernetes.io/hostname: crobasaurusrex
       containers:
         - name: photoframe-nfs-server
-          image: itsthenetwork/nfs-server-alpine:latest
+          # renovate: datasource=docker depname=itsthenetwork/nfs-server-alpine versioning=docker
+          image: itsthenetwork/nfs-server-alpine:latest@sha256:7fa99ae65c23c5af87dd4300e543a86b119ed15ba61422444207efc7abd0ba20
           env:
             - name: SHARED_DIRECTORY
               value: "/photos"

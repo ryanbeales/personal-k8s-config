@@ -6,6 +6,7 @@ metadata:
     crossplane.io/external-name: E14YREW8AXYHTR
 spec:
   forProvider:
+    # Created many years ago in us-east-1 before moving closer to us-west-2 (CloudFront control plane also uses us-east-1).
     region: us-east-1
     enabled: true
     httpVersion: http2and3

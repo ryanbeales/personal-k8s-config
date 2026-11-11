@@ -19,7 +19,7 @@
       managerFilePatterns: [
         "**/*deployment.y?ml",
         "**/daemonset.y?ml",
-        "**/cronjob.y?ml",
+        "**/*cronjob*.y?ml",
         "**/*-values.y?ml",
         "**/values-*.y?ml",
         "**/values.y?ml",
@@ -32,7 +32,7 @@
         //   tag: 0.16.1-tensorrt
         //   renovate: datasource=github-tags depname=esphome/esphome versioning=semver
         //   image: esphome/esphome:2025.8.4
-        "# renovate: datasource=(?<datasource>.*?) depname=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s+\\S+?:\\s(\\S+?:)?(?<currentValue>[^@\\s]+)(@(?<currentDigest>sha256:[a-f0-9]+))?",
+        "# renovate: datasource=(?<datasource>.*?) depname=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s+(?:-\\s+)?\\S+?:\\s(\\S+?:)?(?<currentValue>[^@\\s]+)(@(?<currentDigest>sha256:[a-f0-9]+))?",
       ],
       versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
     },
@@ -60,8 +60,6 @@
         "renovatebot/renovate", 
         "esphome/esphome",
         "argoproj/argo-cd",
-        "ollama/ollama",
-        "Octoprint/octoprint",
         "kube-prometheus-stack",
         "prometheus-community/charts/kube-prometheus-stack",
         "ghcr.io/prometheus-community/charts/kube-prometheus-stack",
@@ -71,7 +69,6 @@
         "grafana/promtail",
         "gateway-helm",
         "envoyproxy/gateway-helm",
-        "envoyproxy//gateway-helm",
         "home-assistant/core"
       ],
       automerge: true
