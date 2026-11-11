@@ -17,6 +17,103 @@ spec:
       labels:
         app: omada-controller
     spec:
+      initContainers:
+        # Step 1: Detect WiredTiger corruption in mongod.log and salvage/dump via MongoDB 4.0 (SERVER-19815).
+        # Intentionally pinned to mongo:4.0.28 (not managed by Renovate) for WiredTiger 3.0/3.1 compatibility.
+        - name: repair-mongo-dump
+          image: mongo:4.0.28
+          command: ["/bin/bash", "-ec"]
+          args:
+            - |
+              mkdir -p /data/autobackup
+              chown 508:508 /data/autobackup
+              if [ ! -f /logs/mongod.log ] || ! tail -n 100 /logs/mongod.log | grep -qE "WiredTiger error|Fatal Assertion"; then
+                exit 0
+              fi
+              echo "Detected MongoDB WiredTiger corruption in /logs/mongod.log; starting repair on local scratch copy..."
+              if [ ! -d /data/db.corrupt.bak ]; then
+                cp -a /data/db /data/db.corrupt.bak
+              fi
+              rm -rf /repair-work/db40 /repair-work/dump
+              cp -a /data/db /repair-work/db40
+              rm -f /repair-work/db40/mongod.lock /repair-work/db40/WiredTiger.lock
+              mongod --dbpath /repair-work/db40 --storageEngine wiredTiger --repair
+              mongod --dbpath /repair-work/db40 --storageEngine wiredTiger --bind_ip 127.0.0.1 --port 27999 --fork --logpath /repair-work/mongod40.log
+              for i in 1 2 3 4 5 6 7 8 9 10; do
+                mongo --quiet --port 27999 --eval "db.runCommand({ ping: 1 })" >/dev/null 2>&1 && break
+                sleep 1
+              done
+              mongodump --host 127.0.0.1 --port 27999 --gzip --out=/repair-work/dump
+              mongod --dbpath /repair-work/db40 --shutdown || true
+              # Exclude MongoDB 4.0 internal databases so FCV 4.0 metadata is not imported into MongoDB 3.6
+              rm -rf /repair-work/db40 /repair-work/dump/admin /repair-work/dump/local /repair-work/dump/config
+              COLLECTION_COUNT=$(find /repair-work/dump -name '*.bson.gz' | wc -l)
+              echo "Dumped ${COLLECTION_COUNT} Omada collections from repaired database."
+              if [ "${COLLECTION_COUNT}" -lt 5 ]; then
+                echo "ERROR: Expected Omada collections in dump, found ${COLLECTION_COUNT}. Aborting to preserve /data/db."
+                rm -rf /repair-work/dump
+                exit 1
+              fi
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          volumeMounts:
+            - name: omada-data
+              mountPath: /data
+              subPath: data
+            - name: omada-data
+              mountPath: /logs
+              subPath: logs
+            - name: repair-work
+              mountPath: /repair-work
+        # Step 2: Rebuild a clean MongoDB 3.6 WiredTiger database matching Omada 5.15's embedded mongod 3.6.8.
+        # Intentionally pinned to mongo:3.6.23 (not managed by Renovate) to match WiredTiger compatibility=3.0.
+        - name: repair-mongo-restore
+          image: mongo:3.6.23
+          command: ["/bin/bash", "-ec"]
+          args:
+            - |
+              if [ ! -d /repair-work/dump ]; then
+                exit 0
+              fi
+              echo "Restoring repaired dump into fresh MongoDB 3.6 WiredTiger database..."
+              rm -rf /repair-work/db36
+              mkdir -p /repair-work/db36
+              mongod --dbpath /repair-work/db36 --storageEngine wiredTiger --bind_ip 127.0.0.1 --port 27999 --fork --logpath /repair-work/mongod36.log
+              for i in 1 2 3 4 5 6 7 8 9 10; do
+                mongo --quiet --port 27999 --eval "db.runCommand({ ping: 1 })" >/dev/null 2>&1 && break
+                sleep 1
+              done
+              mongorestore --host 127.0.0.1 --port 27999 --gzip /repair-work/dump
+              mongod --dbpath /repair-work/db36 --shutdown
+              rm -rf /data/db/* /data/db/.[!.]* /data/mongo.pid
+              cp -a /repair-work/db36/. /data/db/
+              rm -rf /repair-work/db36 /repair-work/dump
+              # Rotate bloated multi-GB crashloop mongod.log so subsequent healthy starts skip repair
+              tail -c 1048576 /logs/mongod.log > /logs/mongod.log.repaired || true
+              : > /logs/mongod.log
+              chown -R 508:508 /data /logs
+              echo "MongoDB 3.6 database restore completed."
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          volumeMounts:
+            - name: omada-data
+              mountPath: /data
+              subPath: data
+            - name: omada-data
+              mountPath: /logs
+              subPath: logs
+            - name: repair-work
+              mountPath: /repair-work
       containers:
         - name: omada-controller
           image: mbentley/omada-controller:5.15
@@ -73,6 +170,13 @@ spec:
             - name: app-discovery
               containerPort: 27001
               protocol: UDP
+          readinessProbe:
+            tcpSocket:
+              port: manage-https
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 18
           resources:
             requests:
               cpu: 100m
@@ -91,3 +195,5 @@ spec:
         - name: omada-data
           persistentVolumeClaim:
             claimName: omada-nfs-pvc
+        - name: repair-work
+          emptyDir: {}
