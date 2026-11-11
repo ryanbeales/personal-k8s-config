@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
       - name: sftp
-        image: docker.io/atmoz/sftp
+        # renovate: datasource=docker depname=docker.io/atmoz/sftp versioning=docker
+        image: docker.io/atmoz/sftp:latest@sha256:6adee9cb7218db1ed7ae7bb4a23677532786eb06997534d9788378001c38447a
         env:
         - name: SFTP_USERS
           value: "user:pass:1000:1000"
@@ -51,18 +52,3 @@ spec:
           # Tempoary mount here
           path: /stash/network-storage/qnap/Photos/PiFrame/Photos
           type: DirectoryOrCreate
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sftp-service
-  namespace: downloader
-spec:
-  selector:
-    app: sftp
-  ports:
-    - protocol: TCP
-      port: 22222
-      targetPort: 22
-  type: LoadBalancer

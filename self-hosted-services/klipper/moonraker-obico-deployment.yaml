@@ -48,8 +48,8 @@ spec:
               mountPath: /tmp/config
       containers:
         - name: moonraker-obico
-          # renovate: datasource=docker depname=ghcr.io/thespaghettidetective/moonraker-obico versioning=docker
-          image: ghcr.io/thespaghettidetective/moonraker-obico:latest
+          # renovate: datasource=docker depname=ghcr.io/thespaghettidetective/moonraker-obico versioning=semver
+          image: ghcr.io/thespaghettidetective/moonraker-obico:v2.2.4
           command:
             - /bin/sh
             - -c

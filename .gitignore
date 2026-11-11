@@ -12,8 +12,21 @@
 *.log
 *logs.txt
 
-# Python virtual environments
+# Python virtual environments and bytecode
 .venv/
 test_env/
 env/
-venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Local environment and credential scratch files
+.env
+*.env
+aws-credentials.txt
+*credentials*.json
+
+# OS metadata
+.DS_Store
+Thumbs.db
+

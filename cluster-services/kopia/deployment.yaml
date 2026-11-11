@@ -22,7 +22,8 @@ spec:
     spec:
       initContainers:
         - name: combine-certs
-          image: alpine:latest
+          # renovate: datasource=docker depname=alpine versioning=semver
+          image: alpine:3.24.4
           command: ["/bin/sh", "-c"]
           args:
             - |

@@ -1,0 +1,38 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Policy
+metadata:
+  name: website-sync-s3-permissions
+spec:
+  forProvider:
+    description: "Permissions for GitHub Actions to sync to website bucket"
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "SyncBucketAccess",
+            "Effect": "Allow",
+            "Action": [
+              "s3:PutObject",
+              "s3:DeleteObject",
+              "s3:ListBucket"
+            ],
+            "Resource": [
+              "arn:aws:s3:::www.ryanbeales.com",
+              "arn:aws:s3:::www.ryanbeales.com/*"
+            ]
+          },
+          {
+            "Sid": "InvalidateCloudFront",
+            "Effect": "Allow",
+            "Action": [
+              "cloudfront:CreateInvalidation"
+            ],
+            "Resource": [
+              "arn:aws:cloudfront::645775182778:distribution/E14YREW8AXYHTR"
+            ]
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default

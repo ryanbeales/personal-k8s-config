@@ -1,0 +1,28 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: Role
+metadata:
+  name: github-actions-website-sync
+spec:
+  forProvider:
+    description: "Allows GitHub Actions to sync content to S3"
+    assumeRolePolicy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Federated": "arn:aws:iam::645775182778:oidc-provider/token.actions.githubusercontent.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+              "StringEquals": {
+                "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                "token.actions.githubusercontent.com:sub": "repo:ryanbeales/wwwryanbealescom:ref:refs/heads/main"
+              }
+            }
+          }
+        ]
+      }
+  providerConfigRef:
+    name: upbound-aws-default
