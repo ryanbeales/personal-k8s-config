@@ -2,12 +2,10 @@ resources:
   - namespace.yaml
   - dns/croblodocus-direct.yaml
   - dns/croblodocus-wildcard.yaml
-  - dns/croblociraptor-direct.yaml
-  - dns/croblociraptor-wildcard.yaml
   - dns/crobasaurusrex-direct.yaml
   - dns/crobasaurusrex-wildcard.yaml
-  - dns/crobceretops-direct.yaml
-  - dns/crobceretops-wildcard.yaml
+  - dns/crobceratops-direct.yaml
+  - dns/crobceratops-wildcard.yaml
   - dns/aws-acm-validation.yaml
   - dns/aws-acm-validation-apex.yaml
   - dns/blog.ryanbeales.com.yaml
@@ -18,8 +16,8 @@ resources:
   - dns/router.ryanbeales.com-aaaa.yaml
   - dns/crobasaurusrex-direct-aaaa.yaml
   - dns/crobasaurusrex-wildcard-aaaa.yaml
-  - dns/crobceretops-direct-aaaa.yaml
-  - dns/crobceretops-wildcard-aaaa.yaml
+  - dns/crobceratops-direct-aaaa.yaml
+  - dns/crobceratops-wildcard-aaaa.yaml
   - dns/croblodocus-direct-aaaa.yaml
   - dns/croblodocus-wildcard-aaaa.yaml
   - dns/wg.ryanbeales.com.yaml
@@ -33,18 +31,33 @@ resources:
   - s3/mx-bucket.yaml
   - s3/mx-bucket-policy.yaml
   - oidc/github-oidc.yaml
+  - oidc/github-actions-role.yaml
+  - oidc/github-actions-policy.yaml
+  - oidc/github-actions-role-policy-attachment.yaml
   - ses/domain-identity.yaml
   - ses/mail-from.yaml
   - ses/dkim.yaml
   - ses/receipt-rule-set.yaml
   - ses/receipt-rule.yaml
   - ses/active-receipt-rule-set.yaml
-  - ses/sns-sqs.yaml
-  - ses/iam-forwarder.yaml
-  - ses/iam-smtp.yaml
+  - ses/sns-topic.yaml
+  - ses/sqs-queue.yaml
+  - ses/sns-topic-subscription.yaml
+  - ses/sqs-queue-policy.yaml
+  - ses/iam-forwarder-user.yaml
+  - ses/iam-forwarder-access-key.yaml
+  - ses/iam-forwarder-policy.yaml
+  - ses/iam-forwarder-policy-attachment.yaml
+  - ses/iam-smtp-user.yaml
+  - ses/iam-smtp-access-key.yaml
+  - ses/iam-smtp-policy.yaml
+  - ses/iam-smtp-policy-attachment.yaml
   - dns/ses-mx.yaml
   - dns/ses-spf.yaml
   - dns/ses-verification.yaml
-  - dns/ses-dkim.yaml
+  - dns/ses-dkim-0.yaml
+  - dns/ses-dkim-1.yaml
+  - dns/ses-dkim-2.yaml
   - dns/ses-dmarc.yaml
-  - dns/ses-mail-from.yaml
+  - dns/ses-mail-from-mx.yaml
+  - dns/ses-mail-from-spf.yaml

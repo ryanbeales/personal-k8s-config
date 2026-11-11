@@ -1,9 +1,12 @@
 resources:
   - dns/www.xn--fu7da.com.yaml
   - dns/mx.yaml
-  - dns/dkim.yaml
+  - dns/dkim-1.yaml
+  - dns/dkim-2.yaml
+  - dns/dkim-3.yaml
   - dns/verification.yaml
   - dns/spf.yaml
   - dns/dmarc.yaml
-  - dns/mail-from.yaml
+  - dns/mail-from-mx.yaml
+  - dns/mail-from-spf.yaml
   - ses/

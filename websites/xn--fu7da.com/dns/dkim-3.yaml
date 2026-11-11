@@ -1,0 +1,13 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: ResourceRecordSet
+metadata:
+  name: dkim3-xn--fu7da.com
+  annotations:
+    crossplane.io/external-name: xougjha3c37gg3bh6bzyx6tye7gsvrk6._domainkey.xn--fu7da.com
+spec:
+  forProvider:
+    resourceRecords:
+      - value: xougjha3c37gg3bh6bzyx6tye7gsvrk6.dkim.amazonses.com
+    type: CNAME
+    ttl: 300
+    zoneId: Z08351656086KJO2313

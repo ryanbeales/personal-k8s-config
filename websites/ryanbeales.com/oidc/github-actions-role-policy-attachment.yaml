@@ -1,0 +1,12 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: RolePolicyAttachment
+metadata:
+  name: github-actions-website-sync-attachment
+spec:
+  forProvider:
+    policyArnRef:
+      name: website-sync-s3-permissions
+    roleRef:
+      name: github-actions-website-sync
+  providerConfigRef:
+    name: upbound-aws-default

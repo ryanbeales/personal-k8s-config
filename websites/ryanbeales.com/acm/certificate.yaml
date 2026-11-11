@@ -4,6 +4,7 @@ metadata:
   name: ryanbeales.com
 spec:
   forProvider:
+    # Created many years ago in us-east-1 before moving closer to us-west-2 (also required by CloudFront).
     region: us-east-1
     domainName: ryanbeales.com
     subjectAlternativeNames:

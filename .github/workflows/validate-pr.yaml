@@ -5,13 +5,17 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   validate:
     name: Validate Manifests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR Branch
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -44,13 +48,14 @@ jobs:
 
       - name: Get Changed Directories
         id: changed-dirs
-        uses: tj-actions/changed-files@v47
-        with:
-          dir_names: true
-          dir_names_exclude_current_dir: true
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          DIRS=$(git diff --name-only "origin/${BASE_REF}...HEAD" | xargs -r -n1 dirname | grep -v '^\.$' | sort -u | tr '\n' ' ')
+          echo "all_changed_files=${DIRS}" >> "$GITHUB_OUTPUT"
 
       - name: Cache Kubeconform Schemas
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: /tmp/kubeconform-cache
           key: ${{ runner.os }}-kubeconform-schemas-${{ github.sha }}
@@ -61,10 +66,13 @@ jobs:
         id: build-validate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash .github/workflows/scripts/validate_manifests.sh "${{ steps.changed-dirs.outputs.all_changed_files }}"
+          CHANGED_DIRS: ${{ steps.changed-dirs.outputs.all_changed_files }}
+        run: |
+          mkdir -p /tmp/kubeconform-cache
+          bash .github/workflows/scripts/validate_manifests.sh "$CHANGED_DIRS"
 
       - name: Post Comment
-        uses: peter-evans/create-or-update-comment@v5
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         if: always()
         with:
           issue-number: ${{ github.event.pull_request.number }}

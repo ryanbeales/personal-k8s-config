@@ -10,6 +10,7 @@ spec:
       name: www-ryanbeales-com-rewrite-code
       namespace: ryanbeales-com
       key: code
+    # Created many years ago in us-east-1 before moving closer to us-west-2 (CloudFront control plane also uses us-east-1).
     region: us-east-1
   providerConfigRef:
     name: upbound-aws-default

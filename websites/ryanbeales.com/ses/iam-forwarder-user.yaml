@@ -1,0 +1,9 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: User
+metadata:
+  name: ryanbeales-email-forwarder
+  namespace: ryanbeales-com
+spec:
+  forProvider: {}
+  providerConfigRef:
+    name: upbound-aws-default

@@ -48,8 +48,8 @@ spec:
               name: klipper-config
       containers:
         - name: klipper
-          # renovate: datasource=docker depname=mkuf/klipper versioning=semver
-          image: mkuf/klipper:latest
+          # renovate: datasource=docker depname=mkuf/klipper versioning=loose
+          image: mkuf/klipper:v0.13.0-824-g56a9c605e
           securityContext:
             privileged: true
           resources:
@@ -79,8 +79,8 @@ spec:
             - mountPath: /dev/host
               name: host-dev
         - name: moonraker
-          # renovate: datasource=docker depname=mkuf/moonraker versioning=semver
-          image: mkuf/moonraker:latest
+          # renovate: datasource=docker depname=mkuf/moonraker versioning=loose
+          image: mkuf/moonraker:v0.11.0-3-g9e676eb
           ports:
             - containerPort: 7125
               name: http

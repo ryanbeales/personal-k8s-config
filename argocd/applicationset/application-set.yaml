@@ -11,6 +11,8 @@ spec:
         revision: main
         files:
           - path: "**/argocd.yaml"
+          - path: "archived/**/argocd.yaml"
+            exclude: true
   template:
     metadata:
       name: "{{.argocd.name}}"

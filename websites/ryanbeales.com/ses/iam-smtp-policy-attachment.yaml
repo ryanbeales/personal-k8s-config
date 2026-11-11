@@ -1,0 +1,13 @@
+apiVersion: iam.aws.upbound.io/v1beta1
+kind: UserPolicyAttachment
+metadata:
+  name: ryanbeales-smtp-attachment
+  namespace: ryanbeales-com
+spec:
+  forProvider:
+    userRef:
+      name: ryanbeales-smtp
+    policyArnRef:
+      name: ryanbeales-smtp-policy
+  providerConfigRef:
+    name: upbound-aws-default

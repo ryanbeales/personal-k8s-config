@@ -18,15 +18,16 @@ spec:
       enableServiceLinks: false
       initContainers:
         - name: volume-permissions
-          image: busybox:latest
+          # renovate: datasource=docker depname=busybox versioning=semver
+          image: busybox:1.36
           command: ["sh", "-c", "chown -R 1000:1000 /home/node/.n8n"]
           volumeMounts:
             - name: storage
               mountPath: /home/node/.n8n
       containers:
         - name: n8n
-          # renovate: datasource=docker depname=n8nio/n8n versioning=loose
-          image: n8nio/n8n:latest
+          # renovate: datasource=docker depname=n8nio/n8n versioning=semver
+          image: n8nio/n8n:2.48.0
           ports:
             - name: http
               containerPort: 5678

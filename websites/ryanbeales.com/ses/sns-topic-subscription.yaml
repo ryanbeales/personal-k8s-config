@@ -1,0 +1,14 @@
+apiVersion: sns.aws.upbound.io/v1beta1
+kind: TopicSubscription
+metadata:
+  name: ryanbeales-com-ses-to-sqs
+spec:
+  forProvider:
+    endpointRef:
+      name: ryanbeales-com-ses-forwarder
+    protocol: sqs
+    region: us-west-2
+    topicArnRef:
+      name: ryanbeales-com-ses-notifications
+  providerConfigRef:
+    name: upbound-aws-default

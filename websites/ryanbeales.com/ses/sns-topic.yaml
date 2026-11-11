@@ -1,0 +1,11 @@
+apiVersion: sns.aws.upbound.io/v1beta1
+kind: Topic
+metadata:
+  annotations:
+    crossplane.io/external-name: ryanbeales-com-ses-notifications
+  name: ryanbeales-com-ses-notifications
+spec:
+  forProvider:
+    region: us-west-2
+  providerConfigRef:
+    name: upbound-aws-default

@@ -8,7 +8,7 @@ If it breaks again, start here.
 1. Get the token from the master node `cat /var/lib/rancher/k3s/server/node-token`
 
 1. On other nodes `curl -sfL https://get.k3s.io | K3S_URL=https://10.0.0.59:6443 K3S_TOKEN=${K3S_TOKEN} sh -s -`
-1. On GPU nodes follow the driver install in the nvidia-gpu readme.
+1. On GPU nodes follow the driver install in [cluster-services/nvidia-gpu/README.md](./cluster-services/nvidia-gpu/README.md).
 1. On all nodes make a `/stash` directory for local storage provisioning.
 1. Check that `/stash` is in the `kube-system/local-path-config` configmap - K3s may change this. It's an issue at the moment but we will look at that later.
 
@@ -18,21 +18,21 @@ All the rest of these steps are on the on master node
 1. Install github client `sudo apt-get install gh`
 1. Authenticate gh client `/usr/bin/gh auth login` and follow instructions. Use SSH not http.
 1. Checkout this repo to the master node `/usr/bin/gh repo clone ryanbeales/personal-k8s-config`
-1. Install cert-manager with `/usr/local/bin/kustomize build cert-manager | sudo k3s kubectl apply -f -`
-1. Create route53 secret access, see `./letsencrypt/README.md`
-1. Add letsencrypt certificate issuer `/usr/local/bin/kustomize build letsencrypt | sudo k3s kubectl apply -f -`
+1. Install cert-manager with `/usr/local/bin/kustomize build cluster-services/cert-manager --enable-helm | sudo k3s kubectl apply -f -`
+1. Create route53 secret access, see `./cluster-services/letsencrypt/README.md`
+1. Add letsencrypt certificate issuer `/usr/local/bin/kustomize build cluster-services/letsencrypt | sudo k3s kubectl apply -f -`
 1. Install envoy-gateway and gateways
 ```bash
-/usr/local/bin/kustomize build ingress/envoy-gateway | sudo k3s kubectl apply -f -
-/usr/local/bin/kustomize build ingress/gateway | sudo k3s kubectl apply -f -
+/usr/local/bin/kustomize build ingress/envoy-gateway --enable-helm | sudo k3s kubectl apply -f -
+/usr/local/bin/kustomize build ingress/gateways | sudo k3s kubectl apply -f -
 ```
 1. Install argocd with kustomize `/usr/local/bin/kustomize build argocd | sudo k3s kubectl apply -f -` - ignore CRD errors, the apps will be picked up after the secret is applied.
-1. Follow argocd readme to create argocd repo secret.
+1. Follow [argocd/README.md](./argocd/README.md) to create argocd repo secret.
 1. At this point the rest of the cluster will then come up as best it can.
-1. Created passwords for octoprint, photoprism, crossplane-providers, this will start these applications correctly.
+1. Create secrets/passwords for applications as needed (e.g., photoprism, `iac-services/crossplane-providers`), this will start these applications correctly.
 
 Notes:
-- The crossplane provider config `crossplane-providers/aws-provider-config.yaml` will not apply until other objects have applied first. You may have to remove this and add in the next sync. I'm not a fan of how this all works but we'll leave it in place for now.
+- The crossplane provider config in `iac-services/crossplane-providers` will not apply until other objects have applied first. You may have to remove this and add in the next sync. I'm not a fan of how this all works but we'll leave it in place for now.
 - There may be some missing steps. Usually the README in each directory will explain what to do if the project goes wrong.
 
 ## Adding windows nodes

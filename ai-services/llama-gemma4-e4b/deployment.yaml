@@ -22,7 +22,8 @@ spec:
         nvidia.com/gpu.product: NVIDIA-GeForce-RTX-3060
       initContainers:
         - name: download-model
-          image: curlimages/curl:latest
+          # renovate: datasource=docker depname=curlimages/curl versioning=semver
+          image: curlimages/curl:8.23.0
           securityContext:
             runAsUser: 0
           command:
