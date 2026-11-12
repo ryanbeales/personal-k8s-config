@@ -19,7 +19,7 @@ spec:
       containers:
       - name: searxng
         # renovate: datasource=docker depname=docker.io/searxng/searxng versioning=loose
-        image: docker.io/searxng/searxng:2026.11.9-57ff753ad
+        image: docker.io/searxng/searxng:2026.11.11-626105eec
         env:
         - name: SEARXNG_BASE_URL
           value: https://searxng.crobasaurusrex.ryanbeales.com
