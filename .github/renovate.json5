@@ -82,6 +82,21 @@
         "python"
       ],
       enabled: false
+    },
+    {
+      description: "Preserve CUDA compatibility suffix (-cu128) for Kokoro GPU image",
+      matchDepNames: [
+        "ghcr.io/remsky/kokoro-fastapi-gpu"
+      ],
+      versioning: "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>cu\\d+)$"
+    },
+    {
+      description: "Parse git-describe commit counts as build numbers for Klipper and Moonraker",
+      matchDepNames: [
+        "mkuf/klipper",
+        "mkuf/moonraker"
+      ],
+      versioning: "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:-(?<build>\\d+)-g[0-9a-f]+)?$"
     }
   ],
 

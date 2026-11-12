@@ -48,7 +48,7 @@ spec:
               name: klipper-config
       containers:
         - name: klipper
-          # renovate: datasource=docker depname=mkuf/klipper versioning=loose
+          # renovate: datasource=docker depname=mkuf/klipper versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<build>\d+)-g[0-9a-f]+)?$
           image: mkuf/klipper:v0.13.0-824-g56a9c605e
           securityContext:
             privileged: true
@@ -79,7 +79,7 @@ spec:
             - mountPath: /dev/host
               name: host-dev
         - name: moonraker
-          # renovate: datasource=docker depname=mkuf/moonraker versioning=loose
+          # renovate: datasource=docker depname=mkuf/moonraker versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<build>\d+)-g[0-9a-f]+)?$
           image: mkuf/moonraker:v0.11.0-3-g9e676eb
           ports:
             - containerPort: 7125
