@@ -23,7 +23,7 @@ spec:
       containers:
         - name: kokoro
           # renovate: datasource=docker depname=ghcr.io/remsky/kokoro-fastapi-gpu versioning=loose
-          image: ghcr.io/remsky/kokoro-fastapi-gpu:v0.10.0-cu128
+          image: ghcr.io/remsky/kokoro-fastapi-gpu:v0.10.0
           env:
             - name: TZ
               value: America/Vancouver
