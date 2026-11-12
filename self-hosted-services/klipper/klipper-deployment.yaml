@@ -80,7 +80,7 @@ spec:
               name: host-dev
         - name: moonraker
           # renovate: datasource=docker depname=mkuf/moonraker versioning=loose
-          image: mkuf/moonraker:v0.11.0-3-g9e676eb
+          image: mkuf/moonraker:v0.11.0
           ports:
             - containerPort: 7125
               name: http
