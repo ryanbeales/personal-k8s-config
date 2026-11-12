@@ -22,7 +22,7 @@ spec:
         nvidia.com/gpu.product: NVIDIA-GeForce-RTX-5060-Ti
       containers:
         - name: kokoro
-          # renovate: datasource=docker depname=ghcr.io/remsky/kokoro-fastapi-gpu versioning=loose
+          # renovate: datasource=docker depname=ghcr.io/remsky/kokoro-fastapi-gpu versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-(?<compatibility>cu\d+)$
           image: ghcr.io/remsky/kokoro-fastapi-gpu:v0.10.0-cu128
           env:
             - name: TZ
