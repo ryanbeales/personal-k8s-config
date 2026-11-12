@@ -49,7 +49,7 @@ spec:
       containers:
         - name: klipper
           # renovate: datasource=docker depname=mkuf/klipper versioning=loose
-          image: mkuf/klipper:v0.13.0-824-g56a9c605e
+          image: mkuf/klipper:v0.13.0
           securityContext:
             privileged: true
           resources:
