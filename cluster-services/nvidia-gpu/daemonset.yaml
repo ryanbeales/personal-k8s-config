@@ -31,7 +31,7 @@ spec:
       containers:
       # https://github.com/NVIDIA/k8s-device-plugin/releases
       # renovate: datasource=github-tags depname=NVIDIA/k8s-device-plugin versioning=semver
-      - image: nvcr.io/nvidia/k8s-device-plugin:v0.17.4
+      - image: nvcr.io/nvidia/k8s-device-plugin:v0.20.1
         name: nvidia-device-plugin-ctr
         env:
           - name: FAIL_ON_INIT_ERROR
