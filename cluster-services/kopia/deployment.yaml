@@ -43,7 +43,7 @@ spec:
         # https://github.com/kopia/kopia/releases for notes
         # https://hub.docker.com/r/kopia/kopia/tags
         # renovate: datasource=github-tags depname=kopia/kopia versioning=semver
-        - image: kopia/kopia:0.21.1
+        - image: kopia/kopia:0.23.1
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
