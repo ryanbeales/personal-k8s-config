@@ -40,7 +40,7 @@ spec:
       containers:
         - name: windmill-server
           # renovate: datasource=docker depname=ghcr.io/windmill-labs/windmill versioning=semver
-          image: ghcr.io/windmill-labs/windmill:1.867.0
+          image: ghcr.io/windmill-labs/windmill:1.873.1
           imagePullPolicy: IfNotPresent
           env:
             - name: MODE
