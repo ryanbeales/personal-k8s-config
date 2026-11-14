@@ -80,7 +80,7 @@ spec:
               name: host-dev
         - name: moonraker
           # renovate: datasource=docker depname=mkuf/moonraker versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<build>\d+)-g[0-9a-f]+)?$
-          image: mkuf/moonraker:v0.11.0-3-g9e676eb
+          image: mkuf/moonraker:v0.11.0-4-gb559b9a
           ports:
             - containerPort: 7125
               name: http
