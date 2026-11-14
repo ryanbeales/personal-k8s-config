@@ -27,7 +27,7 @@ spec:
       containers:
         - name: n8n
           # renovate: datasource=docker depname=n8nio/n8n versioning=semver
-          image: n8nio/n8n:2.48.1
+          image: n8nio/n8n:2.48.4
           ports:
             - name: http
               containerPort: 5678
