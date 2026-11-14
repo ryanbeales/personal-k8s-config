@@ -18,7 +18,7 @@ spec:
       containers:
         - name: qdrant
           # renovate: datasource=github-tags depname=qdrant/qdrant versioning=semver
-          image: qdrant/qdrant:v1.20.0
+          image: qdrant/qdrant:v1.20.1
           ports:
             - name: http
               containerPort: 6333
