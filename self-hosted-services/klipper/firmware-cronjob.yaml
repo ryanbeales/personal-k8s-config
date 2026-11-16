@@ -22,7 +22,7 @@ spec:
           containers:
             - name: builder
               # renovate: datasource=docker depname=ubuntu versioning=ubuntu
-              image: ubuntu:22.04
+              image: ubuntu:26.04
               resources:
                 requests:
                   cpu: 250m
