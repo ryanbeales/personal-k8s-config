@@ -16,7 +16,8 @@ spec:
         app.kubernetes.io/name: tensormmu-qwen3-next-80b
     spec:
       runtimeClassName: nvidia
-      nodeName: crobputer
+      nodeSelector:
+        kubernetes.io/hostname: crobputer
       tolerations:
         - key: dedicated
           operator: Equal
