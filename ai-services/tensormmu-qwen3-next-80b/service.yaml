@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: magnitude-gemma4-26b-a4b
+  name: tensormmu-qwen3-next-80b
   namespace: llama
 spec:
   ports:
@@ -9,4 +9,4 @@ spec:
       port: 8000
       targetPort: 8000
   selector:
-    app.kubernetes.io/name: magnitude-gemma4-26b-a4b
+    app.kubernetes.io/name: tensormmu-qwen3-next-80b

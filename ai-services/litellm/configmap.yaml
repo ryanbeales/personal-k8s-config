@@ -7,22 +7,16 @@ data:
   config.yaml: |
     model_list:
       # Explicit individual models
-      - model_name: llama-gemma4-26b-a4b
+      - model_name: tensormmu-qwen3-next-80b
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          model: openai/Qwen3-Next-80B-A3B-Instruct
+          api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
-      - model_name: gemma-4-26B-A4B
+      - model_name: qwen3-next-80b
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
-          api_key: "sk-no-key"
-          max_parallel_requests: 2
-      - model_name: qwen-3.8-27b
-        litellm_params:
-          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          model: openai/Qwen3-Next-80B-A3B-Instruct
+          api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
       - model_name: llama-gemma4-26b-iq2
@@ -100,16 +94,16 @@ data:
 
       # Routing Groups (Aliases)
       
-      # "agent" group: Hermes & general agents (4090 Qwen 3.8 27B instance)
+      # "agent" group: Hermes & general agents (4090 TensorMMU Qwen3-Next-80B-A3B-Instruct instance)
       - model_name: agent
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          model: openai/Qwen3-Next-80B-A3B-Instruct
+          api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
       - model_name: agent-gemma
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          model: openai/Qwen3-Next-80B-A3B-Instruct
+          api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "vision" group: Frigate camera descriptions (5060 Ti Gemma 4 26B MoE instance, vision enabled)
@@ -126,11 +120,11 @@ data:
           api_base: http://llama-gemma4-26b-iq2.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
-      # "code" group: Coding & developer tasks (4090 Qwen 3.8 27B instance)
+      # "code" group: Coding & developer tasks (4090 TensorMMU Qwen3-Next-80B-A3B-Instruct instance)
       - model_name: code
         litellm_params:
-          model: openai/Qwen3.8-27B-UD-IQ4_XS.gguf
-          api_base: http://llama-gemma4-26b-a4b.llama.svc.cluster.local:8000/v1
+          model: openai/Qwen3-Next-80B-A3B-Instruct
+          api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
 
       # "stt" group

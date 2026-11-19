@@ -1,3 +1,0 @@
-argocd:
-  name: magnitude-gemma4-26b-a4b
-  namespace: llama

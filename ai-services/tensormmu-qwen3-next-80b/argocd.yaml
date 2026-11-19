@@ -1,0 +1,3 @@
+argocd:
+  name: tensormmu-qwen3-next-80b
+  namespace: llama
