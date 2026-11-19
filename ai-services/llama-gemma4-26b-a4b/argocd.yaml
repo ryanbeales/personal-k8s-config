@@ -1,3 +1,0 @@
-argocd:
-  name: llama-gemma4-26b-a4b
-  namespace: llama
