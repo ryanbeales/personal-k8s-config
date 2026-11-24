@@ -1,0 +1,20 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: immich-backend-traffic-policy
+  namespace: immich
+  labels:
+    app.kubernetes.io/name: immich
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: immich-route
+  # Allow large photo/video uploads and long-lived WebSocket connections.
+  # Envoy streams request bodies directly to upstream with no size limit by default
+  # (do not enable requestBuffer, which buffers the full body and breaks WebSockets).
+  timeout:
+    http:
+      requestTimeout: 600s
+      streamIdleTimeout: 600s
+      maxStreamDuration: 0s
