@@ -24,6 +24,7 @@ resources:
   - immich-postgres-pv.yaml
   - immich-postgres-pvc.yaml
   - httproute.yaml
+  - backend-traffic-policy.yaml
 images:
   - name: docker.io/valkey/valkey
     newName: docker.io/valkey/valkey
