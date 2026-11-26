@@ -74,6 +74,35 @@
       automerge: true
     },
     {
+      description: "Automerge minor and patch updates for low-risk, frequently updated apps and helpers",
+      matchDepNames: [
+        "docker.io/searxng/searxng",
+        "ghcr.io/nesquena/hermes-webui",
+        "ghcr.io/windmill-labs/windmill",
+        "ghcr.io/windmill-labs/windmill-extra",
+        "open-webui/open-webui",
+        "ghcr.io/thespaghettidetective/moonraker-obico",
+        "portainer/kubectl-shell",
+        "n8nio/n8n",
+        "neosmemo/memos",
+        "zwave-js/zwave-js-ui",
+        "mkuf/klipper"
+      ],
+      matchUpdateTypes: ["minor", "patch"],
+      automerge: true
+    },
+    {
+      description: "Automerge patch-only updates for stateful, GPU, and hardware-sensitive services",
+      matchDepNames: [
+        "immich-app/immich",
+        "qdrant/qdrant",
+        "ghcr.io/blakeblackshear/frigate",
+        "NVIDIA/k8s-device-plugin"
+      ],
+      matchUpdateTypes: ["patch"],
+      automerge: true
+    },
+    {
       description: "Pin Frigate init container python version to match Frigate image",
       matchFileNames: [
         "self-hosted-services/frigate/frigate-install/values.yaml"
