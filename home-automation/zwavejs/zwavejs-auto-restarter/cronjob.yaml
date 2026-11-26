@@ -14,7 +14,7 @@ spec:
           containers:
           - name: zwavejs-auto-restarter
             # renovate: datasource=docker depname=portainer/kubectl-shell versioning=semver
-            image: portainer/kubectl-shell:3.0.1
+            image: portainer/kubectl-shell:3.1.0
             imagePullPolicy: IfNotPresent
             command:
             - /home/shell/restart-script.sh
