@@ -49,7 +49,7 @@ spec:
       containers:
         - name: klipper
           # renovate: datasource=docker depname=mkuf/klipper versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?:-(?<build>\d+)-g[0-9a-f]+)?$
-          image: mkuf/klipper:v0.14.0
+          image: mkuf/klipper:v0.14.0-1-g7558e8c2f
           securityContext:
             privileged: true
           resources:
