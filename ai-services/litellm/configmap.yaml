@@ -77,6 +77,14 @@ data:
         litellm_params:
           model: gemini/gemini-3.8-flash
           api_key: "os.environ/GEMINI_API_KEY"
+      - model_name: gemini-4-hydrogen
+        litellm_params:
+          model: gemini/gemini-4-hydrogen
+          api_key: "os.environ/GEMINI_API_KEY"
+      - model_name: gemini-hydrogen
+        litellm_params:
+          model: gemini/gemini-4-hydrogen
+          api_key: "os.environ/GEMINI_API_KEY"
       - model_name: gpt-6-luna
         litellm_params:
           model: openai/gpt-6-luna
@@ -154,11 +162,11 @@ data:
     router_settings:
       routing_strategy: "latency-based-routing"
       fallbacks:
-        - {"agent": ["assistant-e3b", "gemini-3.8-flash"]}
-        - {"agent-gemma": ["assistant-e3b", "gemini-3.8-flash"]}
-        - {"vision": ["assistant-e3b", "gemini-3.8-flash"]}
-        - {"assistant": ["assistant-e3b", "gemini-3.8-flash"]}
-        - {"code": ["llama-gemma4-26b-iq2", "gemini-3.8-flash"]}
+        - {"agent": ["assistant-e3b", "gemini-4-hydrogen"]}
+        - {"agent-gemma": ["assistant-e3b", "gemini-4-hydrogen"]}
+        - {"vision": ["assistant-e3b", "gemini-4-hydrogen"]}
+        - {"assistant": ["assistant-e3b", "gemini-4-hydrogen"]}
+        - {"code": ["llama-gemma4-26b-iq2", "gemini-4-hydrogen"]}
 
     litellm_settings:
       drop_params: true
