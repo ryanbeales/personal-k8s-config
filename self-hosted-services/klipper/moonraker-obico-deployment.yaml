@@ -49,7 +49,7 @@ spec:
       containers:
         - name: moonraker-obico
           # renovate: datasource=docker depname=ghcr.io/thespaghettidetective/moonraker-obico versioning=semver
-          image: ghcr.io/thespaghettidetective/moonraker-obico:v2.2.6
+          image: ghcr.io/thespaghettidetective/moonraker-obico:v2.2.8
           command:
             - /bin/sh
             - -c
