@@ -41,6 +41,12 @@ spec:
               value: "32768"
             - name: TMMU_THINKING_BUDGET
               value: "6144"
+            - name: TMMU_L2_WINA_BITS
+              value: "3"
+            - name: TMMU_L2_WINA_RATIO
+              value: "0.65"
+            - name: TMMU_COLD_DROP_WEIGHT
+              value: "0.09"
             - name: HF_TOKEN
               valueFrom:
                 secretKeyRef:
