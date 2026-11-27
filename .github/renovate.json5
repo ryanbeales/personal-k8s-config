@@ -82,6 +82,7 @@
         "ghcr.io/windmill-labs/windmill-extra",
         "open-webui/open-webui",
         "ghcr.io/thespaghettidetective/moonraker-obico",
+        "obico",
         "portainer/kubectl-shell",
         "n8nio/n8n",
         "neosmemo/memos",
