@@ -13,12 +13,14 @@ data:
           api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
+          allowed_openai_params: ["reasoning_effort"]
       - model_name: qwen3-next-80b
         litellm_params:
           model: openai/Qwen3-Next-80B-A3B-Instruct
           api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
           max_parallel_requests: 2
+          allowed_openai_params: ["reasoning_effort"]
       - model_name: llama-gemma4-26b-iq2
         litellm_params:
           model: openai/gemma-4-26B-A4B-it-UD-IQ2_M.gguf
@@ -100,11 +102,13 @@ data:
           model: openai/Qwen3-Next-80B-A3B-Instruct
           api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+          allowed_openai_params: ["reasoning_effort"]
       - model_name: agent-gemma
         litellm_params:
           model: openai/Qwen3-Next-80B-A3B-Instruct
           api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+          allowed_openai_params: ["reasoning_effort"]
 
       # "vision" group: Frigate camera descriptions (5060 Ti Gemma 4 26B MoE instance, vision enabled)
       - model_name: vision
@@ -126,6 +130,7 @@ data:
           model: openai/Qwen3-Next-80B-A3B-Instruct
           api_base: http://tensormmu-qwen3-next-80b.llama.svc.cluster.local:8000/v1
           api_key: "sk-no-key"
+          allowed_openai_params: ["reasoning_effort"]
 
       # "stt" group
       - model_name: stt
@@ -156,6 +161,7 @@ data:
         - {"code": ["llama-gemma4-26b-iq2", "gemini-3.8-flash"]}
 
     litellm_settings:
+      drop_params: true
       callbacks:
         - prometheus
       require_auth_for_metrics_endpoint: false
