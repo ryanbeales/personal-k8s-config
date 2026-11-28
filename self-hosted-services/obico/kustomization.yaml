@@ -5,7 +5,7 @@ namespace: obico
 helmCharts:
   - name: obico
     repo:  oci://ghcr.io/thespaghettidetective/charts
-    version: 2026.11.26
+    version: 2026.11.27
     releaseName: obico
     namespace: obico
     valuesFile: values.yaml
