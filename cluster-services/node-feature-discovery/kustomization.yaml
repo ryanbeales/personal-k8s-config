@@ -1,6 +1,7 @@
 resources:
 - https://github.com/kubernetes-sigs/node-feature-discovery/deployment/overlays/default?ref=v0.20.1
 - usb-devices-rules.yaml
+- display-camera-detector-configmap.yaml
 
 patches:
   - target:
@@ -16,3 +17,43 @@ patches:
           spec:
             tolerations:
               - operator: Exists
+            containers:
+              - name: display-camera-detector
+                # renovate: datasource=docker depName=busybox versioning=semver
+                image: busybox:1.37.0
+                command: ["/bin/sh", "/scripts/detect.sh"]
+                resources:
+                  requests:
+                    cpu: 5m
+                    memory: 16Mi
+                  limits:
+                    memory: 32Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: true
+                  capabilities:
+                    drop:
+                      - ALL
+                    add:
+                      - DAC_OVERRIDE
+                volumeMounts:
+                  - name: host-sys
+                    mountPath: /host-sys
+                    readOnly: true
+                  - name: host-tmp
+                    mountPath: /host-tmp
+                    readOnly: true
+                  - name: features-d
+                    mountPath: /etc/kubernetes/node-feature-discovery/features.d
+                  - name: display-camera-detector-script
+                    mountPath: /scripts
+                    readOnly: true
+            volumes:
+              - name: host-tmp
+                hostPath:
+                  path: /tmp
+                  type: Directory
+              - name: display-camera-detector-script
+                configMap:
+                  name: display-camera-detector-script
+                  defaultMode: 420

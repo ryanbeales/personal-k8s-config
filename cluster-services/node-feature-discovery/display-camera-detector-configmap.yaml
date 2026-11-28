@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: display-camera-detector-script
+  namespace: node-feature-discovery
+  labels:
+    app.kubernetes.io/name: node-feature-discovery
+data:
+  detect.sh: |
+    #!/bin/sh
+    set -eu
+
+    OUT_DIR="/etc/kubernetes/node-feature-discovery/features.d"
+    OUT_FILE="${OUT_DIR}/display-camera"
+    TMP_FILE="${OUT_DIR}/.display-camera.tmp"
+
+    trap 'exit 0' TERM INT
+
+    detect() {
+      : > "${TMP_FILE}"
+
+      # 1. Display detection via DRM connector status
+      display_connected="false"
+      for status_file in /host-sys/class/drm/card*-*/status; do
+        [ -r "${status_file}" ] || continue
+        if [ "$(cat "${status_file}" 2>/dev/null || true)" = "connected" ]; then
+          display_connected="true"
+          break
+        fi
+      done
+
+      if [ "${display_connected}" = "true" ]; then
+        echo "display.connected=true" >> "${TMP_FILE}"
+
+        # Check for active X11 / XWayland display socket
+        x11_present="false"
+        for sock in /host-tmp/.X11-unix/X*; do
+          if [ -S "${sock}" ]; then
+            x11_present="true"
+            break
+          fi
+        done
+        echo "display.x11=${x11_present}" >> "${TMP_FILE}"
+
+        # Check for framebuffer device
+        if [ -d /host-sys/class/graphics/fb0 ]; then
+          echo "display.fbdev=true" >> "${TMP_FILE}"
+        else
+          echo "display.fbdev=false" >> "${TMP_FILE}"
+        fi
+      fi
+
+      # 2. Camera detection via Video4Linux (excludes Pi M2M codecs/ISP)
+      camera_usb="false"
+      camera_csi="false"
+      camera_other="false"
+
+      for vdev in /host-sys/class/video4linux/video*; do
+        [ -d "${vdev}" ] || continue
+
+        driver=""
+        if [ -L "${vdev}/device/driver" ]; then
+          driver="$(basename "$(readlink "${vdev}/device/driver")")"
+        fi
+
+        case "${driver}" in
+          uvcvideo|gspca_*|pwc|sn9c102)
+            camera_usb="true"
+            ;;
+          unicam|rp1-cfe|bcm2835-v4l2|bcm2835_v4l2)
+            camera_csi="true"
+            ;;
+          ""|bcm2835-codec*|bcm2835-isp*|rpi-hevc-dec*|v4l2loopback*)
+            ;;
+          *)
+            # Ignore generic M2M codecs/ISP devices by name
+            vname="$(cat "${vdev}/name" 2>/dev/null || true)"
+            case "${vname}" in
+              *codec*|*isp*|*ISP*|*hevc*|*HEVC*|*loopback*|*Loopback*|*metadata*|*Metadata*)
+                ;;
+              *)
+                camera_other="true"
+                ;;
+            esac
+            ;;
+        esac
+      done
+
+      if [ "${camera_usb}" = "true" ] || [ "${camera_csi}" = "true" ] || [ "${camera_other}" = "true" ]; then
+        echo "camera.present=true" >> "${TMP_FILE}"
+        [ "${camera_usb}" = "true" ] && echo "camera.usb=true" >> "${TMP_FILE}"
+        [ "${camera_csi}" = "true" ] && echo "camera.csi=true" >> "${TMP_FILE}"
+      fi
+
+      # Atomic update only if contents changed
+      if [ ! -f "${OUT_FILE}" ] || ! cmp -s "${TMP_FILE}" "${OUT_FILE}"; then
+        mv -f "${TMP_FILE}" "${OUT_FILE}"
+      else
+        rm -f "${TMP_FILE}"
+      fi
+    }
+
+    while true; do
+      detect
+      sleep 60 &
+      wait $!
+    done
